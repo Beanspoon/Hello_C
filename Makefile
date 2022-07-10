@@ -58,7 +58,7 @@ clean:
 .PHONY: asm
 asm: $(BUILD_DIR)/$(PROJECT).asm
 
-$(BUILD_DIR)/$(PROJECT).asm: %.c
+$(BUILD_DIR)/$(PROJECT).asm: $(SRCS) $(BUILD_DIR)
 	@echo "Compiling $<..."
 	@arm-none-eabi-gcc -S -o $@ $< $(CFLAGS)
     
