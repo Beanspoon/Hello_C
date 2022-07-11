@@ -10,7 +10,6 @@ CFLAGS += \
 	-mfpu=fpv4-sp-d16 \
 	-std=c99 \
 	-O \
-	-g \
 	-ffreestanding \
 	-ffunction-sections \
 	-fdata-sections
