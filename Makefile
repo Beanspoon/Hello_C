@@ -18,7 +18,8 @@ LDFLAGS += \
 	-specs=nosys.specs \
 	-Wl,--print-memory-usage \
 	-Wl,-Map=flash.map \
-	-Wl,--gc-sections
+	-Wl,--gc-sections \
+    -Wl,-T link.ld
 
 BUILD_DIR ?= build
 OBJ_DIR ?= $(BUILD_DIR)/objs
