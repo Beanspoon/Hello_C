@@ -1,6 +1,7 @@
 PROJECT = helloC
 
 SRCS += \
+    startup.c
 	main.c
 
 CFLAGS += \
