@@ -1,8 +1,7 @@
 PROJECT = helloC
 
 SRCS += \
-	startup.c
-	main.c
+    $(wildcard src/*.c)
 
 CFLAGS += \
     -mthumb \
@@ -10,7 +9,8 @@ CFLAGS += \
 	-mfloat-abi=hard \
 	-mfpu=fpv4-sp-d16 \
 	-std=c99 \
-	-O \
+	-O0 \
+    -g \
 	-ffreestanding \
 	-ffunction-sections \
 	-fdata-sections
@@ -55,6 +55,7 @@ $(BUILD_DIR)/$(PROJECT).bin: $(BUILD_DIR)/$(PROJECT).elf $(BUILD_DIR)/$(PROJECT)
 .PHONY: clean
 clean:
 	@rm -rf $(BUILD_DIR)
+	@rm flash.map
 
 .PHONY: asm
 asm: $(BUILD_DIR)/$(PROJECT).asm

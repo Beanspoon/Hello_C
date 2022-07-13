@@ -9,13 +9,9 @@ STACK_SIZE = 0x400;
 
 SECTIONS
 {
-    .vectors :
-    {
-        *(.vectors);
-    } > flash
-
     .text :
     {
+        KEEP(*(.vectors))
         *(.text);
     } > flash
 
