@@ -1,5 +1,4 @@
-#define RW_reg  unsigned int
-#define RO_reg  const unsigned int
+#include "types.h"
 
 #define GPIO_BASE_ADDR  0x50000000U
 
