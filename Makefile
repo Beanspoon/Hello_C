@@ -1,16 +1,15 @@
 PROJECT = helloC
 
 SRCS += \
-    $(wildcard src/*.c)
+	$(wildcard *.c)
 
 CFLAGS += \
-    -mthumb \
-    -mcpu=cortex-m4 \
+	-mthumb \
+	-mcpu=cortex-m4 \
 	-mfloat-abi=hard \
 	-mfpu=fpv4-sp-d16 \
 	-std=c99 \
-	-O0 \
-    -g \
+	-O \
 	-ffreestanding \
 	-ffunction-sections \
 	-fdata-sections
@@ -20,7 +19,7 @@ LDFLAGS += \
 	-Wl,--print-memory-usage \
 	-Wl,-Map=flash.map \
 	-Wl,--gc-sections \
-    -Wl,-T link.ld
+	-Wl,-T link.ld
 
 BUILD_DIR ?= build
 OBJ_DIR ?= $(BUILD_DIR)/objs
@@ -55,7 +54,6 @@ $(BUILD_DIR)/$(PROJECT).bin: $(BUILD_DIR)/$(PROJECT).elf $(BUILD_DIR)/$(PROJECT)
 .PHONY: clean
 clean:
 	@rm -rf $(BUILD_DIR)
-	@rm flash.map
 
 .PHONY: asm
 asm: $(BUILD_DIR)/$(PROJECT).asm
@@ -63,4 +61,8 @@ asm: $(BUILD_DIR)/$(PROJECT).asm
 $(BUILD_DIR)/$(PROJECT).asm: $(SRCS) $(BUILD_DIR)
 	@echo "Compiling $<..."
 	@arm-none-eabi-gcc -S -o $@ $< $(CFLAGS)
-    
+
+.PHONY: print
+print:
+	@echo $(SRCS)
+	@echo $(OBJS)
