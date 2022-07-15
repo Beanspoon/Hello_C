@@ -9,7 +9,8 @@ CFLAGS += \
 	-mfloat-abi=hard \
 	-mfpu=fpv4-sp-d16 \
 	-std=c99 \
-	-O \
+	-O0 \
+	-g \
 	-ffreestanding \
 	-ffunction-sections \
 	-fdata-sections
