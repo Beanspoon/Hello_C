@@ -1,7 +1,10 @@
 PROJECT = helloC
 
 SRCS += \
-	$(wildcard *.c)
+	$(wildcard src/*.c)
+
+INCLUDES += \
+	include
 
 CFLAGS += \
 	-mthumb \
@@ -22,6 +25,8 @@ LDFLAGS += \
 	-Wl,--gc-sections \
 	-Wl,-T link.ld
 
+CFLAGS += $(foreach i,$(INCLUDES),-I $(i))
+
 BUILD_DIR ?= build
 OBJ_DIR ?= $(BUILD_DIR)/objs
 OBJS = $(patsubst %.c,$(OBJ_DIR)/%.o,$(SRCS))
@@ -37,6 +42,7 @@ $(OBJ_DIR):
 
 $(OBJ_DIR)/%.o: %.c $(OBJ_DIR)
 	@echo "Compiling $<..."
+	@mkdir -p $(dir $@)
 	@arm-none-eabi-gcc -c -o $@ $< $(CFLAGS)
 
 $(BUILD_DIR)/$(PROJECT).elf: $(OBJS)
