@@ -1,3 +1,7 @@
+#include "core_m4.h"
+
+#include <stddef.h>
+
 extern unsigned int __srodata;
 extern unsigned int __erodata;
 extern unsigned int __sbss;
@@ -60,15 +64,23 @@ void UsageFault_handler( void )
     while (1) {}
 }
 
+void Systick_handler( void ) { }
+
 // Vector table
 __attribute__ ((section(".vectors")))
-const unsigned int *vectorTable[] = 
+const tVectorTable vectorTable = 
 {
-    (unsigned int *)(&__estack),    // Stack pointer
-    (unsigned int *)Reset_handler,
-    (unsigned int *)NMI_handler,
-    (unsigned int *)Hardfault_handler,
-    (unsigned int *)MemMgmtFault_handler,
-    (unsigned int *)BusFault_handler,
-    (unsigned int *)UsageFault_handler,
+    // Stack pointer
+    .pStack                 = (void *)(&__estack),
+
+    // Exception handlers
+    .pfReset_handler        = (void *)Reset_handler,
+    .pfNMI_handler          = (void *)NMI_handler,
+    .pfHardfault_handler    = (void *)Hardfault_handler,
+    .pfMemMgmtFault_handler = (void *)MemMgmtFault_handler,
+    .pfBusFault_handler     = (void *)BusFault_handler,
+    .pfUsageFault_handler   = (void *)UsageFault_handler,
+    .pfSVCall_handler       = NULL,
+    .pfPendSV_handler       = NULL,
+    .pfSystick_handler      = (void *)Systick_handler,
 };
