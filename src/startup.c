@@ -14,6 +14,7 @@ extern unsigned int __estack;
 // Forward-define main
 void main( void );
 
+__attribute__((weak))
 void Reset_handler( void )
 {
     // Initialise zeroed statics
@@ -39,31 +40,37 @@ void Reset_handler( void )
     while(1) {}
 }
 
+__attribute__((weak))
 void NMI_handler( void )
 {
     while(1) {}
 }
 
+__attribute__((weak))
 void Hardfault_handler( void )
 {
     while(1) {}
 }
 
+__attribute__((weak))
 void MemMgmtFault_handler( void )
 {
     while(1) {}
 }
 
+__attribute__((weak))
 void BusFault_handler( void )
 {
     while (1) {}
 }
 
+__attribute__((weak))
 void UsageFault_handler( void )
 {
     while (1) {}
 }
 
+__attribute__((weak))
 void Systick_handler( void ) { }
 
 // Vector table
