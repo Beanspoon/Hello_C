@@ -68,8 +68,3 @@ asm: $(BUILD_DIR)/$(PROJECT).asm
 $(BUILD_DIR)/$(PROJECT).asm: $(SRCS) $(BUILD_DIR)
 	@echo "Compiling $<..."
 	@arm-none-eabi-gcc -S -o $@ $< $(CFLAGS)
-
-.PHONY: print
-print:
-	@echo $(SRCS)
-	@echo $(OBJS)
