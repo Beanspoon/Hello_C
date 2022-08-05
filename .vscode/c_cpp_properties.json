@@ -9,10 +9,23 @@
             ],
             "defines": [],
             "compilerPath": "/opt/gcc-arm-none-eabi/bin/arm-none-eabi-gcc",
-            "cStandard": "gnu17",
+            "cStandard": "c99",
             "cppStandard": "c++17",
             "intelliSenseMode": "linux-gcc-x64",
             "configurationProvider": "ms-vscode.makefile-tools"
+        },
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/include/"
+            ],
+            "defines": [],
+            "windowsSdkVersion": "10.0.18362.0",
+            "compilerPath": "C:/cygwin64/bin/gcc.exe",
+            "cStandard": "c99",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "windows-gcc-arm"
         }
     ],
     "version": 4
