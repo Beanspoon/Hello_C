@@ -19,5 +19,20 @@ void core_systickInit( const uint16_t tickFrequency, const uint32_t clockFrequen
         CORE_SYSTICK.SYST_RVR = clockFrequency / tickFrequency;
     }
 
-    CORE_SYSTICK.SYST_CSR.CSR_TICKINT = ENABLED;
+    CORE_SYSTICK.SYST_CSR.CSR_TICKINT = ENABLED;    // Enable systick interrupt
+    CORE_SYSTICK.SYST_CVR = 0u; // Clear the current value register (reset)
+    (volatile void)CORE_SYSTICK.SYST_CSR.CSR_COUNTFLAG;  // Read the countflag to reset
+
+    CORE_SYSTICK.SYST_CSR.CSR_SYST_EN = ENABLED;    // Enable systick
+}
+
+void core_busyWait( uint32_t delay_ms )
+{
+    while( delay_ms > 0u )
+    {
+        if( CORE_SYSTICK.SYST_CSR.CSR_COUNTFLAG )
+        {
+            --delay_ms;
+        }
+    }
 }

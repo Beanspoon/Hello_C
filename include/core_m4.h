@@ -51,11 +51,18 @@ typedef struct
 
 /**
  * @brief Initialises the systick
- * 
+ *
  * @param[in] tickFrequency Frequency of systick ticks
  * @param[in] clockFrequency Frequency of the clock (used if no calibration value exists)
  */
 void core_systickInit( const uint16_t tickFrequency, const uint32_t clockFrequency );
+
+/**
+ * @brief Holds execuction for <delay_ms> miliseconds
+ *
+ * @param[in] delay_Ms Time to delay
+ */
+void core_busyWait( uint32_t delay_ms );
 
 /************************************************
  * NVIC
