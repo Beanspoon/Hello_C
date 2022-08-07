@@ -49,7 +49,13 @@ typedef struct
 
 #define CORE_SYSTICK    (*((volatile tCore_systickRegmap *) CORE_SYSTICK_BASE_ADDR))
 
-void core_systickInit( uint16_t tickFrequency );
+/**
+ * @brief Initialises the systick
+ * 
+ * @param[in] tickFrequency Frequency of systick ticks
+ * @param[in] clockFrequency Frequency of the clock (used if no calibration value exists)
+ */
+void core_systickInit( const uint16_t tickFrequency, const uint32_t clockFrequency );
 
 /************************************************
  * NVIC
