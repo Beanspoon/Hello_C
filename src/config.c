@@ -1,7 +1,7 @@
 #include "config.h"
 
-static const tConfig config =
+const tConfig config =
 {
     .systick_frequency = 1000u,         // 1 kHz = 1 ms
-    .core_clock_frequency = 64000000    // 64 MHz
+    .core_clock_frequency = 64000000u,  // 64 MHz
 };

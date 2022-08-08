@@ -3,11 +3,12 @@
 #include "types.h"
 
 #include "config.h"
-extern const tConfig config;
 
 #define GPIO_BASE_ADDR  0x50000000U
 
 #define OUT_ADDR         (GPIO_BASE_ADDR + 0x504)
+#define OUTSET_ADDR         (GPIO_BASE_ADDR + 0x508)
+#define OUTCLR_ADDR         (GPIO_BASE_ADDR + 0x50C)
 #define PIN17_CNF_ADDR      ( GPIO_BASE_ADDR + 0x744U )
 
 typedef struct
@@ -29,6 +30,8 @@ typedef struct
 } tPincnf_reg;
 
 #define OUT      (*((volatile RW_reg *) OUT_ADDR))
+#define OUTSET      (*((volatile RW_reg *) OUTSET_ADDR))
+#define OUTCLR      (*((volatile RW_reg *) OUTCLR_ADDR))
 #define PIN17_CNF   (*((volatile tPincnf_reg *) PIN17_CNF_ADDR))
 
 void main( void )
@@ -41,11 +44,12 @@ void main( void )
     PIN17_CNF.PINCNF_DRIVE = 0u;    // Standard 0, standard 1
     PIN17_CNF.PINCNF_SENSE = 0u;    // Disable
 
-    OUT = 0u;
-
     while(1)
     {
-
+        OUTCLR = (1u << 17u);
+        core_busyWait( 1000u );
+        OUTSET = (1u << 17u);
+        core_busyWait( 1000u );
     }
 }
 

@@ -4,8 +4,8 @@
 *                         www.segger.com                             *
 **********************************************************************
 
-File          : /home/pete/projects/hello_C/MBN52832DK.jdebug
-Created       : 15 Jul 2022 12:38
+File          : C:/Users/Peter/Documents/Projects/Embedded/hello_c/MBN52832DK.jdebug
+Created       : 8 Aug 2022 22:08
 Ozone Version : V3.26h
 */
 
@@ -22,10 +22,10 @@ void OnProjectLoad (void) {
   //
   // Dialog-generated settings
   //
-  Project.AddPathSubstitute ("/home/pete/projects/hello_C", "$(ProjectDir)");
-  Project.AddPathSubstitute ("/home/pete/projects/hello_c", "$(ProjectDir)");
+  Project.AddPathSubstitute ("C:/Users/Peter/Documents/Projects/Embedded/hello_c", "$(ProjectDir)");
+  Project.AddPathSubstitute ("c:/users/peter/documents/projects/embedded/hello_c", "$(ProjectDir)");
   Project.SetDevice ("nRF52832_xxAA");
-  Project.SetHostIF ("USB", "");
+  Project.SetHostIF ("USB", "483069984");
   Project.SetTargetIF ("SWD");
   Project.SetTIFSpeed ("4 MHz");
   Project.AddSvdFile ("$(InstallDir)/Config/CPU/Cortex-M4F.svd");
@@ -324,25 +324,8 @@ void AfterTargetDownload (void) {
 **********************************************************************
 */
 void _SetupTarget(void) {
-  unsigned int SP;
-  unsigned int PC;
-  unsigned int VectorTableAddr;
-
-  VectorTableAddr = Elf.GetBaseAddr();
   //
-  // Set up initial stack pointer
+  // this function is intentionally empty because both inital PC and
+  // initial SP were chosen not to be set
   //
-  SP = Target.ReadU32(VectorTableAddr);
-  if (SP != 0xFFFFFFFF) {
-    Target.SetReg("SP", SP);
-  }
-  //
-  // Set up entry point PC
-  //
-  PC = Elf.GetEntryPointPC();
-  if (PC != 0xFFFFFFFF) {
-    Target.SetReg("PC", PC);
-  } else {
-    Util.Error("Project script error: failed to set up entry point PC", 1);
-  }
 }
