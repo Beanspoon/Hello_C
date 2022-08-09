@@ -1,4 +1,4 @@
-#include "core_m4.h"
+#include "hal_core.h"
 
 #define TENMS_FREQUENCY 100u    // 10 ms periodicity == 100 Hz
 

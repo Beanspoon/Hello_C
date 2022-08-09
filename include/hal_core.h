@@ -1,5 +1,5 @@
-#ifndef CORE_M4_H
-#define CORE_M4_H
+#ifndef HAL_CORE_H
+#define HAL_CORE_H
 
 #include "types.h"
 
@@ -87,4 +87,4 @@ typedef struct
 } tVectorTable;
 
 
-#endif // CORE_M4_H
+#endif // HAL_CORE_H

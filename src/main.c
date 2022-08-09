@@ -1,4 +1,4 @@
-#include "core_m4.h"
+#include "hal_core.h"
 
 #include "types.h"
 
