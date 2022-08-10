@@ -33,39 +33,46 @@ typedef enum
     GPIO_DRIVE_D0S1,    // Disconnect '0', standard '1' (wired-or)
     GPIO_DRIVE_D0H1,    // Disconnect '0', high drive '1' (wired-or)
     GPIO_DRIVE_S0D1,    // Standard '0', disconnect '1' (wired-and)
-    GPIO_DRIVE_H0D1,    // High drive '0', disconnect '1' (wired-and) 
+    GPIO_DRIVE_H0D1,    // High drive '0', disconnect '1' (wired-and)
 } tGpio_drive;
 
 typedef enum
 {
-    
-}
+    GIPO_SENSE_DISABLED,    // Pin sensing mechanism disabled
+    GPIO_SENSE_HIGH,        // Sense for high level
+    GPIO_SENSE_LOW          // Sense for low level
+} tGpio_sense;
 
 typedef struct
 {
-    tGpio_pinDir    PINCNF_DIR      : 1;    // Bit[0]   Pin direction
+    tGpio_dir       PINCNF_DIR      : 1;    // Bit[0]   Pin direction
     tGpio_inBuf     PINCNF_INPUT    : 1;    // Bit[1]   Connect or disconnect input buffer
     tGpio_pull      PINCNF_PULL     : 2;    // Bit[2-3] Pin pull configuration
     const uint8_t                   : 0;
     tGpio_drive     PINCNF_DRIVE    : 3;    // Bit[8-10]    Drive configuration
-
+    const uint8_t                   : 0;
+    tGpio_sense     PINCNF_SENSE    : 2;    // Bit[16-17]   Pin sensing mechanism
+    RO_reg                          : 0;
 } tGpio_pinCnfReg;
 
 typedef struct
 {
-    RO_reg  RESERVED_A[0x141];
-    RW_reg  GPIO_OUT;           // 0x504 Write GPIO port
-    RW_reg  GPIO_OUTSET;        // 0x508 Set individual bits in GPIO port
-    RW_reg  GPIO_OUTCLR;        // 0x50C Clear individual bits in GPIO port
-    RO_reg  GPIO_IN;            // 0x510 Read GPIO port
-    RW_reg  GPIO_DIR;           // 0x514 Direction of GPIO pins
-    RW_reg  GPIO_DIRSET;        // 0x518 Direction set register (sets pin to output)
-    RW_reg  GPIO_DIRCLR;        // 0x51C Direction clear register (sets pin to input)
-    RW_reg  GPIO_LATCH;         // 0x520 Latch register indicating which GPIO pins have met criteria set in PIN_CNF[n].SENSE. Write '1' to clear
-    RW_reg  GPIO_DETECTMODE;    // 0x524 Select between default DETECT signal behaviour (0) and LDETECT mode (1)
-    RW_reg
+    RO_reg          RESERVED_A[0x141];
+    RW_reg          GPIO_OUT;           // 0x504 Write GPIO port
+    RW_reg          GPIO_OUTSET;        // 0x508 Set individual bits in GPIO port
+    RW_reg          GPIO_OUTCLR;        // 0x50C Clear individual bits in GPIO port
+    RO_reg          GPIO_IN;            // 0x510 Read GPIO port
+    RW_reg          GPIO_DIR;           // 0x514 Direction of GPIO pins
+    RW_reg          GPIO_DIRSET;        // 0x518 Direction set register (sets pin to output)
+    RW_reg          GPIO_DIRCLR;        // 0x51C Direction clear register (sets pin to input)
+    RW_reg          GPIO_LATCH;         // 0x520 Latch register indicating which GPIO pins have met criteria set in PIN_CNF[n].SENSE. Write '1' to clear
+    RW_reg          GPIO_DETECTMODE;    // 0x524 Select between default DETECT signal behaviour (0) and LDETECT mode (1)
+    RO_reg          RESERVED_B[0x77];
+    tGpio_pinCnfReg GPIO_PINCNF[32];    // 0x700-77C Configuration of GPIO pins
 } tGpio_regMap;
 
 #define GPIO    (*((volatile tGpio_regMap *) GPIO_BASE_ADDR))
+
+#define GPIO_PINMASK(pin)   (1u << pin)
 
 #endif // HAL_GPIO_H
