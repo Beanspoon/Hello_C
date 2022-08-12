@@ -97,7 +97,7 @@ typedef struct
  * @param[in] pin The pin to be configured
  * @param[in] config Struct detailing the configuration of the pin
  */
-void gpio_configurePin( const uint8_t pin, const tGpio_pinConfig config );
+void gpio_configurePin( const uint8_t pin, const tGpio_pinConfig* const config );
 
 /**
  * @brief Set pin to state
