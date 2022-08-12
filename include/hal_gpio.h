@@ -73,38 +73,46 @@ typedef struct
 
 #define GPIO    (*((volatile tGpio_regMap *) GPIO_BASE_ADDR))
 
+#define GPIO_PINMASK(pin)   (1u << pin)
+
 typedef enum
 {
     LOW,
     HIGH
 } tGpio_pinState;
 
+typedef enum
+{
+    GPIO_STATUS_OK,
+    GPIO_STATUS_INVALID
+} tGpio_status;
+
 typedef struct
 {
-    tGpio_dir       direction;      // Pin direction
-    tGpio_inBuf     inputBuffer;    // Input buffer configuration
-    tGpio_pull      pull;           // Pin pull direction
-    tGpio_drive     drive;          // Pin drive configuration
-    tGpio_sense     sense;          // Sense mechanism configuration
-    tGpio_pinState  initState;      // Initial state for the pin
+    tGpio_pinCnfReg pinConfig;     // Configuration
+    tGpio_pinState  initState;  // Initial state for the pin
 } tGpio_pinConfig;
 
-#define GPIO_PINMASK(pin)   (1u << pin)
+#define GPIO_MAXPIN         31
 
 /**
  * @brief Configure a pin
  *
  * @param[in] pin The pin to be configured
  * @param[in] config Struct detailing the configuration of the pin
+ * 
+ * @return Status value
  */
-void gpio_configurePin( const uint8_t pin, const tGpio_pinConfig* const config );
+tGpio_status gpio_configurePin( const uint8_t pin, const tGpio_pinConfig* const config );
 
 /**
  * @brief Set pin to state
  *
  * @param[in] pin The pin to set
  * @param[in] state The state to set
+ * 
+ * @return Status value
  */
-void gpio_writePin( const uint8_t pin, const tGpio_pinState state );
+tGpio_status gpio_writePin( const uint8_t pin, const tGpio_pinState state );
 
 #endif // HAL_GPIO_H
