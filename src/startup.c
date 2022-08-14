@@ -1,4 +1,4 @@
-#include "core_m4.h"
+#include "core.h"
 
 #include <stddef.h>
 
@@ -75,7 +75,7 @@ void Systick_handler( void ) { }
 
 // Vector table
 __attribute__ ((section(".vectors")))
-const tVectorTable vectorTable = 
+const tVectorTable vectorTable =
 {
     // Stack pointer
     .pStack                 = (void *)(&__estack),
