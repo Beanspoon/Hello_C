@@ -47,6 +47,19 @@ typedef struct
 
 typedef struct
 {
+    RW_reg  LFLEN               : 4; // Bit[0-3] Length on air of LENGTH field in bits
+    const uint8_t               : 0;
+    RW_reg  S0LEN               : 1; // Bit[8] Length on air of S0 field in bytes
+    const uint16_t              : 0;
+    RW_reg  S1LEN               : 4; // Bit[16-19] Length on air of S1 field in bits
+    RW_reg  S1INCL              : 1; // Bit[20] 0: Include S1 in RAM if S1LEN > 0, 1: Always include
+    const uint8_t               : 0;
+    RW_reg  PLEN                : 1; // Bit[24] Length of preamble on air 0: 8bit, 1: 16bit
+    RO_reg                      : 0;
+}
+
+typedef struct
+{
     RW_reg              TASKS_TXEN;         // 0x000 Enable radio in TX mode
     RW_reg              TASKS_RXEN;         // 0x004 Enable radio in RX mode
     RW_reg              TASKS_START;        // 0x008 Start radio
@@ -83,6 +96,29 @@ typedef struct
     RO_reg              RESERVED_G[0x3C];
     RW_reg              PACKETPTR;          // 0x504 RAM address of memory in which packet is stored
     tRadio_frequencyReg FREQUNECY;          // 0x508 Frequency setting register
+    RW_reg              TXPOWER;            // 0x50C Transmission power register
+    RW_reg              MODE;               // 0x510 Radio data rate and modulation
 } tRadio_regMap;
+
+typedef enum
+{
+    RADIO_POWER_POS4DBM   = 0x04,
+    RADIO_POWER_POS3DBM   = 0x03,
+    RADIO_POWER_0DBM      = 0x00,
+    RADIO_POWER_NEG4DBM   = 0xFC,
+    RADIO_POWER_NEG8DBM   = 0xF8,
+    RADIO_POWER_NEG12DBM  = 0xF4,
+    RADIO_POWER_NEG16DBM  = 0xF0,
+    RADIO_POWER_NEG20DBM  = 0xEC,
+    RADIO_POWER_NEG40DBM  = 0xD8
+} tRadio_txPower;
+
+typdef enum
+{
+    RADIO_MODE_NRF1MBIT,
+    RADIO_MODE_NRF2MBIT,
+    RADIO_MODE_BLE1MBIT = 3,
+    RADIO_MODE_BLE2MBIT,
+} tRadio_mode;
 
 #endif // RADIO_H
