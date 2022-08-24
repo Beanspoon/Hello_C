@@ -83,6 +83,27 @@ typedef struct
 
 typedef struct
 {
+    RW_reg  ADDR0               : 1; // Bit[0] 0: disable, or 1: enable reception on logical address 0
+    RW_reg  ADDR1               : 1; // Bit[1] 0: disable, or 1: enable reception on logical address 1
+    RW_reg  ADDR2               : 1; // Bit[2] 0: disable, or 1: enable reception on logical address 2
+    RW_reg  ADDR3               : 1; // Bit[3] 0: disable, or 1: enable reception on logical address 3
+    RW_reg  ADDR4               : 1; // Bit[4] 0: disable, or 1: enable reception on logical address 4
+    RW_reg  ADDR5               : 1; // Bit[5] 0: disable, or 1: enable reception on logical address 5
+    RW_reg  ADDR6               : 1; // Bit[6] 0: disable, or 1: enable reception on logical address 6
+    RW_reg  ADDR7               : 1; // Bit[7] 0: disable, or 1: enable reception on logical address 7
+    RO_reg                      : 0;
+} tRadio_rxAddressReg;
+
+typedef struct
+{
+    RW_reg  LEN                 : 3; // Bit[0-2] CRC length in number of bytes
+    const uint8_t;
+    RW_reg  SKIPADDR            : 1; // Bit[8] 0: include, or 1: skip address field in CRC calculation
+    RO_reg                      : 0;
+} tRadio_crcCnf;
+
+typedef struct
+{
     RW_reg              TASKS_TXEN;         // 0x000 Enable radio in TX mode
     RW_reg              TASKS_RXEN;         // 0x004 Enable radio in RX mode
     RW_reg              TASKS_START;        // 0x008 Start radio
@@ -125,6 +146,18 @@ typedef struct
     RW_reg              BASE[2];            // 0x51C-520 Radio base address registers
     tRadio_prefixRegs   PREFIX;             // 0x524-528 Prefix bytes for logical addresses
     RW_reg              TXADDRESS;          // 0x52C Transmit logical address select
+    tRadio_rxAddressReg RXADDRESS;          // 0x530 Receive logical address select
+    tRadio_crcCnf       CRCCNF;             // 0x534 CRC configuration register
+    RW_reg              CRCPOLY;            // 0x538 CRC polynomial register
+    RW_reg              CRCINIT;            // 0x53C Initial value for CRC
+    RO_reg              RESERVED_H;
+    RW_reg              TIFS;               // 0x544 Inter-frame spacing in us [0-255]
+    RO_reg              RSSISAMPLE;         // 0x548 RSSI sample register (read as -A dbm)
+    RO_reg              RESERVED_I;
+    RO_reg              STATE;              // 0x550 Current radio state
+    RW_reg              DATAWHITEIV;        // 0x554 Data whitening initial value register
+    RO_reg              RESERVED_J[2];
+    RW_reg              BCC;                // 0x560 Bit counter compare
 } tRadio_regMap;
 
 typedef enum
@@ -140,12 +173,37 @@ typedef enum
     RADIO_POWER_NEG40DBM  = 0xD8
 } tRadio_txPower;
 
-typdef enum
+typedef enum
 {
     RADIO_MODE_NRF1MBIT,
     RADIO_MODE_NRF2MBIT,
     RADIO_MODE_BLE1MBIT = 3,
     RADIO_MODE_BLE2MBIT,
 } tRadio_mode;
+
+typedef enum
+{
+    RADIO_LOGADDR0,
+    RADIO_LOGADDR1,
+    RADIO_LOGADDR2,
+    RADIO_LOGADDR3,
+    RADIO_LOGADDR4,
+    RADIO_LOGADDR5,
+    RADIO_LOGADDR6,
+    RADIO_LOGADDR7
+} tRadio_logAddr;
+
+typedef enum
+{
+    RADIO_DISABLED,
+    RADIO_RXRU,
+    RADIO_RXIDLE,
+    RADIO_RX,
+    RADIO_RXDISABLE,
+    RADIO_TXRU      = 9,
+    RADIO_TXIDLE,
+    RADIO_TX,
+    RADIO_TXDISABLE,
+} tRadio_state;
 
 #endif // RADIO_H
