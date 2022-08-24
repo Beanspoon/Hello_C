@@ -47,6 +47,7 @@ typedef struct
 
 typedef struct
 {
+    // PCNF0
     RW_reg  LFLEN               : 4; // Bit[0-3] Length on air of LENGTH field in bits
     const uint8_t               : 0;
     RW_reg  S0LEN               : 1; // Bit[8] Length on air of S0 field in bytes
@@ -56,7 +57,29 @@ typedef struct
     const uint8_t               : 0;
     RW_reg  PLEN                : 1; // Bit[24] Length of preamble on air 0: 8bit, 1: 16bit
     RO_reg                      : 0;
-}
+    //PCNF1
+    RW_reg  MAXLEN              : 8; // Bit[0-7] Maximum length in bytes of packet payload. Larger payloads will be truncated
+    RW_reg  STATLEN             : 8; // Bit[8-15] Static length in bytes. This is added to payload length
+    RW_reg  BALEN               : 3; // Bit[16-18] Base address length in bytes
+    const uint8_t               : 0;
+    RW_reg  ENDIAN              : 1; // Bit[24] On-air endianness of packet (S0, LENGTH, S1 & PAYLOAD). 0: Little, 1: Big
+    RW_reg  WHITEEN             : 1; // Bit[25] 0: disable, or 1: enable packet whitening
+    RO_reg                      : 0;
+} tRadio_pCnfRegs;
+
+typedef struct
+{
+    // PREFIX0
+    RW_reg  AP0                 : 8; // Bit[0-7] Address prefix 0
+    RW_reg  AP1                 : 8; // Bit[8-15] Address prefix 1
+    RW_reg  AP2                 : 8; // Bit[16-24] Address prefix 2
+    RW_reg  AP3                 : 8; // Bit[25-31] Address prefix 3
+    // PREFIX1
+    RW_reg  AP4                 : 8; // Bit[0-7] Address prefix 4
+    RW_reg  AP5                 : 8; // Bit[8-15] Address prefix 5
+    RW_reg  AP6                 : 8; // Bit[16-24] Address prefix 6
+    RW_reg  AP7                 : 8; // Bit[25-31] Address prefix 7
+} tRadio_prefixRegs;
 
 typedef struct
 {
@@ -98,6 +121,10 @@ typedef struct
     tRadio_frequencyReg FREQUNECY;          // 0x508 Frequency setting register
     RW_reg              TXPOWER;            // 0x50C Transmission power register
     RW_reg              MODE;               // 0x510 Radio data rate and modulation
+    tRadio_pCnfRegs     PCNF;               // 0x514-518 Packet configuration registers
+    RW_reg              BASE[2];            // 0x51C-520 Radio base address registers
+    tRadio_prefixRegs   PREFIX;             // 0x524-528 Prefix bytes for logical addresses
+    RW_reg              TXADDRESS;          // 0x52C Transmit logical address select
 } tRadio_regMap;
 
 typedef enum
