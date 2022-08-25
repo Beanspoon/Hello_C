@@ -7,16 +7,16 @@
 
 typedef struct
 {
-    RW_reg  READY_START         : 1; // Bit[0] Shortcut between READY event and START task
-    RW_reg  END_DISABLE         : 1; // Bit[1] Shortcut between END event and DISABLE task
-    RW_reg  DISABLED_TXEN       : 1; // Bit[2] Shortcut between DISABLED event and TXEN task
-    RW_reg  DISABLED_RXEN       : 1; // Bit[3] Shortcut between DISABLED event and RXEN task
-    RW_reg  ADDRESS_RSSISTART   : 1; // Bit[4] Shortcut between ADDRESS event and RSSISTART task
-    RW_reg  END_START           : 1; // Bit[5] Shortcut between END event and START task
-    RW_reg  ADDRESS_BCSTART     : 1; // Bit[6] Shortcut between ADDRESS event and BCSTART task
-    const uint8_t               : 0;
-    RW_reg  DISABLED_RSSISTOP   : 1; // Bit[8] Shortcut between DISABLED event and RSSISTOP task
-    RO_reg                      : 0;
+    tBitState   READY_START         : 1; // Bit[0] Shortcut between READY event and START task
+    tBitState   END_DISABLE         : 1; // Bit[1] Shortcut between END event and DISABLE task
+    tBitState   DISABLED_TXEN       : 1; // Bit[2] Shortcut between DISABLED event and TXEN task
+    tBitState   DISABLED_RXEN       : 1; // Bit[3] Shortcut between DISABLED event and RXEN task
+    tBitState   ADDRESS_RSSISTART   : 1; // Bit[4] Shortcut between ADDRESS event and RSSISTART task
+    tBitState   END_START           : 1; // Bit[5] Shortcut between END event and START task
+    tBitState   ADDRESS_BCSTART     : 1; // Bit[6] Shortcut between ADDRESS event and BCSTART task
+    const uint8_t                   : 0;
+    tBitState   DISABLED_RSSISTOP   : 1; // Bit[8] Shortcut between DISABLED event and RSSISTOP task
+    RO_reg                          : 0;
 } tRadio_shortsReg;
 
 typdef struct
@@ -48,23 +48,23 @@ typedef struct
 typedef struct
 {
     // PCNF0
-    RW_reg  LFLEN               : 4; // Bit[0-3] Length on air of LENGTH field in bits
-    const uint8_t               : 0;
-    RW_reg  S0LEN               : 1; // Bit[8] Length on air of S0 field in bytes
-    const uint16_t              : 0;
-    RW_reg  S1LEN               : 4; // Bit[16-19] Length on air of S1 field in bits
-    RW_reg  S1INCL              : 1; // Bit[20] 0: Include S1 in RAM if S1LEN > 0, 1: Always include
-    const uint8_t               : 0;
-    RW_reg  PLEN                : 1; // Bit[24] Length of preamble on air 0: 8bit, 1: 16bit
-    RO_reg                      : 0;
+    RW_reg      LFLEN               : 4; // Bit[0-3] Length on air of LENGTH field in bits
+    const uint8_t                   : 0;
+    RW_reg      S0LEN               : 1; // Bit[8] Length on air of S0 field in bytes
+    const uint16_t                  : 0;
+    RW_reg      S1LEN               : 4; // Bit[16-19] Length on air of S1 field in bits
+    RW_reg      S1INCL              : 1; // Bit[20] 0: Include S1 in RAM if S1LEN > 0, 1: Always include
+    const uint8_t                   : 0;
+    RW_reg      PLEN                : 1; // Bit[24] Length of preamble on air 0: 8bit, 1: 16bit
+    RO_reg                          : 0;
     //PCNF1
-    RW_reg  MAXLEN              : 8; // Bit[0-7] Maximum length in bytes of packet payload. Larger payloads will be truncated
-    RW_reg  STATLEN             : 8; // Bit[8-15] Static length in bytes. This is added to payload length
-    RW_reg  BALEN               : 3; // Bit[16-18] Base address length in bytes
-    const uint8_t               : 0;
-    RW_reg  ENDIAN              : 1; // Bit[24] On-air endianness of packet (S0, LENGTH, S1 & PAYLOAD). 0: Little, 1: Big
-    RW_reg  WHITEEN             : 1; // Bit[25] 0: disable, or 1: enable packet whitening
-    RO_reg                      : 0;
+    RW_reg      MAXLEN              : 8; // Bit[0-7] Maximum length in bytes of packet payload. Larger payloads will be truncated
+    RW_reg      STATLEN             : 8; // Bit[8-15] Static length in bytes. This is added to payload length
+    RW_reg      BALEN               : 3; // Bit[16-18] Base address length in bytes
+    const uint8_t                   : 0;
+    RW_reg      ENDIAN              : 1; // Bit[24] On-air endianness of packet (S0, LENGTH, S1 & PAYLOAD). 0: Little, 1: Big
+    tBitState   WHITEEN             : 1; // Bit[25] 0: disable, or 1: enable packet whitening
+    RO_reg                          : 0;
 } tRadio_pCnfRegs;
 
 typedef struct
@@ -83,15 +83,15 @@ typedef struct
 
 typedef struct
 {
-    RW_reg  ADDR0               : 1; // Bit[0] 0: disable, or 1: enable reception on logical address 0
-    RW_reg  ADDR1               : 1; // Bit[1] 0: disable, or 1: enable reception on logical address 1
-    RW_reg  ADDR2               : 1; // Bit[2] 0: disable, or 1: enable reception on logical address 2
-    RW_reg  ADDR3               : 1; // Bit[3] 0: disable, or 1: enable reception on logical address 3
-    RW_reg  ADDR4               : 1; // Bit[4] 0: disable, or 1: enable reception on logical address 4
-    RW_reg  ADDR5               : 1; // Bit[5] 0: disable, or 1: enable reception on logical address 5
-    RW_reg  ADDR6               : 1; // Bit[6] 0: disable, or 1: enable reception on logical address 6
-    RW_reg  ADDR7               : 1; // Bit[7] 0: disable, or 1: enable reception on logical address 7
-    RO_reg                      : 0;
+    tBitState   ADDR0               : 1; // Bit[0] 0: disable, or 1: enable reception on logical address 0
+    tBitState   ADDR1               : 1; // Bit[1] 0: disable, or 1: enable reception on logical address 1
+    tBitState   ADDR2               : 1; // Bit[2] 0: disable, or 1: enable reception on logical address 2
+    tBitState   ADDR3               : 1; // Bit[3] 0: disable, or 1: enable reception on logical address 3
+    tBitState   ADDR4               : 1; // Bit[4] 0: disable, or 1: enable reception on logical address 4
+    tBitState   ADDR5               : 1; // Bit[5] 0: disable, or 1: enable reception on logical address 5
+    tBitState   ADDR6               : 1; // Bit[6] 0: disable, or 1: enable reception on logical address 6
+    tBitState   ADDR7               : 1; // Bit[7] 0: disable, or 1: enable reception on logical address 7
+    RO_reg                          : 0;
 } tRadio_rxAddressReg;
 
 typedef struct
@@ -150,18 +150,18 @@ typedef enum
 
 typedef struct
 {
-    RW_reg  ENA0    : 1;    // Bit[0] 0: disable, or 1: enable device address matching using address 0
-    RW_reg  ENA1    : 1;    // Bit[1] 0: disable, or 1: enable device address matching using address 1
-    RW_reg  ENA2    : 1;    // Bit[2] 0: disable, or 1: enable device address matching using address 2
-    RW_reg  ENA3    : 1;    // Bit[3] 0: disable, or 1: enable device address matching using address 3
-    RW_reg  ENA4    : 1;    // Bit[4] 0: disable, or 1: enable device address matching using address 4
-    RW_reg  ENA5    : 1;    // Bit[5] 0: disable, or 1: enable device address matching using address 5
-    RW_reg  ENA6    : 1;    // Bit[6] 0: disable, or 1: enable device address matching using address 6
-    RW_reg  ENA7    : 1;    // Bit[7] 0: disable, or 1: enable device address matching using address 7
-    RW_reg  TXADD0  : 1;    // Bit[8] Txadd for device address 0
-    RW_reg  TXADD1  : 1;    // Bit[9] Txadd for device address 1
-    RW_reg  TXADD2  : 1;    // Bit[10] Txadd for device address 2
-    RW_reg  TXADD3  : 1;    // Bit[11] Txadd for device address 3
+    tBitState   ENA0    : 1;    // Bit[0] 0: disable, or 1: enable device address matching using address 0
+    tBitState   ENA1    : 1;    // Bit[1] 0: disable, or 1: enable device address matching using address 1
+    tBitState   ENA2    : 1;    // Bit[2] 0: disable, or 1: enable device address matching using address 2
+    tBitState   ENA3    : 1;    // Bit[3] 0: disable, or 1: enable device address matching using address 3
+    tBitState   ENA4    : 1;    // Bit[4] 0: disable, or 1: enable device address matching using address 4
+    tBitState   ENA5    : 1;    // Bit[5] 0: disable, or 1: enable device address matching using address 5
+    tBitState   ENA6    : 1;    // Bit[6] 0: disable, or 1: enable device address matching using address 6
+    tBitState   ENA7    : 1;    // Bit[7] 0: disable, or 1: enable device address matching using address 7
+    tBitState   TXADD0  : 1;    // Bit[8] Txadd for device address 0
+    tBitState   TXADD1  : 1;    // Bit[9] Txadd for device address 1
+    tBitState   TXADD2  : 1;    // Bit[10] Txadd for device address 2
+    tBitState   TXADD3  : 1;    // Bit[11] Txadd for device address 3
     RW_reg  TXADD4  : 1;    // Bit[12] Txadd for device address 4
     RW_reg  TXADD5  : 1;    // Bit[13] Txadd for device address 5
     RW_reg  TXADD6  : 1;    // Bit[14] Txadd for device address 6
