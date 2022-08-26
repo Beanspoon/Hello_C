@@ -162,10 +162,10 @@ typedef struct
     tBitState   TXADD1  : 1;    // Bit[9] Txadd for device address 1
     tBitState   TXADD2  : 1;    // Bit[10] Txadd for device address 2
     tBitState   TXADD3  : 1;    // Bit[11] Txadd for device address 3
-    RW_reg  TXADD4  : 1;    // Bit[12] Txadd for device address 4
-    RW_reg  TXADD5  : 1;    // Bit[13] Txadd for device address 5
-    RW_reg  TXADD6  : 1;    // Bit[14] Txadd for device address 6
-    RW_reg  TXADD7  : 1;    // Bit[15] Txadd for device address 7
+    tBitState   TXADD4  : 1;    // Bit[12] Txadd for device address 4
+    tBitState   TXADD5  : 1;    // Bit[13] Txadd for device address 5
+    tBitState   TXADD6  : 1;    // Bit[14] Txadd for device address 6
+    tBitState   TXADD7  : 1;    // Bit[15] Txadd for device address 7
     RO_reg          : 0;
 } tRadio_daCnfReg;
 
