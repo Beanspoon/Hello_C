@@ -2,6 +2,17 @@
 
 #define TENMS_FREQUENCY 100u    // 10 ms periodicity == 100 Hz
 
+typedef struct
+{
+    uint32_t    tick_count;
+} tCore_context;
+
+static tCore_context* core_getContext( void )
+{
+    static tCore_context context = { 0 };
+    return &context;
+}
+
 void core_systickInit( const uint16_t tickFrequency, const uint32_t clockFrequency )
 {
     // If there is a reference clock (NOREF==0), use it (CSR_CLKSOURCE==0)
@@ -35,4 +46,10 @@ void core_busyWait( uint32_t delay_ms )
             --delay_ms;
         }
     }
+}
+
+void Systick_handler( void )
+{
+    tCore_context *pContext = main_getContext();
+    ++(pContext->tick_count);
 }
