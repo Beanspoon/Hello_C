@@ -19,7 +19,7 @@ typedef struct
     RO_reg                          : 0;
 } tRadio_shortsReg;
 
-typdef struct
+typedef struct
 {
     RW_reg  READY               : 1; // Bit[0] Write '1' to set/clear READY event interrupt
     RW_reg  ADDRESS             : 1; // Bit[1] Write '1' to set/clear ADDRESS event interrupt
@@ -97,7 +97,7 @@ typedef struct
 typedef struct
 {
     RW_reg  LEN                 : 3; // Bit[0-2] CRC length in number of bytes
-    const uint8_t;
+    const uint8_t               : 0;
     RW_reg  SKIPADDR            : 1; // Bit[8] 0: include, or 1: skip address field in CRC calculation
     RO_reg                      : 0;
 } tRadio_crcCnf;
