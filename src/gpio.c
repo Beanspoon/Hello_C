@@ -1,4 +1,4 @@
-#include "hal_gpio.h"
+#include "gpio.h"
 
 tGpio_status gpio_configurePin( const uint8_t pin, const tGpio_pinConfig* const config )
 {

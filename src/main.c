@@ -1,4 +1,4 @@
-#include "hal_core.h"
+#include "core.h"
 
 #include "types.h"
 

@@ -1,4 +1,4 @@
-#include "core_m4.h"
+#include "core.h"
 
 #include <stddef.h>
 

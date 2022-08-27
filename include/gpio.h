@@ -1,5 +1,5 @@
-#ifndef HAL_GPIO_H
-#define HAL_GPIO_H
+#ifndef GPIO_H
+#define GPIO_H
 
 #include "types.h"
 
@@ -115,4 +115,4 @@ tGpio_status gpio_configurePin( const uint8_t pin, const tGpio_pinConfig* const 
  */
 tGpio_status gpio_writePin( const uint8_t pin, const tGpio_pinState state );
 
-#endif // HAL_GPIO_H
+#endif // GPIO_H
