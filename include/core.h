@@ -84,6 +84,48 @@ typedef struct
     void *RESERVED_B[2];
     void *pfPendSV_handler;
     void *pfSystick_handler;
+
+    // Interrupts
+    void *pfIrq_clockPowerBprot;
+    void *pfIrq_radio;
+    void *pfIrq_uarte;
+    void *pfIrq_spiTwi0;
+    void *pfIrq_spiTwi1;
+    void *pfIrq_nfct;
+    void *pfIrq_gpiote;
+    void *pfIrq_saadc;
+    void *pfIrq_timer0;
+    void *pfIrq_timer1;
+    void *pfIrq_timer2;
+    void *pfIrq_rtc0;
+    void *pfIrq_temp;
+    void *pfIrq_rng;
+    void *pfIrq_ecb;
+    void *pfIrq_ccm;
+    void *pfIrq_aar;
+    void *pfIrq_wdt;
+    void *pfIrq_rtc1;
+    void *pfIrq_qdec;
+    void *pfIrq_comp;
+    void *pfIrq_swiEgu0;
+    void *pfIrq_swiEgu1;
+    void *pfIrq_swiegu2;
+    void *pfIrq_swiegu3;
+    void *pfIrq_swiegu4;
+    void *pfIrq_swiegu5;
+    void *pfIrq_timer3;
+    void *pfIrq_timer4;
+    void *pfIrq_pwm0;
+    void *pfIrq_pdm;
+    void *pfIrq_nvmc;
+    void *pfIrq_ppi;
+    void *pfIrq_mwu;
+    void *pfIrq_pwm1;
+    void *pfIrq_pwm2;
+    void *pfIrq_spi2;
+    void *pfIrq_rtc2;
+    void *pfIrq_i2s;
+    void *pfIrq_fpu;
 } tVectorTable;
 
 

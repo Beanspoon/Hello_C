@@ -7,7 +7,7 @@ typedef struct
     uint32_t    tick_count;
 } tCore_context;
 
-static tCore_context* core_getContext( void )
+static tCore_context* getContext( void )
 {
     static tCore_context context = { 0 };
     return &context;
@@ -50,6 +50,6 @@ void core_busyWait( uint32_t delay_ms )
 
 void Systick_handler( void )
 {
-    tCore_context *pContext = main_getContext();
+    tCore_context *pContext = getContext();
     ++(pContext->tick_count);
 }
