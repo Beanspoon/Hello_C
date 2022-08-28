@@ -14,9 +14,9 @@ typedef struct
     tBitState   ADDRESS_RSSISTART   : 1; // Bit[4] Shortcut between ADDRESS event and RSSISTART task
     tBitState   END_START           : 1; // Bit[5] Shortcut between END event and START task
     tBitState   ADDRESS_BCSTART     : 1; // Bit[6] Shortcut between ADDRESS event and BCSTART task
-    const uint8_t                   : 0;
+    uint8_t                         : 0;
     tBitState   DISABLED_RSSISTOP   : 1; // Bit[8] Shortcut between DISABLED event and RSSISTOP task
-    RO_reg                          : 0;
+    RW_reg                          : 0;
 } tRadio_shortsReg;
 
 typedef struct
@@ -248,5 +248,17 @@ typedef struct
     RO_reg                  RESERVED_M[0x26A];
     RW_reg                  POWER;              // 0xFFC Peripheral power control. Registers will be reset if peripheral power is toggled
 } tRadio_regMap;
+
+#define RADIO   (*((tRadio_regMap *)RADIO_BASE_ADDR))
+
+typedef struct __attribute__((packed))
+{
+    uint8_t length;
+    uint8_t payload[255];
+} tRadio_packet;
+
+void radio_setShorts( const tRadio_shortsReg shorts );
+
+void radio_setTxPacket( const uintptr_t const payload, const uint16_t length );
 
 #endif // RADIO_H
