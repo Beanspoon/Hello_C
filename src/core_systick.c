@@ -1,4 +1,4 @@
-#include "core.h"
+#include "core_systick.h"
 
 #define TENMS_FREQUENCY 100u    // 10 ms periodicity == 100 Hz
 

@@ -1,4 +1,4 @@
-#include "core.h"
+#include "core_systick.h"
 #include "radio.h"
 
 #include "types.h"
