@@ -22,7 +22,7 @@ static tCore_context* getContext( void )
     return &context;
 }
 
-void core_systickInit( const uint16_t tickFrequency, const uint32_t clockFrequency )
+void systick_init( const uint16_t tickFrequency, const uint32_t clockFrequency )
 {
     // If there is a reference clock (NOREF==0), use it (CSR_CLKSOURCE==0)
     // Otherwise, CSR_CLKSOURCE is forced to 1 anyway
@@ -46,7 +46,7 @@ void core_systickInit( const uint16_t tickFrequency, const uint32_t clockFrequen
     CORE_SYSTICK.SYST_CSR.CSR_SYST_EN = ENABLED;    // Enable systick
 }
 
-void core_busyWait( uint32_t delay_ms )
+void systick_busyWait( uint32_t delay_ms )
 {
     while( delay_ms > 0u )
     {

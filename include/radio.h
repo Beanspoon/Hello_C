@@ -318,6 +318,12 @@ typedef struct __attribute__((packed))
 } tRadio_packet;
 
 /**
+ * @brief Initialise the radio peripheral
+ * 
+ */
+void radio_init( void );
+
+/**
  * @brief Sets the shortcut register (overwrites all bits)
  * 
  * @param[in] shorts Desired configuration for the shortcuts register

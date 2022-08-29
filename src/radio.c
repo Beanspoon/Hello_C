@@ -1,5 +1,7 @@
 #include "radio.h"
 
+#include "core_nvic.h"
+
 /**
  * @brief Radio context
  * 
@@ -18,6 +20,11 @@ static tRadio_context* getContext( void )
 {
     static tRadio_context context = { 0 };
     return &context;
+}
+
+void radio_init( void )
+{
+
 }
 
 void radio_setShorts( const tRadio_shortsReg shorts )

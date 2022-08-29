@@ -7,7 +7,7 @@
 
 void main( void )
 {
-    core_systickInit( config.systick_frequency, config.core_clock_frequency );
+    systick_init( config.systick_frequency, config.core_clock_frequency );
 
     // Set up radio
     uint8_t packet[] = { 0x55, 0x55, 'H', 'e', 'l', 'l', 'o', 'w', 'o', 'r', 'l', 'd', 0x55, 0x55 };

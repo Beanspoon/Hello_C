@@ -41,9 +41,9 @@ typedef struct
     RW_reg              SYST_RVR;   // 0x04 Reload value register
     RW_reg              SYST_CVR;   // 0x08 Current value register
     tSystick_calibReg   SYST_CALIB; // 0x0C Calibration value register
-} tCore_systickRegmap;
+} tSystick_regMap;
 
-#define CORE_SYSTICK    (*((volatile tCore_systickRegmap *) CORE_SYSTICK_BASE_ADDR))
+#define CORE_SYSTICK    (*((volatile tSystick_regMap *) CORE_SYSTICK_BASE_ADDR))
 
 /**
  * @brief Initialises the systick
@@ -51,13 +51,13 @@ typedef struct
  * @param[in] tickFrequency Frequency of systick ticks
  * @param[in] clockFrequency Frequency of the clock (used if no calibration value exists)
  */
-void core_systickInit( const uint16_t tickFrequency, const uint32_t clockFrequency );
+void systick_init( const uint16_t tickFrequency, const uint32_t clockFrequency );
 
 /**
  * @brief Holds execuction for <delay_ms> miliseconds
  *
  * @param[in] delay_Ms Time to delay
  */
-void core_busyWait( uint32_t delay_ms );
+void systick_busyWait( uint32_t delay_ms );
 
 #endif // CORE_SYSTICK_H
