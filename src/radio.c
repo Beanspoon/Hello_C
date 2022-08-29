@@ -1,10 +1,19 @@
 #include "radio.h"
 
+/**
+ * @brief Radio context
+ * 
+ */
 typedef struct
 {
     tRadio_packet   txPacket;
 } tRadio_context;
 
+/**
+ * @brief Get a pointer to the radio context
+ * 
+ * @return pointer to the context
+ */
 static tRadio_context* getContext( void )
 {
     static tRadio_context context = { 0 };

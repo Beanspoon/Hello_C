@@ -68,6 +68,10 @@ void core_busyWait( uint32_t delay_ms );
  * NVIC
  * *********************************************/
 
+/**
+ * @brief Vector table definition
+ * 
+ */
 typedef struct
 {
     void *pStack;   // Stack pointer

@@ -5,6 +5,10 @@
 
 #define RADIO_BASE_ADDR 0x40001000
 
+/**
+ * @brief Definition of the Shortcuts register
+ * 
+ */
 typedef struct
 {
     tBitState   READY_START         : 1; // Bit[0] Shortcut between READY event and START task
@@ -19,6 +23,10 @@ typedef struct
     RW_reg                          : 0;
 } tRadio_shortsReg;
 
+/**
+ * @brief Definition of the interrupt enable registers
+ * 
+ */
 typedef struct
 {
     RW_reg  READY               : 1; // Bit[0] Write '1' to set/clear READY event interrupt
@@ -37,6 +45,10 @@ typedef struct
     RO_reg                      : 0;
 } tRadio_intEnReg;
 
+/**
+ * @brief Definition of the frequency setting register
+ * 
+ */
 typedef struct
 {
     RW_reg  FREQUENCY           : 7; // Bit[0-6] Radio channel frequency (2400 + FREQUENCY) MHz [0-100]
@@ -45,6 +57,10 @@ typedef struct
     RO_reg                      : 0;
 } tRadio_frequencyReg;
 
+/**
+ * @brief Definition of the packet config registers
+ * 
+ */
 typedef struct
 {
     // PCNF0
@@ -67,6 +83,10 @@ typedef struct
     RO_reg                          : 0;
 } tRadio_pCnfRegs;
 
+/**
+ * @brief Definition of the address prefix registers
+ * 
+ */
 typedef struct
 {
     // PREFIX0
@@ -94,6 +114,10 @@ typedef struct
     RO_reg                          : 0;
 } tRadio_rxAddressReg;
 
+/**
+ * @brief Definition of the CRC config register
+ * 
+ */
 typedef struct
 {
     RW_reg  LEN                 : 3; // Bit[0-2] CRC length in number of bytes
@@ -102,6 +126,10 @@ typedef struct
     RO_reg                      : 0;
 } tRadio_crcCnf;
 
+/**
+ * @brief Radio power enum
+ * 
+ */
 typedef enum
 {
     RADIO_POWER_POS4DBM   = 0x04,
@@ -115,6 +143,10 @@ typedef enum
     RADIO_POWER_NEG40DBM  = 0xD8
 } tRadio_txPower;
 
+/**
+ * @brief Radio mode enum
+ * 
+ */
 typedef enum
 {
     RADIO_MODE_NRF1MBIT,
@@ -123,6 +155,10 @@ typedef enum
     RADIO_MODE_BLE2MBIT,
 } tRadio_mode;
 
+/**
+ * @brief Logical address enum
+ * 
+ */
 typedef enum
 {
     RADIO_LOGADDR0,
@@ -135,6 +171,10 @@ typedef enum
     RADIO_LOGADDR7
 } tRadio_logAddr;
 
+/**
+ * @brief Radio state enum
+ * 
+ */
 typedef enum
 {
     RADIO_DISABLED,
@@ -148,6 +188,10 @@ typedef enum
     RADIO_TXDISABLE,
 } tRadio_state;
 
+/**
+ * @brief Definition of the device address register
+ * 
+ */
 typedef struct
 {
     tBitState   ENA0    : 1;    // Bit[0] 0: disable, or 1: enable device address matching using address 0
@@ -169,6 +213,10 @@ typedef struct
     RO_reg          : 0;
 } tRadio_daCnfReg;
 
+/**
+ * @brief Radio default transmission frequency register
+ * 
+ */
 typedef enum
 {
     B1,         // Transmit '1'
@@ -176,6 +224,10 @@ typedef enum
     CENTER,     // Transmit center frequency
 } tRadio_dtx;
 
+/**
+ * @brief Radio mode config register
+ * 
+ */
 typedef struct
 {
     RW_reg      RU      : 1;    // Bit[0] Radio ramp up time 0: Default, 1: Fast
@@ -183,6 +235,10 @@ typedef struct
     tRadio_dtx  DTX     : 2;    // Bit[8-9] Default TX value - specifies what is transmitted when radio is up but not started
 } tRadio_modeCnf0Reg;
 
+/**
+ * @brief Radio register map
+ * 
+ */
 typedef struct
 {
     RW_reg                  TASKS_TXEN;         // 0x000 Enable radio in TX mode
@@ -251,14 +307,29 @@ typedef struct
 
 #define RADIO   (*((tRadio_regMap *)RADIO_BASE_ADDR))
 
+/**
+ * @brief Radio packet structure
+ * 
+ */
 typedef struct __attribute__((packed))
 {
     uint8_t length;
     uint8_t payload[255];
 } tRadio_packet;
 
+/**
+ * @brief Sets the shortcut register (overwrites all bits)
+ * 
+ * @param[in] shorts Desired configuration for the shortcuts register
+ */
 void radio_setShorts( const tRadio_shortsReg shorts );
 
-void radio_setTxPacket( const uintptr_t const payload, const uint16_t length );
+/**
+ * @brief Sets the contents of the radio packet to be transmitted
+ * 
+ * @param[in] payload The desired payload for the packet
+ * @param[in] length The length of the payload
+ */
+void radio_setTxPacket( const uintptr_t const payload, const uint8_t length );
 
 #endif // RADIO_H

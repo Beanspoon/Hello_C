@@ -2,11 +2,20 @@
 
 #define TENMS_FREQUENCY 100u    // 10 ms periodicity == 100 Hz
 
+/**
+ * @brief Core context
+ * 
+ */
 typedef struct
 {
     uint32_t    tick_count;
 } tCore_context;
 
+/**
+ * @brief Get a pointer to the core context
+ * 
+ * @return pointer to the core context
+ */
 static tCore_context* getContext( void )
 {
     static tCore_context context = { 0 };

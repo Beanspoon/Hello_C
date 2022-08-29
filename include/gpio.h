@@ -5,18 +5,30 @@
 
 #define GPIO_BASE_ADDR  0x50000000
 
+/**
+ * @brief Pin direction enum
+ * 
+ */
 typedef enum
 {
     GPIO_DIR_INPUT,
     GPIO_DIR_OUTPUT
 } tGpio_dir;
 
+/**
+ * @brief Input buffer setting enum
+ * 
+ */
 typedef enum
 {
     GPIO_INBUF_CONNECT,
     GPIO_INBUF_DISCONNECT
 } tGpio_inBuf;
 
+/**
+ * @brief Pin pull direction enum (input)
+ * 
+ */
 typedef enum
 {
     GPIO_PULL_DISABLED,
@@ -24,6 +36,10 @@ typedef enum
     GPIO_PULL_UP
 } tGpio_pull;
 
+/**
+ * @brief Pin drive configuration enum (output)
+ * 
+ */
 typedef enum
 {
     GPIO_DRIVE_S0S1,    // Standard '0', standard '1'
@@ -36,6 +52,10 @@ typedef enum
     GPIO_DRIVE_H0D1,    // High drive '0', disconnect '1' (wired-and)
 } tGpio_drive;
 
+/**
+ * @brief Pin sense configuration enum (input)
+ * 
+ */
 typedef enum
 {
     GIPO_SENSE_DISABLED,    // Pin sensing mechanism disabled
@@ -43,6 +63,10 @@ typedef enum
     GPIO_SENSE_LOW          // Sense for low level
 } tGpio_sense;
 
+/**
+ * @brief Definition of pin configuration registers
+ * 
+ */
 typedef struct
 {
     tGpio_dir       DIR             : 1;    // Bit[0]   Pin direction
@@ -55,6 +79,10 @@ typedef struct
     RO_reg                          : 0;
 } tGpio_pinCnfReg;
 
+/**
+ * @brief Definition of GPIO register map
+ * 
+ */
 typedef struct
 {
     RO_reg          RESERVED_A[0x141];
@@ -75,18 +103,30 @@ typedef struct
 
 #define GPIO_PINMASK(pin)   (1u << pin)
 
+/**
+ * @brief Pin state enum
+ * 
+ */
 typedef enum
 {
     LOW,
     HIGH
 } tGpio_pinState;
 
+/**
+ * @brief GPIO operation status enum
+ * 
+ */
 typedef enum
 {
     GPIO_STATUS_OK,
     GPIO_STATUS_INVALID
 } tGpio_status;
 
+/**
+ * @brief Definition of pin configuration struct
+ * 
+ */
 typedef struct
 {
     tGpio_pinCnfReg pinConfig;     // Configuration
