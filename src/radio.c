@@ -24,7 +24,7 @@ static tRadio_context* getContext( void )
 
 void radio_init( void )
 {
-
+    nvic_enableInterrupt( NVIC_INT_RADIO );
 }
 
 void radio_setShorts( const tRadio_shortsReg shorts )
