@@ -29,7 +29,7 @@ void radio_init( void )
 
 void radio_enableShortsFn( const tRadio_shorts shorts[], const uint8_t length )
 {
-    tRadio_shortsReg enabledShorts = 0u;
+    RW_reg enabledShorts = { 0u };
     for( uint8_t shortIdx = 0u; shortIdx < length; ++shortIdx )
     {
         enabledShorts |= (1u << shorts[shortIdx]);
@@ -40,5 +40,5 @@ void radio_setTxPacket( const uintptr_t const payload, const uint8_t length )
 {
     tRadio_context *pContext = getContext();
     pContext->txPacket.length = length;
-    memcpy( &(pContext->txPacket.payload), payload, length );
+    memcpy( &(pContext->txPacket.payload), (void *)payload, length );
 }
