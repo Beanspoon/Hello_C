@@ -316,7 +316,7 @@ typedef enum
     RADIO_SHORTS_ADDRESS_RSSISTART,
     RADIO_SHORTS_END_START,
     RADIO_SHORTS_ADDRESS_BCSTART,
-    RADIO_SHORTS_DISABLED_RSSISTOP
+    RADIO_SHORTS_DISABLED_RSSISTOP = 8u,
 } tRadio_shorts;
 
 /**
@@ -340,8 +340,8 @@ void radio_init( void );
  * 
  * @param[in] shorts Shortcuts to be enabled
  */
-void radio_setShorts( const tRadio_shorts shorts[], uint8_t arrayLen );
-#define radio_setShorts( shorts )   radio_setShorts( shorts, sizeof(shorts)/sizeof(shorts[0]) )
+void radio_enableShortsFn( const tRadio_shorts shorts[], const uint8_t arrayLen );
+#define radio_setShorts( shorts )   radio_setShortsFn( shorts, sizeof(shorts)/sizeof(shorts[0]) )
 
 /**
  * @brief Sets the contents of the radio packet to be transmitted

@@ -27,9 +27,13 @@ void radio_init( void )
     nvic_enableInterrupt( NVIC_INT_RADIO );
 }
 
-void radio_setShorts( const tRadio_shortsReg shorts )
+void radio_enableShortsFn( const tRadio_shorts shorts[], const uint8_t length )
 {
-    RADIO.SHORTS = shorts;
+    tRadio_shortsReg enabledShorts = 0u;
+    for( uint8_t shortIdx = 0u; shortIdx < length; ++shortIdx )
+    {
+        enabledShorts |= (1u << shorts[shortIdx]);
+    }
 }
 
 void radio_setTxPacket( const uintptr_t const payload, const uint8_t length )
