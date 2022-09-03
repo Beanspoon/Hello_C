@@ -16,16 +16,6 @@ typedef enum
 } tRadio_shorts;
 
 /**
- * @brief Radio packet structure
- * 
- */
-typedef struct __attribute__((packed))
-{
-    uint8_t length;
-    uint8_t payload[255];
-} tRadio_packet;
-
-/**
  * @brief Initialise the radio peripheral
  * 
  */
@@ -38,13 +28,5 @@ void radio_init( void );
  */
 void radio_enableShortsFn( const tRadio_shorts shorts[], const uint8_t arrayLen );
 #define radio_setShorts( shorts )   radio_setShortsFn( shorts, sizeof(shorts)/sizeof(shorts[0]) )
-
-/**
- * @brief Sets the contents of the radio packet to be transmitted
- * 
- * @param[in] payload The desired payload for the packet
- * @param[in] length The length of the payload
- */
-void radio_setTxPacket( const void * const payload, const uint8_t length );
 
 #endif // RADIO_H
