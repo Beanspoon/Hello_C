@@ -18,8 +18,8 @@ typedef struct
  */
 static tCore_context* getContext( void )
 {
-    static tCore_context context = { 0 };
-    return &context;
+    static tCore_context coreContext = { 0 };
+    return &coreContext;
 }
 
 void Systick_handler( void )

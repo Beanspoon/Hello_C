@@ -1,6 +1,8 @@
 #ifndef RADIO_CTRL_H
 #define RADIO_CTRL_H
 
+#include "radio.h"
+
 #include "types.h"
 
 /**

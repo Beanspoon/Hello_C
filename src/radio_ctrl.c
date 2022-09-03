@@ -1,5 +1,7 @@
 #include "radio_ctrl.h"
 
+#include "utils.h"
+
 /**
  * @brief Radio context
  * 
@@ -16,8 +18,8 @@ typedef struct
  */
 static tRadio_context* getContext( void )
 {
-    static tRadio_context context = { 0 };
-    return &context;
+    static tRadio_context radioContext = { 0 };
+    return &radioContext;
 }
 
 void radio_setTxPacket( const void * const payload, const uint8_t length )
