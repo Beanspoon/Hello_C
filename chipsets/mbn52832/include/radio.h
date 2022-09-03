@@ -27,6 +27,6 @@ static void radio_enableShortsFn( const tRadio_shorts shorts[], const uint8_t ar
  * 
  * @param[in] shorts Shortcuts to be enabled
  */
-#define radio_setShorts( shortsArray )   radio_setShortsFn( shortsArray, sizeof(shorts)/sizeof(shorts[0]) )
+#define radio_setShorts( shortsArray )   radio_enableShortsFn( shortsArray, sizeof(shorts)/sizeof(shorts[0]) )
 
 #endif // RADIO_H
