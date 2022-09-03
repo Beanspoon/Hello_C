@@ -1,9 +1,12 @@
 PROJECT = helloC
+CHIPSET = mbn52832
 
 SRCS += \
+	$(wildcard chipsets/$(CHIPSET)/src/*.c) \
 	$(wildcard src/*.c)
 
 INCLUDES += \
+	chipsets/$(CHIPSET)/include \
 	include
 
 CFLAGS += \
