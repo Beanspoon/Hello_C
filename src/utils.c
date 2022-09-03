@@ -2,7 +2,7 @@
 
 #define ARCH_SIZE   sizeof(unsigned int)
 
-void memcpy( void * pDest, const void * pSource, uint32_t length )
+void memcpy( void *pDest, const void *pSource, uint32_t length )
 {
     // Fast copy using full register size
     while( length >= ARCH_SIZE )

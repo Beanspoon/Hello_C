@@ -21,6 +21,6 @@ typedef struct __attribute__((packed))
  * @param[in] payload The desired payload for the packet
  * @param[in] length The length of the payload
  */
-void radio_setTxPacket( const void * const payload, const uint8_t length );
+void radio_setTxPacket( const void *const payload, const uint8_t length );
 
 #endif // RADIO_CTRL_H

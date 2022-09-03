@@ -9,21 +9,21 @@
 typedef struct
 {
     uint32_t    tick_count;
-} tCore_context;
+} tCoreCtrl_context;
 
 /**
  * @brief Get a pointer to the core context
  * 
  * @return pointer to the core context
  */
-static tCore_context* getContext( void )
+static tCoreCtrl_context *getContext( void )
 {
-    static tCore_context coreContext = { 0 };
-    return &coreContext;
+    static tCoreCtrl_context coreCtrl_context = { 0 };
+    return &coreCtrl_context;
 }
 
 void Systick_handler( void )
 {
-    tCore_context *pContext = getContext();
+    tCoreCtrl_context *pContext = getContext();
     ++(pContext->tick_count);
 }
