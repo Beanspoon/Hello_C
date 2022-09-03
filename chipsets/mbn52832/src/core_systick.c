@@ -44,26 +44,6 @@ typedef struct
 
 #define TENMS_FREQUENCY 100u    // 10 ms periodicity == 100 Hz
 
-/**
- * @brief Core context
- * 
- */
-typedef struct
-{
-    uint32_t    tick_count;
-} tCore_context;
-
-/**
- * @brief Get a pointer to the core context
- * 
- * @return pointer to the core context
- */
-static tCore_context* getContext( void )
-{
-    static tCore_context context = { 0 };
-    return &context;
-}
-
 void systick_init( const uint16_t tickFrequency, const uint32_t clockFrequency )
 {
     // If there is a reference clock (NOREF==0), use it (CSR_CLKSOURCE==0)
@@ -97,10 +77,4 @@ void systick_busyWait( uint32_t delay_ms )
             --delay_ms;
         }
     }
-}
-
-void Systick_handler( void )
-{
-    tCore_context *pContext = getContext();
-    ++(pContext->tick_count);
 }
