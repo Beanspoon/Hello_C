@@ -10,6 +10,6 @@
  * @param pSource pointer to the source memory address
  * @param length number of bytes to copy
  */
-void memcpy( const void *pDest, const void * const pSource, const uint32_t length );
+void memcpy( void *pDest, const void * pSource, uint32_t length );
 
 #endif
