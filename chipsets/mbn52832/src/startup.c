@@ -1,7 +1,5 @@
 #include "core_nvic.h"
 
-#include <stddef.h>
-
 extern unsigned int __srodata;
 extern unsigned int __erodata;
 extern unsigned int __sbss;

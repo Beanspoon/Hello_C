@@ -3,7 +3,7 @@
 
 #include "radio.h"
 
-#include "types.h"
+#include <stdint-gcc.h>
 
 /**
  * @brief Radio packet structure

@@ -1,7 +1,7 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-#include "types.h"
+#include <stdint-gcc.h>
 
 /**
  * @brief Copy data from address pSource to address pDest

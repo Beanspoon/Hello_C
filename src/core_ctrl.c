@@ -1,6 +1,6 @@
 #include "core_ctrl.h"
 
-#include "types.h"
+#include <stdint-gcc.h>
 
 /**
  * @brief Core context

@@ -1,9 +1,9 @@
 #include "core_ctrl.h"
 #include "radio_ctrl.h"
 
-#include "types.h"
-
 #include "config.h"
+
+#include <stdint-gcc.h>
 
 void main( void )
 {
