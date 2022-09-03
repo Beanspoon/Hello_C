@@ -309,7 +309,7 @@ typedef struct
 
 void radio_init( void )
 {
-    nvic_enableInterrupt( NVIC_INT_RADIO );
+
 }
 
 void radio_enableShortsFn( const tRadio_shorts shorts[], const uint8_t length )

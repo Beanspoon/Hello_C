@@ -21,12 +21,12 @@ typedef enum
  */
 void radio_init( void );
 
+static void radio_enableShortsFn( const tRadio_shorts shorts[], const uint8_t arrayLen );
 /**
  * @brief Enables radio shortcuts between tasks and events
  * 
  * @param[in] shorts Shortcuts to be enabled
  */
-void radio_enableShortsFn( const tRadio_shorts shorts[], const uint8_t arrayLen );
-#define radio_setShorts( shorts )   radio_setShortsFn( shorts, sizeof(shorts)/sizeof(shorts[0]) )
+#define radio_setShorts( shortsArray )   radio_setShortsFn( shortsArray, sizeof(shorts)/sizeof(shorts[0]) )
 
 #endif // RADIO_H
