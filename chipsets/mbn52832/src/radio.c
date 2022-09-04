@@ -3,25 +3,23 @@
 #include "core_nvic.h"
 #include "utils.h"
 
+#include <stddef.h>
+
 #define RADIO_BASE_ADDR 0x40001000
 
-/**
- * @brief Definition of the Shortcuts register
- * 
- */
-typedef struct
+typedef enum
 {
-    tBitState   READY_START         : 1; // Bit[0] Shortcut between READY event and START task
-    tBitState   END_DISABLE         : 1; // Bit[1] Shortcut between END event and DISABLE task
-    tBitState   DISABLED_TXEN       : 1; // Bit[2] Shortcut between DISABLED event and TXEN task
-    tBitState   DISABLED_RXEN       : 1; // Bit[3] Shortcut between DISABLED event and RXEN task
-    tBitState   ADDRESS_RSSISTART   : 1; // Bit[4] Shortcut between ADDRESS event and RSSISTART task
-    tBitState   END_START           : 1; // Bit[5] Shortcut between END event and START task
-    tBitState   ADDRESS_BCSTART     : 1; // Bit[6] Shortcut between ADDRESS event and BCSTART task
-    uint8_t                         : 0;
-    tBitState   DISABLED_RSSISTOP   : 1; // Bit[8] Shortcut between DISABLED event and RSSISTOP task
-    RW_reg                          : 0;
-} tRadio_shortsReg;
+    TASKS_TXEN,         // Enable the radio in tx mode
+    TASKS_RXEN,         // Enable the radio in rx mode
+    TASKS_START,        // Start radio tx or rx
+    TASKS_STOP,         // Stop radio tx or rx
+    TASKS_DISABLE,      // Disable radio
+    TASKS_RSSISTART,    // Start RSSI measurement and take one sample
+    TASKS_RSSISTOP,     // Stop RSSI measurement
+    TASKS_BCSTART,      // Start the bit counter
+    TASKS_BCSTOP,       // Stop the bit counter
+    TASKS_MAX
+} tRadio_tasks;
 
 /**
  * @brief Definition of the interrupt enable registers
@@ -241,40 +239,21 @@ typedef struct
  */
 typedef struct
 {
-    RW_reg                  TASKS_TXEN;         // 0x000 Enable radio in TX mode
-    RW_reg                  TASKS_RXEN;         // 0x004 Enable radio in RX mode
-    RW_reg                  TASKS_START;        // 0x008 Start radio
-    RW_reg                  TASKS_STOP;         // 0x00C Stop radio
-    RW_reg                  TASKS_DISABLE;      // 0x010 Disable radio
-    RW_reg                  TASKS_RSSISTART;    // 0x014 Start the RSSI and take one sample of the receive signal strength
-    RW_reg                  TASKS_RSSISTOP;     // 0x018 Stop the RSSI measurement
-    RW_reg                  TASKS_BCSTART;      // 0x01C Start the bit counter
-    RW_reg                  TASKS_BCSTOP;       // 0x020 Stop the bit counter
+    RW_reg                  TASKS[TASKS_MAX];   // 0x000-020 Tasks registers
     RO_reg                  RESERVED_A[0x37];
-    RO_reg                  EVENTS_READY;       // 0x100 Radio has ramped up and is ready to be started
-    RO_reg                  EVENTS_ADDRESS;     // 0x104 Address sent or received
-    RO_reg                  EVENTS_PAYLOAD;     // 0x108 Packet payload sent or received
-    RO_reg                  EVENTS_END;         // 0x10C Packet sent or received
-    RO_reg                  EVENTS_DISABLED;    // 0x110 Radio has been disabled
-    RO_reg                  EVENTS_DEVMATCH;    // 0x114 A device address match occurred on the last received packet
-    RO_reg                  EVENTS_DEVMISS;     // 0x118 No device address match occurred on the last received packet
-    RO_reg                  EVENTS_RSSIEND;     // 0x11C Sampling of receive signal strength complete
-    RO_reg                  RESERVED_B[2];
-    RO_reg                  EVENTS_BCMATCH;     // 0x128 Bit counter reached bit count value
-    RO_reg                  EVENTS_CRCOK;       // 0x130 Packet received with CRC OK
-    RO_reg                  EVENTS_CRCERROR;    // 0x134 Packet received with CRC error
-    RO_reg                  RESERVED_C[0x32];
-    tRadio_shortsReg        SHORTS;             // 0x200 Shortcuts register
-    RO_reg                  RESERVED_D[0x40];
-    tRadio_intEnReg         INTENSET;           // 0x304 Interrupt enable register
-    tRadio_intEnReg         INTENCLR;           // 0x308 Interrupt clear register
-    RO_reg                  RESERVED_E[0x3D];
+    RO_reg                  EVENTS[EVENTS_MAX]; // 0x100-134 Events registers
+    RO_reg                  RESERVED_B[0x32];
+    RW_reg                  SHORTS;             // 0x200 Shortcuts register
+    RO_reg                  RESERVED_C[0x40];
+    RW_reg                  INTENSET;           // 0x304 Interrupt enable register
+    RW_reg                  INTENCLR;           // 0x308 Interrupt clear register
+    RO_reg                  RESERVED_D[0x3D];
     RO_reg                  CRCSTATUS;          // 0x400 CRC status register
-    RO_reg                  RESERVED_F;
+    RO_reg                  RESERVED_E;
     const tRadio_logAddr    RXMATCH;            // 0x408 Received address logical match register
     RO_reg                  RXCRC;              // 0x40C CRC field of previously received packet (24 bits)
     const tRadio_logAddr    DAI;                // 0x410 Device address match index
-    RO_reg                  RESERVED_G[0x3C];
+    RO_reg                  RESERVED_F[0x3C];
     RW_reg                  PACKETPTR;          // 0x504 RAM address of memory in which packet is stored
     tRadio_frequencyReg     FREQUNECY;          // 0x508 Frequency setting register
     tRadio_txPower          TXPOWER;            // 0x50C Transmission power register
@@ -287,36 +266,78 @@ typedef struct
     tRadio_crcCnf           CRCCNF;             // 0x534 CRC configuration register
     RW_reg                  CRCPOLY;            // 0x538 CRC polynomial register (24 bits)
     RW_reg                  CRCINIT;            // 0x53C Initial value for CRC (24 bits)
-    RO_reg                  RESERVED_H;
+    RO_reg                  RESERVED_G;
     RW_reg                  TIFS;               // 0x544 Inter-frame spacing in us (8 bits)
     RO_reg                  RSSISAMPLE;         // 0x548 RSSI sample register (read as -A dbm, 7 bits)
-    RO_reg                  RESERVED_I;
+    RO_reg                  RESERVED_H;
     const tRadio_state      STATE;              // 0x550 Current radio state
     RW_reg                  DATAWHITEIV;        // 0x554 Data whitening initial value register (7 bits)
-    RO_reg                  RESERVED_J[2];
+    RO_reg                  RESERVED_I[2];
     RW_reg                  BCC;                // 0x560 Bit counter compare
-    RO_reg                  RESERVED_K[0x27];
+    RO_reg                  RESERVED_J[0x27];
     RW_reg                  DAB[8];             // 0x600-61C Device address base segment registers
     RW_reg                  DAP[8];             // 0x620-63C Device address prefix segment registers
     tRadio_daCnfReg         DACNF;              // 0x640 Device address match configuration
-    RO_reg                  RESERVED_L[3];
+    RO_reg                  RESERVED_K[3];
     tRadio_modeCnf0Reg      MODECNF0;           // 0x650 Radio mode configuration register 0
-    RO_reg                  RESERVED_M[0x26A];
+    RO_reg                  RESERVED_L[0x26A];
     RW_reg                  POWER;              // 0xFFC Peripheral power control. Registers will be reset if peripheral power is toggled
 } tRadio_regMap;
 
 #define RADIO   (*((tRadio_regMap *)RADIO_BASE_ADDR))
+
+typedef struct
+{
+    tRadio_eventHandler pfEventHandlers[RADIO_SHORTS_MAX];
+} tRadio_context;
+
+static tRadio_context *getContext( void )
+{
+    static tRadio_context radio_context = { 0 };
+    return &radio_context;
+}
 
 void radio_init( void )
 {
 
 }
 
-void radio_enableShortsFn( const tRadio_shorts shorts[], const uint8_t length )
+void (radio_enableShorts)( const tRadio_shorts shorts[], const uint8_t length )
 {
     RW_reg enabledShorts = { 0u };
     for( uint8_t shortIdx = 0u; shortIdx < length; ++shortIdx )
     {
         enabledShorts |= (1u << shorts[shortIdx]);
+    }
+    RADIO.SHORTS |= enabledShorts;
+}
+
+void (radio_enableEvents)( tRadio_event_handler_tableElement table[], uint8_t length )
+{
+    tRadio_context *pContext = getContext();
+    RW_reg enabledEvents = { 0 };
+
+    nvic_enterCriticalSection();
+    for( uint8_t arrIdx = 0u; arrIdx < length; ++arrIdx )
+    {
+        tRadio_events event = table[arrIdx].event;
+        enabledEvents |= (1u << event);
+        pContext->pfEventHandlers[event] = table[arrIdx].handler;
+    }
+
+    RADIO.INTENSET |= enabledEvents;
+    nvic_exitCriticalSection();
+}
+
+void Radio_isr( void )
+{
+    tRadio_context *pContext = getContext();
+    for( tRadio_events event = 0u; event < EVENTS_MAX; ++event )
+    {
+        if( RADIO.EVENTS[event] &&
+            pContext->pfEventHandlers[event] != NULL )
+        {
+            pContext->pfEventHandlers[event]();
+        }
     }
 }
