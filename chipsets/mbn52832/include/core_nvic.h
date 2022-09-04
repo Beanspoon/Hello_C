@@ -111,6 +111,12 @@ typedef enum
     NVIC_INT_FPU,
 } tNvic_interrupt;
 
-void nvic_enableInterrupt( tNvic_interrupt interrupt );
+/**
+ * @brief Enable/disable the target interrupt
+ * 
+ * @param[in] interrupt Interrupt to change
+ * @param[in] targetState State to change to
+ */
+void nvic_changeInterruptState( const tNvic_interrupt interrupt, const tBitState targetState);
 
 #endif // CORE_NVIC_H

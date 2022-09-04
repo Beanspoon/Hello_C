@@ -19,10 +19,11 @@ typedef struct
 
 #define NVIC        (*((tNvic_regMap *)NVIC_BASE_ADDR))
 
-void nvic_enableInterrupt( tNvic_interrupt interrupt )
+void nvic_changeInterruptState( const tNvic_interrupt interrupt, const tBitState targetState )
 {
     uint8_t registerNumber = interrupt / 32u;
     uint8_t bitNumber = interrupt % 32u;
 
-    NVIC.ISER[registerNumber] = (1u << bitNumber);
+    RW_reg *targetRegSet = (ENABLED == targetState) ? NVIC.ISER : NVIC.ICER;
+    targetRegSet[registerNumber] = (1u << bitNumber);
 }

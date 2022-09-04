@@ -56,4 +56,12 @@ void (radio_enableShorts)( const tRadio_shorts shorts[], const uint8_t arrayLen 
  */
 #define radio_enableShorts( shortsArray )   radio_enableShorts( shortsArray, sizeof(shorts)/sizeof(shorts[0]) )
 
+void (radio_enableEvents)( const tRadio_event_handler_tableElement table[], const uint8_t length);
+/**
+ * @brief Enables radio events with associated handlers
+ * 
+ * @param[in] event_handlerTable Table of events to be enabled along with event handler
+ */
+#define radio_enableEvents( event_handlerTable )    radio_enableEvents(event_handlerTable, sizeof(event_handlerTable)/sizeof(event_handlerTable[0]))
+
 #endif // RADIO_H

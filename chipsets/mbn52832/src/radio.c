@@ -312,12 +312,13 @@ void (radio_enableShorts)( const tRadio_shorts shorts[], const uint8_t length )
     RADIO.SHORTS |= enabledShorts;
 }
 
-void (radio_enableEvents)( tRadio_event_handler_tableElement table[], uint8_t length )
+void (radio_enableEvents)( const tRadio_event_handler_tableElement table[], const uint8_t length )
 {
     tRadio_context *pContext = getContext();
-    RW_reg enabledEvents = { 0 };
 
-    nvic_enterCriticalSection();
+    nvic_changeInterruptState( NVIC_INT_RADIO, DISABLED );
+
+    RW_reg enabledEvents = { 0 };
     for( uint8_t arrIdx = 0u; arrIdx < length; ++arrIdx )
     {
         tRadio_events event = table[arrIdx].event;
@@ -326,7 +327,8 @@ void (radio_enableEvents)( tRadio_event_handler_tableElement table[], uint8_t le
     }
 
     RADIO.INTENSET |= enabledEvents;
-    nvic_exitCriticalSection();
+
+    nvic_changeInterruptState( NVIC_INT_RADIO, ENABLED );
 }
 
 void Radio_isr( void )
