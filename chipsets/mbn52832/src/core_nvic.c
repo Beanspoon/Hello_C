@@ -19,7 +19,7 @@ typedef struct
 
 #define NVIC        (*((tNvic_regMap *)NVIC_BASE_ADDR))
 
-void nvic_changeInterruptState( const tNvic_interrupt interrupt, const tBitState targetState )
+void nvic_changeInterruptState( const tNvic_interrupt interrupt, const tEnableState targetState )
 {
     uint8_t registerNumber = interrupt / 32u;
     uint8_t bitNumber = interrupt % 32u;

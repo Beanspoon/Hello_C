@@ -8,12 +8,12 @@
 
 /**
  * @brief Bit state enum
- * 
+ *
  */
 typedef enum
 {
     DISABLED,
     ENABLED
-} tBitState;
+} tEnableState;
 
 #endif // TYPES_H

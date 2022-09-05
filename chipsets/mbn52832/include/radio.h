@@ -42,19 +42,15 @@ typedef struct
     tRadio_eventHandler handler;
 } tRadio_event_handler_tableElement;
 
+void (radio_shorts_changeState)( const tRadio_shorts shorts[], const uint8_t arrayLen, const tEnableState targetState );
 /**
- * @brief Initialise the radio peripheral
- *
- */
-void radio_init( void );
-
-void (radio_enableShorts)( const tRadio_shorts shorts[], const uint8_t arrayLen );
-/**
- * @brief Enables radio shortcuts between tasks and events
+ * @brief Enables or disables the target shorts
  *
  * @param[in] shorts Shortcuts to be enabled
+ * @param[in] targetState State to set shortcuts to
  */
-#define radio_enableShorts( shortsArray )   radio_enableShorts( shortsArray, sizeof(shorts)/sizeof(shorts[0]) )
+//TODO: continue this
+#define radio_enableShorts( shortsArray, targetState )   radio_enableShorts( shortsArray, sizeof(shorts)/sizeof(shorts[0]), targetState )
 
 void (radio_enableEvents)( const tRadio_event_handler_tableElement table[], const uint8_t length);
 /**
