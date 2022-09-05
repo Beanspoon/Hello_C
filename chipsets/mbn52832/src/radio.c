@@ -9,21 +9,21 @@
 
 typedef enum
 {
-    TASKS_TXEN,         // Enable the radio in tx mode
-    TASKS_RXEN,         // Enable the radio in rx mode
-    TASKS_START,        // Start radio tx or rx
-    TASKS_STOP,         // Stop radio tx or rx
-    TASKS_DISABLE,      // Disable radio
-    TASKS_RSSISTART,    // Start RSSI measurement and take one sample
-    TASKS_RSSISTOP,     // Stop RSSI measurement
-    TASKS_BCSTART,      // Start the bit counter
-    TASKS_BCSTOP,       // Stop the bit counter
-    TASKS_MAX
+    RADIO_TASKS_TXEN,         // Enable the radio in tx mode
+    RADIO_TASKS_RXEN,         // Enable the radio in rx mode
+    RADIO_TASKS_START,        // Start radio tx or rx
+    RADIO_TASKS_STOP,         // Stop radio tx or rx
+    RADIO_TASKS_DISABLE,      // Disable radio
+    RADIO_TASKS_RSSISTART,    // Start RSSI measurement and take one sample
+    RADIO_TASKS_RSSISTOP,     // Stop RSSI measurement
+    RADIO_TASKS_BCSTART,      // Start the bit counter
+    RADIO_TASKS_BCSTOP,       // Stop the bit counter
+    RADIO_TASKS_MAX
 } tRadio_tasks;
 
 /**
  * @brief Definition of the interrupt enable registers
- * 
+ *
  */
 typedef struct
 {
@@ -45,7 +45,7 @@ typedef struct
 
 /**
  * @brief Definition of the frequency setting register
- * 
+ *
  */
 typedef struct
 {
@@ -57,7 +57,7 @@ typedef struct
 
 /**
  * @brief Definition of the packet config registers
- * 
+ *
  */
 typedef struct
 {
@@ -83,7 +83,7 @@ typedef struct
 
 /**
  * @brief Definition of the address prefix registers
- * 
+ *
  */
 typedef struct
 {
@@ -114,7 +114,7 @@ typedef struct
 
 /**
  * @brief Definition of the CRC config register
- * 
+ *
  */
 typedef struct
 {
@@ -126,7 +126,7 @@ typedef struct
 
 /**
  * @brief Radio power enum
- * 
+ *
  */
 typedef enum
 {
@@ -143,7 +143,7 @@ typedef enum
 
 /**
  * @brief Radio mode enum
- * 
+ *
  */
 typedef enum
 {
@@ -155,7 +155,7 @@ typedef enum
 
 /**
  * @brief Logical address enum
- * 
+ *
  */
 typedef enum
 {
@@ -171,7 +171,7 @@ typedef enum
 
 /**
  * @brief Radio state enum
- * 
+ *
  */
 typedef enum
 {
@@ -188,7 +188,7 @@ typedef enum
 
 /**
  * @brief Definition of the device address register
- * 
+ *
  */
 typedef struct
 {
@@ -213,7 +213,7 @@ typedef struct
 
 /**
  * @brief Radio default transmission frequency register
- * 
+ *
  */
 typedef enum
 {
@@ -224,7 +224,7 @@ typedef enum
 
 /**
  * @brief Radio mode config register
- * 
+ *
  */
 typedef struct
 {
@@ -235,53 +235,53 @@ typedef struct
 
 /**
  * @brief Radio register map
- * 
+ *
  */
 typedef struct
 {
-    RW_reg                  TASKS[TASKS_MAX];   // 0x000-020 Tasks registers
+    RW_reg                  TASKS[RADIO_TASKS_MAX];     // 0x000-020 Tasks registers
     RO_reg                  RESERVED_A[0x37];
-    RO_reg                  EVENTS[EVENTS_MAX]; // 0x100-134 Events registers
+    RO_reg                  EVENTS[RADIO_EVENTS_MAX];   // 0x100-134 Events registers
     RO_reg                  RESERVED_B[0x32];
-    RW_reg                  SHORTS;             // 0x200 Shortcuts register
+    RW_reg                  SHORTS;                     // 0x200 Shortcuts register
     RO_reg                  RESERVED_C[0x40];
-    RW_reg                  INTENSET;           // 0x304 Interrupt enable register
-    RW_reg                  INTENCLR;           // 0x308 Interrupt clear register
+    RW_reg                  INTENSET;                   // 0x304 Interrupt enable register
+    RW_reg                  INTENCLR;                   // 0x308 Interrupt clear register
     RO_reg                  RESERVED_D[0x3D];
-    RO_reg                  CRCSTATUS;          // 0x400 CRC status register
+    RO_reg                  CRCSTATUS;                  // 0x400 CRC status register
     RO_reg                  RESERVED_E;
-    const tRadio_logAddr    RXMATCH;            // 0x408 Received address logical match register
-    RO_reg                  RXCRC;              // 0x40C CRC field of previously received packet (24 bits)
-    const tRadio_logAddr    DAI;                // 0x410 Device address match index
+    const tRadio_logAddr    RXMATCH;                    // 0x408 Received address logical match register
+    RO_reg                  RXCRC;                      // 0x40C CRC field of previously received packet (24 bits)
+    const tRadio_logAddr    DAI;                        // 0x410 Device address match index
     RO_reg                  RESERVED_F[0x3C];
-    RW_reg                  PACKETPTR;          // 0x504 RAM address of memory in which packet is stored
-    tRadio_frequencyReg     FREQUNECY;          // 0x508 Frequency setting register
-    tRadio_txPower          TXPOWER;            // 0x50C Transmission power register
-    tRadio_mode             MODE;               // 0x510 Radio data rate and modulation
-    tRadio_pCnfRegs         PCNF;               // 0x514-518 Packet configuration registers
-    RW_reg                  BASE[2];            // 0x51C-520 Radio base address registers
-    tRadio_prefixRegs       PREFIX;             // 0x524-528 Prefix bytes for logical addresses
-    tRadio_logAddr          TXADDRESS;          // 0x52C Transmit logical address select
-    tRadio_rxAddressReg     RXADDRESS;          // 0x530 Receive logical address select
-    tRadio_crcCnf           CRCCNF;             // 0x534 CRC configuration register
-    RW_reg                  CRCPOLY;            // 0x538 CRC polynomial register (24 bits)
-    RW_reg                  CRCINIT;            // 0x53C Initial value for CRC (24 bits)
+    RW_reg                  PACKETPTR;                  // 0x504 RAM address of memory in which packet is stored
+    tRadio_frequencyReg     FREQUNECY;                  // 0x508 Frequency setting register
+    tRadio_txPower          TXPOWER;                    // 0x50C Transmission power register
+    tRadio_mode             MODE;                       // 0x510 Radio data rate and modulation
+    tRadio_pCnfRegs         PCNF;                       // 0x514-518 Packet configuration registers
+    RW_reg                  BASE[2];                    // 0x51C-520 Radio base address registers
+    tRadio_prefixRegs       PREFIX;                     // 0x524-528 Prefix bytes for logical addresses
+    tRadio_logAddr          TXADDRESS;                  // 0x52C Transmit logical address select
+    tRadio_rxAddressReg     RXADDRESS;                  // 0x530 Receive logical address select
+    tRadio_crcCnf           CRCCNF;                     // 0x534 CRC configuration register
+    RW_reg                  CRCPOLY;                    // 0x538 CRC polynomial register (24 bits)
+    RW_reg                  CRCINIT;                    // 0x53C Initial value for CRC (24 bits)
     RO_reg                  RESERVED_G;
-    RW_reg                  TIFS;               // 0x544 Inter-frame spacing in us (8 bits)
-    RO_reg                  RSSISAMPLE;         // 0x548 RSSI sample register (read as -A dbm, 7 bits)
+    RW_reg                  TIFS;                       // 0x544 Inter-frame spacing in us (8 bits)
+    RO_reg                  RSSISAMPLE;                 // 0x548 RSSI sample register (read as -A dbm, 7 bits)
     RO_reg                  RESERVED_H;
-    const tRadio_state      STATE;              // 0x550 Current radio state
-    RW_reg                  DATAWHITEIV;        // 0x554 Data whitening initial value register (7 bits)
+    const tRadio_state      STATE;                      // 0x550 Current radio state
+    RW_reg                  DATAWHITEIV;                // 0x554 Data whitening initial value register (7 bits)
     RO_reg                  RESERVED_I[2];
-    RW_reg                  BCC;                // 0x560 Bit counter compare
+    RW_reg                  BCC;                        // 0x560 Bit counter compare
     RO_reg                  RESERVED_J[0x27];
-    RW_reg                  DAB[8];             // 0x600-61C Device address base segment registers
-    RW_reg                  DAP[8];             // 0x620-63C Device address prefix segment registers
-    tRadio_daCnfReg         DACNF;              // 0x640 Device address match configuration
+    RW_reg                  DAB[8];                     // 0x600-61C Device address base segment registers
+    RW_reg                  DAP[8];                     // 0x620-63C Device address prefix segment registers
+    tRadio_daCnfReg         DACNF;                      // 0x640 Device address match configuration
     RO_reg                  RESERVED_K[3];
-    tRadio_modeCnf0Reg      MODECNF0;           // 0x650 Radio mode configuration register 0
+    tRadio_modeCnf0Reg      MODECNF0;                   // 0x650 Radio mode configuration register 0
     RO_reg                  RESERVED_L[0x26A];
-    RW_reg                  POWER;              // 0xFFC Peripheral power control. Registers will be reset if peripheral power is toggled
+    RW_reg                  POWER;                      // 0xFFC Peripheral power control. Registers will be reset if peripheral power is toggled
 } tRadio_regMap;
 
 #define RADIO   (*((tRadio_regMap *)RADIO_BASE_ADDR))
@@ -334,7 +334,7 @@ void (radio_enableEvents)( const tRadio_event_handler_tableElement table[], cons
 void Radio_isr( void )
 {
     tRadio_context *pContext = getContext();
-    for( tRadio_events event = 0u; event < EVENTS_MAX; ++event )
+    for( tRadio_events event = 0u; event < RADIO_EVENTS_MAX; ++event )
     {
         if( RADIO.EVENTS[event] &&
             pContext->pfEventHandlers[event] != NULL )

@@ -4,7 +4,7 @@
 
 /**
  * @brief Radio context
- * 
+ *
  */
 typedef struct
 {
@@ -13,7 +13,7 @@ typedef struct
 
 /**
  * @brief Get a pointer to the radio context
- * 
+ *
  * @return pointer to the context
  */
 static tRadioCtrl_context *getContext( void )
@@ -22,9 +22,24 @@ static tRadioCtrl_context *getContext( void )
     return &radioCtrl_context;
 }
 
-void radio_setTxPacket( const void *const payload, const uint8_t length )
+static void radioCtrl_readyHandler( void );
+
+void radioCtrl_init( void )
+{
+    tRadio_event_handler_tableElement eventTable[] = {
+        { RADIO_EVENTS_READY, radioCtrl_readyHandler }
+    };
+    radio_enableEvents( eventTable );
+}
+
+void radioCtrl_setTxPacket( const void *const payload, const uint8_t length )
 {
     tRadioCtrl_context *pContext = getContext();
     pContext->txPacket.length = length;
     memcpy( &(pContext->txPacket.payload), payload, length );
+}
+
+static void radioCtrl_readyHandler( void )
+{
+
 }

@@ -7,7 +7,7 @@
 
 /**
  * @brief Radio packet structure
- * 
+ *
  */
 typedef struct __attribute__((packed))
 {
@@ -16,11 +16,17 @@ typedef struct __attribute__((packed))
 } tRadio_packet;
 
 /**
+ * @brief Initialise the radio
+ *
+ */
+void radioCtrl_init( void );
+
+/**
  * @brief Sets the contents of the radio packet to be transmitted
- * 
+ *
  * @param[in] payload The desired payload for the packet
  * @param[in] length The length of the payload
  */
-void radio_setTxPacket( const void *const payload, const uint8_t length );
+void radioCtrl_setTxPacket( const void *const payload, const uint8_t length );
 
 #endif // RADIO_CTRL_H
