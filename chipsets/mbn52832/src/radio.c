@@ -291,20 +291,44 @@ typedef struct
     tRadio_eventHandler pfEventHandlers[RADIO_SHORTS_MAX];
 } tRadio_context;
 
+/**
+ * @brief Get the Context object
+ *
+ * @return tRadio_context* pointer to the context object
+ */
 static tRadio_context *getContext( void )
 {
     static tRadio_context radio_context = { 0 };
     return &radio_context;
 }
 
-void (radio_enableShorts)( const tRadio_shorts shorts[], const uint8_t length )
+ /**
+  * @brief Generate shorts register bit pattern for a given array of shorts
+  *
+  * @param shorts array of shorts
+  * @param arrayLen length of the array
+  * @return Shorts register bit pattern
+  */
+static RW_reg shortsArrayToReg( const tRadio_shorts shorts[], const uint8_t arrayLen )
 {
-    RW_reg enabledShorts = { 0u };
-    for( uint8_t shortIdx = 0u; shortIdx < length; ++shortIdx )
+    RW_reg shortsReg = { 0u };
+    for( uint8_t shortIdx = 0u; shortIdx < arrayLen; ++shortIdx )
     {
-        enabledShorts |= (1u << shorts[shortIdx]);
+        shortsReg |= (1u << shorts[shortIdx]);
     }
-    RADIO.SHORTS |= enabledShorts;
+    return shortsReg;
+}
+
+void (radio_enableShorts)( const tRadio_shorts shorts[], const uint8_t arrayLen )
+{
+    RW_reg shortsReg = shortsArrayToReg( shorts, arrayLen );
+    RADIO.SHORTS |= shortsReg;
+}
+
+void (radio_disableShorts)( const tRadio_shorts shorts[], const uint8_t arrayLen )
+{
+    RW_reg shortsReg = shortsArrayToReg( shorts, arrayLen );
+    RADIO.SHORTS &= ~shortsReg;
 }
 
 void (radio_enableEvents)( const tRadio_event_handler_tableElement table[], const uint8_t length )

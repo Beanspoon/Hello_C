@@ -42,15 +42,21 @@ typedef struct
     tRadio_eventHandler handler;
 } tRadio_event_handler_tableElement;
 
-void (radio_shorts_changeState)( const tRadio_shorts shorts[], const uint8_t arrayLen, const tEnableState targetState );
+void (radio_enableShorts)( const tRadio_shorts shorts[], const uint8_t arrayLen );
 /**
- * @brief Enables or disables the target shorts
+ * @brief Enables the target shorts
  *
- * @param[in] shorts Shortcuts to be enabled
- * @param[in] targetState State to set shortcuts to
+ * @param[in] shortsArray Shortcuts to be enabled
  */
-//TODO: continue this
-#define radio_enableShorts( shortsArray, targetState )   radio_enableShorts( shortsArray, sizeof(shorts)/sizeof(shorts[0]), targetState )
+#define radio_enableShorts( shortsArray )   radio_enableShorts( shortsArray, sizeof(shortsArray)/sizeof(shortsArray[0]) )
+
+void (radio_disableShorts)( const tRadio_shorts shorts[], const uint8_t arrayLen );
+/**
+ * @brief Disables the target shorts
+ *
+ * @param[in] shortsArray Shortcuts to be disabled
+ */
+#define radio_disableShorts( shortsArray )  radio_disableShorts( shortsArray, sizeof(shortsArray)/sizeof(shortsArray[0]) )
 
 void (radio_enableEvents)( const tRadio_event_handler_tableElement table[], const uint8_t length);
 /**
