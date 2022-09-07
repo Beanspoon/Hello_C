@@ -241,7 +241,7 @@ typedef struct
 {
     RW_reg                  TASKS[RADIO_TASKS_MAX];     // 0x000-020 Tasks registers
     RO_reg                  RESERVED_A[0x37];
-    RO_reg                  EVENTS[RADIO_EVENTS_MAX];   // 0x100-134 Events registers
+    RW_reg                  EVENTS[RADIO_EVENTS_MAX];   // 0x100-134 Events registers
     RO_reg                  RESERVED_B[0x32];
     RW_reg                  SHORTS;                     // 0x200 Shortcuts register
     RO_reg                  RESERVED_C[0x40];
@@ -291,6 +291,10 @@ typedef struct
     tRadio_eventHandler pfEventHandlers[RADIO_SHORTS_MAX];
 } tRadio_context;
 
+#define RADIO_LENGTH_FIELD_MAX_LENGTH_BITS  8u
+#define RADIO_S0_FIELD_MAX_LENGTH_BYTES     1u
+#define RADIO_S1_FIELD_MAX_LENGTH_BITS      8u
+
 /**
  * @brief Get the Context object
  *
@@ -303,42 +307,42 @@ static tRadio_context *getContext( void )
 }
 
  /**
-  * @brief Generate shorts register bit pattern for a given array of shorts
+  * @brief Generate register bit pattern for a given array of register field enums
   *
-  * @param shorts array of shorts
+  * @param array array of field enums
   * @param arrayLen length of the array
-  * @return Shorts register bit pattern
+  * @return Register bit pattern
   */
-static RW_reg shortsArrayToReg( const tRadio_shorts shorts[], const uint8_t arrayLen )
+static RW_reg regFieldArrayToReg( const int array[], const uint8_t arrayLen )
 {
-    RW_reg shortsReg = { 0u };
-    for( uint8_t shortIdx = 0u; shortIdx < arrayLen; ++shortIdx )
+    RW_reg reg = { 0u };
+    for( uint8_t arrayIdx = 0u; arrayIdx < arrayLen; ++arrayIdx )
     {
-        shortsReg |= (1u << shorts[shortIdx]);
+        reg |= (1u << array[arrayIdx]);
     }
-    return shortsReg;
+    return reg;
 }
 
 void (radio_enableShorts)( const tRadio_shorts shorts[], const uint8_t arrayLen )
 {
-    RW_reg shortsReg = shortsArrayToReg( shorts, arrayLen );
+    RW_reg shortsReg = regFieldArrayToReg( (int)shorts, arrayLen );
     RADIO.SHORTS |= shortsReg;
 }
 
 void (radio_disableShorts)( const tRadio_shorts shorts[], const uint8_t arrayLen )
 {
-    RW_reg shortsReg = shortsArrayToReg( shorts, arrayLen );
+    RW_reg shortsReg = regFieldArrayToReg( (int)shorts, arrayLen );
     RADIO.SHORTS &= ~shortsReg;
 }
 
-void (radio_enableEvents)( const tRadio_event_handler_tableElement table[], const uint8_t length )
+void (radio_enableEvents)( const tRadio_event_handler_tableElement table[], const uint8_t tableLength )
 {
     tRadio_context *pContext = getContext();
 
     nvic_changeInterruptState( NVIC_INT_RADIO, DISABLED );
 
     RW_reg enabledEvents = { 0 };
-    for( uint8_t arrIdx = 0u; arrIdx < length; ++arrIdx )
+    for( uint8_t arrIdx = 0u; arrIdx < tableLength; ++arrIdx )
     {
         tRadio_events event = table[arrIdx].event;
         enabledEvents |= (1u << event);
@@ -350,15 +354,60 @@ void (radio_enableEvents)( const tRadio_event_handler_tableElement table[], cons
     nvic_changeInterruptState( NVIC_INT_RADIO, ENABLED );
 }
 
+void (radio_disableEvents)( const tRadio_events events[], const uint8_t arrayLen )
+{
+    tRadio_context *pContext = getContext();
+
+    nvic_changeInterruptState( NVIC_INT_RADIO, DISABLED );
+
+    RW_reg disabledEvents = regFieldArrayToReg( (int)events, arrayLen );
+    RADIO.INTENCLR |= disabledEvents;
+
+    nvic_changeInterruptState( NVIC_INT_RADIO, ENABLED );
+}
+
+
+tRadio_retVal radio_setPacketConfiguration( const tRadio_packetConfig config )
+{
+    if( ( config.lengthFieldLen > RADIO_LENGTH_FIELD_MAX_LENGTH_BITS ) ||
+        ( config.s0Len > RADIO_S0_FIELD_MAX_LENGTH_BYTES ) ||
+        ( config.s1Len > RADIO_S1_FIELD_MAX_LENGTH_BITS ) )
+    {
+        return RADIO_INVALID_PARAM;
+    }
+
+    tRadio_pCnfRegs config =
+    {
+        .LFLEN      = config.lengthFieldLen,
+        .S0LEN      = config.s0Len,
+        .S1LEN      = config.s1Len,
+        .S1INCL     = config.s1InclInRam,
+        .PLEN       = config.preambleLen,
+        .MAXLEN     = config.maxPayloadLen,
+        .STATLEN    = config.staticLen,
+        .BALEN      = config.baseAddrLen,
+        .ENDIAN     = config.endian,
+        .WHITEEN    = config.dataWhitening
+    };
+
+    memcpy( &RADIO.PCNF, &config, sizeof(config) );
+
+    return RADIO_OK;
+}
+
 void Radio_isr( void )
 {
     tRadio_context *pContext = getContext();
     for( tRadio_events event = 0u; event < RADIO_EVENTS_MAX; ++event )
     {
-        if( RADIO.EVENTS[event] &&
-            pContext->pfEventHandlers[event] != NULL )
+        if( RADIO.EVENTS[event] )
         {
-            pContext->pfEventHandlers[event]();
+            if( pContext->pfEventHandlers[event] != NULL )
+            {
+                pContext->pfEventHandlers[event]();
+            }
+            RADIO.EVENTS[event] = 0u;
         }
+
     }
 }

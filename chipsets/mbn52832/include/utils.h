@@ -3,9 +3,11 @@
 
 #include <stdint-gcc.h>
 
+#define ARRAY_SIZE( array )     ( sizeof(array)/sizeof(array[0]) )
+
 /**
  * @brief Copy data from address pSource to address pDest
- * 
+ *
  * @param pDest pointer to the destination memory address
  * @param pSource pointer to the source memory address
  * @param length number of bytes to copy
