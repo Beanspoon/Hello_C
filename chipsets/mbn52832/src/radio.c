@@ -154,22 +154,6 @@ typedef enum
 } tRadio_mode;
 
 /**
- * @brief Logical address enum
- *
- */
-typedef enum
-{
-    RADIO_LOGADDR0,
-    RADIO_LOGADDR1,
-    RADIO_LOGADDR2,
-    RADIO_LOGADDR3,
-    RADIO_LOGADDR4,
-    RADIO_LOGADDR5,
-    RADIO_LOGADDR6,
-    RADIO_LOGADDR7
-} tRadio_logAddr;
-
-/**
  * @brief Radio state enum
  *
  */

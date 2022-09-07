@@ -4,6 +4,10 @@
 #include "types.h"
 #include "utils.h"
 
+/**
+ * @brief Radio shortcuts enum
+ *
+ */
 typedef enum
 {
     RADIO_SHORTS_READY_START,
@@ -17,6 +21,10 @@ typedef enum
     RADIO_SHORTS_MAX
 } tRadio_shorts;
 
+/**
+ * @brief Radio events enum
+ *
+ */
 typedef enum
 {
     RADIO_EVENTS_READY    = 0,    // Radio has ramped up and is ready for tx or rx
@@ -35,26 +43,47 @@ typedef enum
     RADIO_EVENTS_MAX
 } tRadio_events;
 
+/**
+ * @brief Typedef for event handler
+ *  Called by radio interrupt
+ *
+ */
 typedef void (*tRadio_eventHandler)( void );
 
+/**
+ * @brief Table element pairing events with pointers to handler functions
+ *
+ */
 typedef struct
 {
     tRadio_events       event;
     tRadio_eventHandler handler;
 } tRadio_event_handler_tableElement;
 
+/**
+ * @brief Packet configuration S1 include enum
+ *
+ */
 typedef enum
 {
     RADIO_S1INCL_AUTO,
     RADIO_S1INCL_ALWAYS
 } tRadio_s1Incl;
 
+/**
+ * @brief Packet configuration preamble length enum
+ *
+ */
 typedef enum
 {
     RADIO_PLEN_8BIT,
     RADIO_PLEN_16BIT
 } tRadio_pLen;
 
+/**
+ * @brief Packet configuration base address length enum
+ *
+ */
 typedef enum
 {
     RADIO_2_BYTE_BASE_ADDR = 2,
@@ -62,12 +91,36 @@ typedef enum
     RADIO_4_BYTE_BASE_ADDR = 4
 } tRadio_baseAddrLen;
 
+/**
+ * @brief Packet configuration endianness of S0, length, S1 and payload sections
+ *
+ */
 typedef enum
 {
     RADIO_LITTLE_ENDIAN,
     RADIO_BIG_ENDIAN,
 } tRadio_endianness;
 
+/**
+ * @brief Logical address enum
+ *
+ */
+typedef enum
+{
+    RADIO_LOGADDR0,
+    RADIO_LOGADDR1,
+    RADIO_LOGADDR2,
+    RADIO_LOGADDR3,
+    RADIO_LOGADDR4,
+    RADIO_LOGADDR5,
+    RADIO_LOGADDR6,
+    RADIO_LOGADDR7
+} tRadio_logAddr;
+
+/**
+ * @brief Packet configuration structure
+ *
+ */
 typedef struct
 {
     uint8_t             lengthFieldLen; // Length (on-air) in bits of the packet length field (max 8)
@@ -82,6 +135,10 @@ typedef struct
     tEnableState        dataWhitening;  // Enable or disable packet whitening
 } tRadio_packetConfig;
 
+/**
+ * @brief Radio return value used to indicate success or failure of a radio function
+ *
+ */
 typedef enum
 {
     RADIO_OK,
@@ -126,10 +183,19 @@ void (radio_disableEvents)( const tRadio_events events[], const uint8_t arrayLen
 /**
  * @brief Sets the packet configuration
  *
- * @param config Packet config structure for defining packet configuration
+ * @param[in] config Packet config structure for defining packet configuration
  *
  * @return tRadio_retVal describing the status of the operation
  */
 tRadio_retVal radio_setPacketConfiguration( const tRadio_packetConfig config );
+
+/**
+ * @brief Set the prefix and base of target logical address
+ *
+ * @param[in] logicalAddress the logical address to change
+ * @param[in] prefix value of the address prefix
+ * @param[in] base value of the address base
+ */
+void radio_setAddress( const tRadio_logAddr logicalAddress, const uint8_t prefix, const int32_t base );
 
 #endif // RADIO_H
