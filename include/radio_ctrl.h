@@ -22,11 +22,11 @@ typedef struct __attribute__((packed))
 void radioCtrl_init( void );
 
 /**
- * @brief Sets the contents of the radio packet to be transmitted
+ * @brief Send a packet
  *
- * @param[in] payload The desired payload for the packet
- * @param[in] length The length of the payload
+ * @param pPayload payload of the packet to be sent
+ * @param payloadLen length of the payload
  */
-void radioCtrl_setTxPacket( const void *const payload, const uint8_t length );
+void radioCtrl_transmitPacket( const void * const pPayload, const uint8_t payloadLen );
 
 #endif // RADIO_CTRL_H

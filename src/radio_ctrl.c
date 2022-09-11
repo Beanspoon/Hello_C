@@ -24,7 +24,14 @@ static tRadioCtrl_context *getContext( void )
 
 static void radioCtrl_readyHandler( void )
 {
+    tRadioCtrl_context *pContext = getContext();
+    radio_setTxPacket( &pContext->txPacket );
+    radio_setTxAddress( RADIO_LOGADDR_PRIMARY );
 
+    if( radio_start() != RADIO_OK )
+    {
+        radioCtrl_errorHandler( "Radio TX error\n" );
+    }
 }
 
 static void radioCtrl_errorHandler( const char errorString[] )
@@ -56,11 +63,16 @@ void radioCtrl_init( void )
     radio_enableEvents( eventTable );
 
     radio_setPrimaryAddress( 0x12, 0xdeadbeef );
+
+    tRadio_shorts shortsToEnable = { RADIO_SHORTS_END_DISABLE };
+    radio_enableShorts( shortsToEnable );
 }
 
-void radioCtrl_setTxPacket( const void *const payload, const uint8_t length )
+void radioCtrl_transmitPacket( const void * const pPayload, const uint8_t payloadLen )
 {
     tRadioCtrl_context *pContext = getContext();
     pContext->txPacket.length = length;
     memcpy( &(pContext->txPacket.payload), payload, length );
+
+    radio_enableTxMode();
 }

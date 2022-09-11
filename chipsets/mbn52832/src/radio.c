@@ -397,7 +397,7 @@ void radio_setTxAddress( const tRadio_logAddr logAddr )
     RADIO.TXADDRESS = logAddr;
 }
 
-tRadio_retVal radio_startTxMode( void )
+tRadio_retVal radio_enableTxMode( void )
 {
     if( RADIO.STATE != RADIO_DISABLED )
     {
@@ -406,6 +406,24 @@ tRadio_retVal radio_startTxMode( void )
 
     RADIO.TXEN = ENABLED;
     return RADIO_OK;
+}
+
+tRadio_retVal radio_start( void )
+{
+    tRadio_retVal retVal = RADIO_ERROR;
+
+    if( ( RADIO.STATE == RADIO_TXIDLE ) ||
+        ( RADIO.STATE == RADIO_RXIDLE ) )
+    {
+        radio_start();
+        retVal = RADIO_OK;
+    }
+    else
+    {
+        retVal = RADIO_INVALID_TASK;
+    }
+
+    return retVal;
 }
 
 void Radio_isr( void )

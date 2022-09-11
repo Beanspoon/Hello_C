@@ -231,8 +231,15 @@ void radio_setTxAddress( const tRadio_logAddr logAddr );
 /**
  * @brief Ramps up the radio in TX mode. Event READY will trigger when complete
  *
- * @return tRadio_retVal indicating success or failure of the task
+ * @return tRadio_retVal indicating success or failure of setting the task
  */
-tRadio_retVal radio_startTxMode( void );
+tRadio_retVal radio_enableTxMode( void );
+
+/**
+ * @brief Starts transmission or reception
+ *
+ * @return tRadio_retVal indicating success or failure of settin the task
+ */
+tRadio_retVal radio_start( void );
 
 #endif // RADIO_H

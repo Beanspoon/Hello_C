@@ -13,7 +13,6 @@ void main( void )
     radioCtrl_init();
 
     uint8_t packet[] = { 0x55, 0x55, 'H', 'e', 'l', 'l', 'o', 'w', 'o', 'r', 'l', 'd', 0x55, 0x55 };
-    radioCtrl_setTxPacket( packet, sizeof(packet) );
 
     while(1)
     {
