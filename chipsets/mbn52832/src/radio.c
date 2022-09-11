@@ -371,38 +371,41 @@ tRadio_retVal radio_setPacketConfiguration( const tRadio_packetConfig config )
     return RADIO_OK;
 }
 
-/**
- * @brief Sets the primary address
- *
- * @param baseAddr Base address to set
- * @param address Value to set the base address to
- */
 void radio_setPrimaryAddress( const uint8_t prefix, const uint32_t address )
 {
     RADIO.BASE[0] = address;
     setLogicalAddressPrefix( 0u, prefix );
 }
 
-/**
- * @brief Sets the base for the secondary addresses
- *
- * @param addressBase Value of the address base
- */
 void radio_setSecondaryAddressBase( const uint32_t addressBase )
 {
     RADIO.BASE[1] = addressBase;
 }
 
-/**
- * @brief Sets the target logical address prefix
- * Logical addresses use the secondary address base plus a prefix
- *
- * @param logicalAddr Logical address prefix to set
- * @param prefix Value of the prefix
- */
 void radio_setSecondaryAddressPrefix( const radio_logAddr logicalAddr, const uint8_t prefix )
 {
     setLogicalAddressPrefix( logicalAddr, prefix );
+}
+
+void radio_setTxPacket( const void * const pPacket )
+{
+    RADIO.PACKETPTR = (uint32_t)pPacket;
+}
+
+void radio_setTxAddress( const tRadio_logAddr logAddr )
+{
+    RADIO.TXADDRESS = logAddr;
+}
+
+tRadio_retVal radio_startTxMode( void )
+{
+    if( RADIO.STATE != RADIO_DISABLED )
+    {
+        return RADIO_INVALID_TASK;
+    }
+
+    RADIO.TXEN = ENABLED;
+    return RADIO_OK;
 }
 
 void Radio_isr( void )

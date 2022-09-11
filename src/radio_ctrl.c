@@ -54,6 +54,8 @@ void radioCtrl_init( void )
         { RADIO_EVENTS_READY, radioCtrl_readyHandler }
     };
     radio_enableEvents( eventTable );
+
+    radio_setPrimaryAddress( 0x12, 0xdeadbeef );
 }
 
 void radioCtrl_setTxPacket( const void *const payload, const uint8_t length )

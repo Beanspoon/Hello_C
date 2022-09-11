@@ -107,7 +107,8 @@ typedef enum
  */
 typedef enum
 {
-    RADIO_LOGADDR1 = 1,
+    RADIO_LOGADDR_PRIMARY,
+    RADIO_LOGADDR1,
     RADIO_LOGADDR2,
     RADIO_LOGADDR3,
     RADIO_LOGADDR4,
@@ -140,9 +141,10 @@ typedef struct
  */
 typedef enum
 {
-    RADIO_OK,
-    RADIO_INVALID_PARAM,
-    RADIO_ERROR,
+    RADIO_OK,               // Success
+    RADIO_INVALID_PARAM,    // Parameters supplied were invalid
+    RADIO_INVALID_TASK,     // Task is not valid for current radio state
+    RADIO_ERROR,            // An error occurred
 } tRadio_retVal;
 
 void (radio_enableShorts)( const tRadio_shorts shorts[], const uint8_t arrayLen );
@@ -191,15 +193,15 @@ tRadio_retVal radio_setPacketConfiguration( const tRadio_packetConfig config );
 /**
  * @brief Sets the primary address
  *
- * @param baseAddr Base address to set
- * @param address Value to set the base address to
+ * @param[in] baseAddr Base address to set
+ * @param[in] address Value to set the base address to
  */
 void radio_setPrimaryAddress( const uint8_t prefix, const uint32_t address );
 
 /**
  * @brief Sets the base for the secondary addresses
  *
- * @param addressBase Value of the address base
+ * @param[in] addressBase Value of the address base
  */
 void radio_setSecondaryAddressBase( const uint32_t addressBase );
 
@@ -207,9 +209,30 @@ void radio_setSecondaryAddressBase( const uint32_t addressBase );
  * @brief Sets the target logical address prefix
  * Logical addresses use the secondary address base plus a prefix
  *
- * @param logicalAddr Logical address prefix to set
- * @param prefix Value of the prefix
+ * @param[in] logicalAddr Logical address prefix to set
+ * @param[in] prefix Value of the prefix
  */
-void radio_setSecondaryAddressPrefix( const radio_logAddr logicalAddr, const uint8_t prefix );
+void radio_setAddressPrefix( const radio_logAddr logicalAddr, const uint8_t prefix );
+
+/**
+ * @brief Assigns the memory address of the packet to be transmitted
+ *
+ * @param[in] pPacket pointer to the packet in memory
+ */
+void radio_setTxPacket( const void * const pPacket );
+
+/**
+ * @brief Sets the logical address to use in transmission
+ *
+ * @param[in] logAddr the logical address to be used
+ */
+void radio_setTxAddress( const tRadio_logAddr logAddr );
+
+/**
+ * @brief Ramps up the radio in TX mode. Event READY will trigger when complete
+ *
+ * @return tRadio_retVal indicating success or failure of the task
+ */
+tRadio_retVal radio_startTxMode( void );
 
 #endif // RADIO_H
