@@ -4,6 +4,7 @@
 #include <stdint-gcc.h>
 
 #define ARRAY_SIZE( array )     ( sizeof(array)/sizeof(array[0]) )
+#define BYTE_SIZE_BITS          8u
 
 /**
  * @brief Copy data from address pSource to address pDest

@@ -107,8 +107,7 @@ typedef enum
  */
 typedef enum
 {
-    RADIO_LOGADDR0,
-    RADIO_LOGADDR1,
+    RADIO_LOGADDR1 = 1,
     RADIO_LOGADDR2,
     RADIO_LOGADDR3,
     RADIO_LOGADDR4,
@@ -190,12 +189,27 @@ void (radio_disableEvents)( const tRadio_events events[], const uint8_t arrayLen
 tRadio_retVal radio_setPacketConfiguration( const tRadio_packetConfig config );
 
 /**
- * @brief Set the prefix and base of target logical address
+ * @brief Sets the primary address
  *
- * @param[in] logicalAddress the logical address to change
- * @param[in] prefix value of the address prefix
- * @param[in] base value of the address base
+ * @param baseAddr Base address to set
+ * @param address Value to set the base address to
  */
-void radio_setAddress( const tRadio_logAddr logicalAddress, const uint8_t prefix, const int32_t base );
+void radio_setPrimaryAddress( const uint8_t prefix, const uint32_t address );
+
+/**
+ * @brief Sets the base for the secondary addresses
+ *
+ * @param addressBase Value of the address base
+ */
+void radio_setSecondaryAddressBase( const uint32_t addressBase );
+
+/**
+ * @brief Sets the target logical address prefix
+ * Logical addresses use the secondary address base plus a prefix
+ *
+ * @param logicalAddr Logical address prefix to set
+ * @param prefix Value of the prefix
+ */
+void radio_setSecondaryAddressPrefix( const radio_logAddr logicalAddr, const uint8_t prefix );
 
 #endif // RADIO_H

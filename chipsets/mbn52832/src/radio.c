@@ -81,24 +81,6 @@ typedef struct
     RO_reg                          : 0;
 } tRadio_pCnfRegs;
 
-/**
- * @brief Definition of the address prefix registers
- *
- */
-typedef struct
-{
-    // PREFIX0
-    RW_reg  AP0                 : 8; // Bit[0-7] Address prefix 0
-    RW_reg  AP1                 : 8; // Bit[8-15] Address prefix 1
-    RW_reg  AP2                 : 8; // Bit[16-24] Address prefix 2
-    RW_reg  AP3                 : 8; // Bit[25-31] Address prefix 3
-    // PREFIX1
-    RW_reg  AP4                 : 8; // Bit[0-7] Address prefix 4
-    RW_reg  AP5                 : 8; // Bit[8-15] Address prefix 5
-    RW_reg  AP6                 : 8; // Bit[16-24] Address prefix 6
-    RW_reg  AP7                 : 8; // Bit[25-31] Address prefix 7
-} tRadio_prefixRegs;
-
 typedef struct
 {
     tEnableState   ADDR0               : 1; // Bit[0] 0: disable, or 1: enable reception on logical address 0
@@ -244,7 +226,7 @@ typedef struct
     tRadio_mode             MODE;                       // 0x510 Radio data rate and modulation
     tRadio_pCnfRegs         PCNF;                       // 0x514-518 Packet configuration registers
     RW_reg                  BASE[2];                    // 0x51C-520 Radio base address registers
-    tRadio_prefixRegs       PREFIX;                     // 0x524-528 Prefix bytes for logical addresses
+    RW_reg                  PREFIX[2];                  // 0x524-528 Prefix bytes for logical addresses
     tRadio_logAddr          TXADDRESS;                  // 0x52C Transmit logical address select
     tRadio_rxAddressReg     RXADDRESS;                  // 0x530 Receive logical address select
     tRadio_crcCnf           CRCCNF;                     // 0x534 CRC configuration register
@@ -279,6 +261,8 @@ typedef struct
 #define RADIO_S0_FIELD_MAX_LENGTH_BYTES     1u
 #define RADIO_S1_FIELD_MAX_LENGTH_BITS      8u
 
+#define RADIO_PREFIXES_PER_REGISTER         4u
+
 /**
  * @brief Get the Context object
  *
@@ -305,6 +289,14 @@ static RW_reg regFieldArrayToReg( const int array[], const uint8_t arrayLen )
         reg |= (1u << array[arrayIdx]);
     }
     return reg;
+}
+
+static void setLogicalAddressPrefix( const uint8_t logicalAddress, const uint8_t prefix )
+{
+    const uint8_t regNum = logicalAddress / RADIO_PREFIXES_PER_REGISTER;
+    const uint8_t byteNum = logicalAddress % RADIO_PREFIXES_PER_REGISTER;
+
+    RADIO.PREFIX[regNum] = ( prefix << (byteNum * BYTE_SIZE_BITS ) );
 }
 
 void (radio_enableShorts)( const tRadio_shorts shorts[], const uint8_t arrayLen )
@@ -377,6 +369,40 @@ tRadio_retVal radio_setPacketConfiguration( const tRadio_packetConfig config )
     memcpy( &RADIO.PCNF, &config, sizeof(config) );
 
     return RADIO_OK;
+}
+
+/**
+ * @brief Sets the primary address
+ *
+ * @param baseAddr Base address to set
+ * @param address Value to set the base address to
+ */
+void radio_setPrimaryAddress( const uint8_t prefix, const uint32_t address )
+{
+    RADIO.BASE[0] = address;
+    setLogicalAddressPrefix( 0u, prefix );
+}
+
+/**
+ * @brief Sets the base for the secondary addresses
+ *
+ * @param addressBase Value of the address base
+ */
+void radio_setSecondaryAddressBase( const uint32_t addressBase )
+{
+    RADIO.BASE[1] = addressBase;
+}
+
+/**
+ * @brief Sets the target logical address prefix
+ * Logical addresses use the secondary address base plus a prefix
+ *
+ * @param logicalAddr Logical address prefix to set
+ * @param prefix Value of the prefix
+ */
+void radio_setSecondaryAddressPrefix( const radio_logAddr logicalAddr, const uint8_t prefix )
+{
+    setLogicalAddressPrefix( logicalAddr, prefix );
 }
 
 void Radio_isr( void )
