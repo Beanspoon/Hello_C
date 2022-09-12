@@ -22,6 +22,15 @@ static tRadioCtrl_context *getContext( void )
     return &radioCtrl_context;
 }
 
+
+static void radioCtrl_errorHandler( const char errorString[] )
+{
+    while (1)
+    {
+        // Radio hit fatal error!
+    }
+}
+
 static void radioCtrl_readyHandler( void )
 {
     tRadioCtrl_context *pContext = getContext();
@@ -34,16 +43,9 @@ static void radioCtrl_readyHandler( void )
     }
 }
 
-static void radioCtrl_errorHandler( const char errorString[] )
-{
-    while (1)
-    {
-        // Radio hit fatal error!
-    }
-}
-
 void radioCtrl_init( void )
 {
+    radio_test();
     tRadio_packetConfig packetConfig =
     {
         .lengthFieldLen = 8u,

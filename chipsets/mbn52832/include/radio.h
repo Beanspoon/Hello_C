@@ -242,4 +242,6 @@ tRadio_retVal radio_enableTxMode( void );
  */
 tRadio_retVal radio_start( void );
 
+void radio_test( void );
+
 #endif // RADIO_H

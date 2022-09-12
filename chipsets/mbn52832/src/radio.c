@@ -195,7 +195,7 @@ typedef enum
 typedef struct
 {
     RW_reg      RU      : 1;    // Bit[0] Radio ramp up time 0: Default, 1: Fast
-    const uint8_t       : 0;
+    uint8_t             : 0;
     tRadio_dtx  DTX     : 2;    // Bit[8-9] Default TX value - specifies what is transmitted when radio is up but not started
 } tRadio_modeCnf0Reg;
 
@@ -221,7 +221,7 @@ typedef struct
     const tRadio_logAddr    DAI;                        // 0x410 Device address match index
     RO_reg                  RESERVED_F[0x3C];
     RW_reg                  PACKETPTR;                  // 0x504 RAM address of memory in which packet is stored
-    tRadio_frequencyReg     FREQUNECY;                  // 0x508 Frequency setting register
+    tRadio_frequencyReg     FREQUENCY;                  // 0x508 Frequency setting register
     tRadio_txPower          TXPOWER;                    // 0x50C Transmission power register
     tRadio_mode             MODE;                       // 0x510 Radio data rate and modulation
     tRadio_pCnfRegs         PCNF;                       // 0x514-518 Packet configuration registers
@@ -252,6 +252,24 @@ typedef struct
 
 #define RADIO   (*((tRadio_regMap *)RADIO_BASE_ADDR))
 
+void radio_test( void )
+{
+    RADIO.TASKS[0] = 0;
+    RADIO.EVENTS[0] = 0;
+    RADIO.SHORTS = 0;
+    RADIO.INTENSET = 0;
+    RADIO.PACKETPTR = 0;
+    volatile tRadio_mode mode = RADIO.MODE;
+    RADIO.BASE[0] = 0;
+    RADIO.PREFIX[1] = 0;
+    RADIO.CRCINIT = 0;
+    RADIO.TIFS = 0;
+    RADIO.DATAWHITEIV =0;
+    RADIO.BCC = 0;
+    RADIO.DAB[0] = 0;
+    RADIO.POWER = 0;
+}
+
 typedef struct
 {
     tRadio_eventHandler pfEventHandlers[RADIO_SHORTS_MAX];
@@ -274,6 +292,15 @@ static tRadio_context *getContext( void )
     return &radio_context;
 }
 
+typedef enum { RADIO_NONE } tRadio_regFieldEnum;
+
+typedef union
+{
+    tRadio_shorts           shortcut;
+    tRadio_events           event;
+    tRadio_regFieldEnum     field;
+} tRadio_regFieldEnumUnion;
+
  /**
   * @brief Generate register bit pattern for a given array of register field enums
   *
@@ -281,16 +308,16 @@ static tRadio_context *getContext( void )
   * @param arrayLen length of the array
   * @return Register bit pattern
   */
-static RW_reg (regFieldArrayToReg)( const int array[], const uint8_t arrayLen )
+static RW_reg regFieldArrayToReg( const tRadio_regFieldEnumUnion array[], const uint8_t arrayLen )
 {
+    const tRadio_regFieldEnum *abstractedArray = (tRadio_regFieldEnum *)array;
     RW_reg reg = { 0u };
     for( uint8_t arrayIdx = 0u; arrayIdx < arrayLen; ++arrayIdx )
     {
-        reg |= (1u << array[arrayIdx]);
+        reg |= (1u << abstractedArray[arrayIdx]);
     }
     return reg;
 }
-#define regFieldArrayToReg( array, arrayLen ) regFieldArrayToReg( (int *)array, arrayLen)
 
 static void setLogicalAddressPrefix( const uint8_t logicalAddress, const uint8_t prefix )
 {
