@@ -281,7 +281,7 @@ static tRadio_context *getContext( void )
   * @param arrayLen length of the array
   * @return Register bit pattern
   */
-static RW_reg regFieldArrayToReg( const int array[], const uint8_t arrayLen )
+static RW_reg (regFieldArrayToReg)( const int array[], const uint8_t arrayLen )
 {
     RW_reg reg = { 0u };
     for( uint8_t arrayIdx = 0u; arrayIdx < arrayLen; ++arrayIdx )
@@ -290,6 +290,7 @@ static RW_reg regFieldArrayToReg( const int array[], const uint8_t arrayLen )
     }
     return reg;
 }
+#define regFieldArrayToReg( array, arrayLen ) regFieldArrayToReg( (int *)array, arrayLen)
 
 static void setLogicalAddressPrefix( const uint8_t logicalAddress, const uint8_t prefix )
 {
@@ -301,13 +302,13 @@ static void setLogicalAddressPrefix( const uint8_t logicalAddress, const uint8_t
 
 void (radio_enableShorts)( const tRadio_shorts shorts[], const uint8_t arrayLen )
 {
-    RW_reg shortsReg = regFieldArrayToReg( (int)shorts, arrayLen );
+    RW_reg shortsReg = regFieldArrayToReg( shorts, arrayLen );
     RADIO.SHORTS |= shortsReg;
 }
 
 void (radio_disableShorts)( const tRadio_shorts shorts[], const uint8_t arrayLen )
 {
-    RW_reg shortsReg = regFieldArrayToReg( (int)shorts, arrayLen );
+    RW_reg shortsReg = regFieldArrayToReg( shorts, arrayLen );
     RADIO.SHORTS &= ~shortsReg;
 }
 
@@ -336,7 +337,7 @@ void (radio_disableEvents)( const tRadio_events events[], const uint8_t arrayLen
 
     nvic_changeInterruptState( NVIC_INT_RADIO, DISABLED );
 
-    RW_reg disabledEvents = regFieldArrayToReg( (int)events, arrayLen );
+    RW_reg disabledEvents = regFieldArrayToReg( events, arrayLen );
     RADIO.INTENCLR |= disabledEvents;
 
     nvic_changeInterruptState( NVIC_INT_RADIO, ENABLED );
@@ -352,7 +353,7 @@ tRadio_retVal radio_setPacketConfiguration( const tRadio_packetConfig config )
         return RADIO_INVALID_PARAM;
     }
 
-    tRadio_pCnfRegs config =
+    tRadio_pCnfRegs configReg =
     {
         .LFLEN      = config.lengthFieldLen,
         .S0LEN      = config.s0Len,
@@ -366,7 +367,7 @@ tRadio_retVal radio_setPacketConfiguration( const tRadio_packetConfig config )
         .WHITEEN    = config.dataWhitening
     };
 
-    memcpy( &RADIO.PCNF, &config, sizeof(config) );
+    memcpy( &RADIO.PCNF, &configReg, sizeof(config) );
 
     return RADIO_OK;
 }
@@ -382,7 +383,7 @@ void radio_setSecondaryAddressBase( const uint32_t addressBase )
     RADIO.BASE[1] = addressBase;
 }
 
-void radio_setSecondaryAddressPrefix( const radio_logAddr logicalAddr, const uint8_t prefix )
+void radio_setSecondaryAddressPrefix( const tRadio_logAddr logicalAddr, const uint8_t prefix )
 {
     setLogicalAddressPrefix( logicalAddr, prefix );
 }
@@ -404,7 +405,7 @@ tRadio_retVal radio_enableTxMode( void )
         return RADIO_INVALID_TASK;
     }
 
-    RADIO.TXEN = ENABLED;
+    RADIO.TASKS[RADIO_TASKS_TXEN] = ENABLED;
     return RADIO_OK;
 }
 

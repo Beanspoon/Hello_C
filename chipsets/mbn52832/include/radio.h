@@ -212,7 +212,7 @@ void radio_setSecondaryAddressBase( const uint32_t addressBase );
  * @param[in] logicalAddr Logical address prefix to set
  * @param[in] prefix Value of the prefix
  */
-void radio_setAddressPrefix( const radio_logAddr logicalAddr, const uint8_t prefix );
+void radio_setAddressPrefix( const tRadio_logAddr logicalAddr, const uint8_t prefix );
 
 /**
  * @brief Assigns the memory address of the packet to be transmitted

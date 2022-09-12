@@ -64,15 +64,15 @@ void radioCtrl_init( void )
 
     radio_setPrimaryAddress( 0x12, 0xdeadbeef );
 
-    tRadio_shorts shortsToEnable = { RADIO_SHORTS_END_DISABLE };
+    tRadio_shorts shortsToEnable[] = { RADIO_SHORTS_END_DISABLE };
     radio_enableShorts( shortsToEnable );
 }
 
 void radioCtrl_transmitPacket( const void * const pPayload, const uint8_t payloadLen )
 {
     tRadioCtrl_context *pContext = getContext();
-    pContext->txPacket.length = length;
-    memcpy( &(pContext->txPacket.payload), payload, length );
+    pContext->txPacket.length = payloadLen;
+    memcpy( &(pContext->txPacket.payload), pPayload, payloadLen );
 
     radio_enableTxMode();
 }
