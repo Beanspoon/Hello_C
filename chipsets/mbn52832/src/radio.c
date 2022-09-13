@@ -104,7 +104,7 @@ typedef struct
     const uint8_t               : 0;
     RW_reg  SKIPADDR            : 1; // Bit[8] 0: include, or 1: skip address field in CRC calculation
     RO_reg                      : 0;
-} tRadio_crcCnf;
+} tRadio_crcCnfReg;
 
 /**
  * @brief Radio power enum
@@ -216,27 +216,27 @@ typedef struct
     RO_reg                  RESERVED_D[0x3D];
     RO_reg                  CRCSTATUS;                  // 0x400 CRC status register
     RO_reg                  RESERVED_E;
-    const tRadio_logAddr    RXMATCH;                    // 0x408 Received address logical match register
+    RO_reg                  RXMATCH;                    // 0x408 Received address logical match register
     RO_reg                  RXCRC;                      // 0x40C CRC field of previously received packet (24 bits)
-    const tRadio_logAddr    DAI;                        // 0x410 Device address match index
+    RO_reg                  DAI;                        // 0x410 Device address match index
     RO_reg                  RESERVED_F[0x3C];
     RW_reg                  PACKETPTR;                  // 0x504 RAM address of memory in which packet is stored
     tRadio_frequencyReg     FREQUENCY;                  // 0x508 Frequency setting register
-    tRadio_txPower          TXPOWER;                    // 0x50C Transmission power register
-    tRadio_mode             MODE;                       // 0x510 Radio data rate and modulation
+    RW_reg                  TXPOWER;                    // 0x50C Transmission power register
+    RW_reg                  MODE;                       // 0x510 Radio data rate and modulation
     tRadio_pCnfRegs         PCNF;                       // 0x514-518 Packet configuration registers
     RW_reg                  BASE[2];                    // 0x51C-520 Radio base address registers
     RW_reg                  PREFIX[2];                  // 0x524-528 Prefix bytes for logical addresses
-    tRadio_logAddr          TXADDRESS;                  // 0x52C Transmit logical address select
+    RW_reg                  TXADDRESS;                  // 0x52C Transmit logical address select
     tRadio_rxAddressReg     RXADDRESS;                  // 0x530 Receive logical address select
-    tRadio_crcCnf           CRCCNF;                     // 0x534 CRC configuration register
+    tRadio_crcCnfReg        CRCCNF;                     // 0x534 CRC configuration register
     RW_reg                  CRCPOLY;                    // 0x538 CRC polynomial register (24 bits)
     RW_reg                  CRCINIT;                    // 0x53C Initial value for CRC (24 bits)
     RO_reg                  RESERVED_G;
     RW_reg                  TIFS;                       // 0x544 Inter-frame spacing in us (8 bits)
     RO_reg                  RSSISAMPLE;                 // 0x548 RSSI sample register (read as -A dbm, 7 bits)
     RO_reg                  RESERVED_H;
-    const tRadio_state      STATE;                      // 0x550 Current radio state
+    RO_reg                  STATE;                      // 0x550 Current radio state
     RW_reg                  DATAWHITEIV;                // 0x554 Data whitening initial value register (7 bits)
     RO_reg                  RESERVED_I[2];
     RW_reg                  BCC;                        // 0x560 Bit counter compare
@@ -251,24 +251,6 @@ typedef struct
 } tRadio_regMap;
 
 #define RADIO   (*((tRadio_regMap *)RADIO_BASE_ADDR))
-
-void radio_test( void )
-{
-    RADIO.TASKS[0] = 0;
-    RADIO.EVENTS[0] = 0;
-    RADIO.SHORTS = 0;
-    RADIO.INTENSET = 0;
-    RADIO.PACKETPTR = 0;
-    volatile tRadio_mode mode = RADIO.MODE;
-    RADIO.BASE[0] = 0;
-    RADIO.PREFIX[1] = 0;
-    RADIO.CRCINIT = 0;
-    RADIO.TIFS = 0;
-    RADIO.DATAWHITEIV =0;
-    RADIO.BCC = 0;
-    RADIO.DAB[0] = 0;
-    RADIO.POWER = 0;
-}
 
 typedef struct
 {

@@ -1,8 +1,9 @@
 
-OpenDocument="core_systick.c", FilePath="/home/pete/projects/hello_C/chipsets/mbn52832/src/core_systick.c", Line=43
-OpenDocument="main.c", FilePath="/home/pete/projects/hello_C/src/main.c", Line=2
-OpenDocument="utils.c", FilePath="/home/pete/projects/hello_C/src/utils.c", Line=3
-OpenDocument="", FilePath="", Line=0
+OpenDocument="radio.c", FilePath="/home/pete/projects/hello_C/chipsets/mbn52832/src/radio.c", Line=255
+OpenDocument="radio_ctrl.c", FilePath="/home/pete/projects/hello_C/src/radio_ctrl.c", Line=42
+OpenDocument="core_systick.c", FilePath="/home/pete/projects/hello_C/chipsets/mbn52832/src/core_systick.c", Line=42
+OpenDocument="main.c", FilePath="/home/pete/projects/hello_C/src/main.c", Line=3
+OpenDocument="utils.c", FilePath="/home/pete/projects/hello_C/src/utils.c", Line=0
 OpenDocument="startup.c", FilePath="/home/pete/projects/hello_C/chipsets/mbn52832/src/startup.c", Line=60
 OpenToolbar="Debug", Floating=0, x=0, y=0
 OpenWindow="Registers 1", DockArea=RIGHT, x=0, y=1, w=358, h=190, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, FilteredItems=[], RefreshRate=1
@@ -11,7 +12,7 @@ OpenWindow="Memory 1", DockArea=BOTTOM, x=1, y=0, w=622, h=242, FilterBarShown=0
 OpenWindow="Functions", DockArea=LEFT, x=0, y=1, w=358, h=189, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
 OpenWindow="Memory Usage", DockArea=LEFT, x=0, y=0, w=358, h=191, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
 OpenWindow="Console", DockArea=BOTTOM, x=0, y=0, w=666, h=242, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
-TableHeader="Functions", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Address";"Size";"#Insts";"Source"], ColWidths=[238;100;100;100;154]
+TableHeader="Functions", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Address";"Size";"#Insts";"Source"], ColWidths=[238;100;100;100;147]
 TableHeader="Power Sampling", SortCol="None", SortOrder="ASCENDING", VisibleCols=["Index";"Time";"Ch 0"], ColWidths=[100;100;100]
 TableHeader="Registers 1", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Description"], ColWidths=[94;105;144]
 TableHeader="RegisterSelectionDialog", SortCol="None", SortOrder="ASCENDING", VisibleCols=[], ColWidths=[]

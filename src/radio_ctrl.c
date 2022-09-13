@@ -45,7 +45,6 @@ static void radioCtrl_readyHandler( void )
 
 void radioCtrl_init( void )
 {
-    radio_test();
     tRadio_packetConfig packetConfig =
     {
         .lengthFieldLen = 8u,
