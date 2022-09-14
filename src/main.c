@@ -13,10 +13,10 @@ void main( void )
     radioCtrl_init();
 
     uint8_t packet[] = { 0x55, 0x55, 'H', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd', 0x00, 0x55, 0x55 };
+    uint8_t counter = 0u;
 
     while(1)
     {
-        uint8_t counter = 0;
         packet[13] = counter;
         radioCtrl_transmitPacket( packet, sizeof(packet) );
         systick_busyWait( 1000 );
