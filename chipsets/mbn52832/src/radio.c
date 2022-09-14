@@ -425,7 +425,7 @@ tRadio_retVal radio_start( void )
     if( ( RADIO.STATE == RADIO_TXIDLE ) ||
         ( RADIO.STATE == RADIO_RXIDLE ) )
     {
-        radio_start();
+        RADIO.TASKS[RADIO_TASKS_START] = ENABLED;
         retVal = RADIO_OK;
     }
     else
