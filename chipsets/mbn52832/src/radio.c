@@ -353,30 +353,30 @@ void (radio_disableEvents)( const tRadio_events events[], const uint8_t arrayLen
 }
 
 
-tRadio_retVal radio_setPacketConfiguration( const tRadio_packetConfig config )
+tRadio_retVal radio_setPacketConfiguration( const tRadio_packetConfig * const config )
 {
-    if( ( config.lengthFieldLen > RADIO_LENGTH_FIELD_MAX_LENGTH_BITS ) ||
-        ( config.s0Len > RADIO_S0_FIELD_MAX_LENGTH_BYTES ) ||
-        ( config.s1Len > RADIO_S1_FIELD_MAX_LENGTH_BITS ) )
+    if( ( config->lengthFieldLen > RADIO_LENGTH_FIELD_MAX_LENGTH_BITS ) ||
+        ( config->s0Len > RADIO_S0_FIELD_MAX_LENGTH_BYTES ) ||
+        ( config->s1Len > RADIO_S1_FIELD_MAX_LENGTH_BITS ) )
     {
         return RADIO_INVALID_PARAM;
     }
 
     tRadio_pCnfRegs configReg =
     {
-        .LFLEN      = config.lengthFieldLen,
-        .S0LEN      = config.s0Len,
-        .S1LEN      = config.s1Len,
-        .S1INCL     = config.s1InclInRam,
-        .PLEN       = config.preambleLen,
-        .MAXLEN     = config.maxPayloadLen,
-        .STATLEN    = config.staticLen,
-        .BALEN      = config.baseAddrLen,
-        .ENDIAN     = config.endian,
-        .WHITEEN    = config.dataWhitening
+        .LFLEN      = config->lengthFieldLen,
+        .S0LEN      = config->s0Len,
+        .S1LEN      = config->s1Len,
+        .S1INCL     = config->s1InclInRam,
+        .PLEN       = config->preambleLen,
+        .MAXLEN     = config->maxPayloadLen,
+        .STATLEN    = config->staticLen,
+        .BALEN      = config->baseAddrLen,
+        .ENDIAN     = config->endian,
+        .WHITEEN    = config->dataWhitening
     };
 
-    memcpy( &RADIO.PCNF, &configReg, sizeof(config) );
+    memcpy( &RADIO.PCNF, &configReg, sizeof(configReg) );
 
     return RADIO_OK;
 }

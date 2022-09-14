@@ -188,7 +188,7 @@ void (radio_disableEvents)( const tRadio_events events[], const uint8_t arrayLen
  *
  * @return tRadio_retVal describing the status of the operation
  */
-tRadio_retVal radio_setPacketConfiguration( const tRadio_packetConfig config );
+tRadio_retVal radio_setPacketConfiguration( const tRadio_packetConfig * const config );
 
 /**
  * @brief Sets the primary address

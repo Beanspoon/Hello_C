@@ -51,7 +51,7 @@ void radioCtrl_init( void )
         .maxPayloadLen = 255u,
         .baseAddrLen = RADIO_4_BYTE_BASE_ADDR,
     };
-    tRadio_retVal initRetVal = radio_setPacketConfiguration( packetConfig );
+    tRadio_retVal initRetVal = radio_setPacketConfiguration( &packetConfig );
 
     if( initRetVal != RADIO_OK )
     {
