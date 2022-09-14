@@ -75,5 +75,8 @@ void radioCtrl_transmitPacket( const void * const pPayload, const uint8_t payloa
     pContext->txPacket.length = payloadLen;
     memcpy( &(pContext->txPacket.payload), pPayload, payloadLen );
 
-    radio_enableTxMode();
+    if( RADIO_OK != radio_enableTxMode() )
+    {
+        radioCtrl_errorHandler( "Invalid radio state\n" );
+    }
 }
