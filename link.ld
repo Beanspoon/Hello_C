@@ -26,6 +26,7 @@ SECTIONS
     {
         __sbss = .;
         *(.bss);
+        *(.bss*);
         __ebss = .;
     } > ram
 
