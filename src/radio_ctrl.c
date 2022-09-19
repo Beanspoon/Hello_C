@@ -45,6 +45,8 @@ static void radioCtrl_readyHandler( void )
 
 void radioCtrl_init( void )
 {
+    radio_setMode( RADIO_MODE_BLE1MBIT );
+
     tRadio_packetConfig packetConfig =
     {
         .lengthFieldLen = 8u,

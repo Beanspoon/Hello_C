@@ -118,6 +118,18 @@ typedef enum
 } tRadio_logAddr;
 
 /**
+ * @brief Radio mode enum
+ *
+ */
+typedef enum
+{
+    RADIO_MODE_NRF1MBIT,
+    RADIO_MODE_NRF2MBIT,
+    RADIO_MODE_BLE1MBIT = 3,
+    RADIO_MODE_BLE2MBIT,
+} tRadio_mode;
+
+/**
  * @brief Packet configuration structure
  *
  */
@@ -180,6 +192,13 @@ void (radio_disableEvents)( const tRadio_events events[], const uint8_t arrayLen
  * @param[in] events Array of events to disable
  */
 #define radio_disableEvents( events )   radio_disableEvents( events, ARRAY_SIZE( events ) )
+
+/**
+ * @brief Set the radio mode to use
+ *
+ * @param[in] mode Radio mode setting
+ */
+void radio_setMode( const tRadio_mode mode );
 
 /**
  * @brief Sets the packet configuration

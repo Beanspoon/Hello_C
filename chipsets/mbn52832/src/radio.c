@@ -124,18 +124,6 @@ typedef enum
 } tRadio_txPower;
 
 /**
- * @brief Radio mode enum
- *
- */
-typedef enum
-{
-    RADIO_MODE_NRF1MBIT,
-    RADIO_MODE_NRF2MBIT,
-    RADIO_MODE_BLE1MBIT = 3,
-    RADIO_MODE_BLE2MBIT,
-} tRadio_mode;
-
-/**
  * @brief Radio state enum
  *
  */
@@ -309,15 +297,20 @@ static void setLogicalAddressPrefix( const uint8_t logicalAddress, const uint8_t
     RADIO.PREFIX[regNum] = ( prefix << (byteNum * BYTE_SIZE_BITS ) );
 }
 
+void radio_setMode( const tRadio_mode mode )
+{
+    RADIO.MODE = mode;
+}
+
 void (radio_enableShorts)( const tRadio_shorts shorts[], const uint8_t arrayLen )
 {
-    RW_reg shortsReg = regFieldArrayToReg( shorts, arrayLen );
+    RW_reg shortsReg = regFieldArrayToReg( (tRadio_regFieldEnumUnion *)shorts, arrayLen );
     RADIO.SHORTS |= shortsReg;
 }
 
 void (radio_disableShorts)( const tRadio_shorts shorts[], const uint8_t arrayLen )
 {
-    RW_reg shortsReg = regFieldArrayToReg( shorts, arrayLen );
+    RW_reg shortsReg = regFieldArrayToReg( (tRadio_regFieldEnumUnion *)shorts, arrayLen );
     RADIO.SHORTS &= ~shortsReg;
 }
 
@@ -346,7 +339,7 @@ void (radio_disableEvents)( const tRadio_events events[], const uint8_t arrayLen
 
     nvic_changeInterruptState( NVIC_INT_RADIO, DISABLED );
 
-    RW_reg disabledEvents = regFieldArrayToReg( events, arrayLen );
+    RW_reg disabledEvents = regFieldArrayToReg( (tRadio_regFieldEnumUnion *)events, arrayLen );
     RADIO.INTENCLR |= disabledEvents;
 
     nvic_changeInterruptState( NVIC_INT_RADIO, ENABLED );
