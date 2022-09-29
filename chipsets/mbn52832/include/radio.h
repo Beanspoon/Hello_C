@@ -118,6 +118,18 @@ typedef enum
 } tRadio_logAddr;
 
 /**
+ * @brief Radio mode enum
+ *
+ */
+typedef enum
+{
+    RADIO_MODE_NRF1MBIT,
+    RADIO_MODE_NRF2MBIT,
+    RADIO_MODE_BLE1MBIT = 3,
+    RADIO_MODE_BLE2MBIT,
+} tRadio_mode;
+
+/**
  * @brief Packet configuration structure
  *
  */
@@ -182,6 +194,13 @@ void (radio_disableEvents)( const tRadio_events events[], const uint8_t arrayLen
 #define radio_disableEvents( events )   radio_disableEvents( events, ARRAY_SIZE( events ) )
 
 /**
+ * @brief Set the radio mode to use
+ *
+ * @param[in] mode Radio mode setting
+ */
+void radio_setMode( const tRadio_mode mode );
+
+/**
  * @brief Sets the packet configuration
  *
  * @param[in] config Packet config structure for defining packet configuration
@@ -219,7 +238,7 @@ void radio_setAddressPrefix( const tRadio_logAddr logicalAddr, const uint8_t pre
  *
  * @param[in] pPacket pointer to the packet in memory
  */
-void radio_setTxPacket( const void * const pPacket );
+void radio_setPacketAddress( const void * const pPacket );
 
 /**
  * @brief Sets the logical address to use in transmission
@@ -228,12 +247,21 @@ void radio_setTxPacket( const void * const pPacket );
  */
 void radio_setTxAddress( const tRadio_logAddr logAddr );
 
+void radio_setRxAddresses( const tRadio_logAddr logAddrs[], const uint8_t arrayLen );
+
 /**
  * @brief Ramps up the radio in TX mode. Event READY will trigger when complete
  *
  * @return tRadio_retVal indicating success or failure of setting the task
  */
 tRadio_retVal radio_enableTxMode( void );
+
+/**
+ * @brief Ramps up the radio in RX mode. Event READY will trigger when complete
+ *
+ * @return tRadio_retVal RADIO_INVALID_TASK if radio is not in correct state else RADIO_OK
+ */
+tRadio_retVal radio_enableRxMode( void );
 
 /**
  * @brief Starts transmission or reception
