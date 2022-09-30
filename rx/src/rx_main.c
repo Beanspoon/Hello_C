@@ -1,7 +1,7 @@
-#include "core_ctrl.h"
-#include "radio_ctrl.h"
+#include "rx_core_ctrl.h"
+#include "rx_radio_ctrl.h"
 
-#include "config.h"
+#include "rx_config.h"
 
 #include <stdint-gcc.h>
 

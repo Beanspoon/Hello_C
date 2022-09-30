@@ -1,8 +1,6 @@
-#include "radio_ctrl.h"
+#include "tx_radio_ctrl.h"
 
 #include "utils.h"
-
-extern uint32_t __estack;
 
 /**
  * @brief Radio context
@@ -11,7 +9,6 @@ extern uint32_t __estack;
 typedef struct
 {
     tRadio_packet   txPacket;
-    tRadio_packet * pRxPacket;
 } tRadioCtrl_context;
 
 /**
@@ -34,20 +31,16 @@ static void radioCtrl_errorHandler( const char errorString[] )
     }
 }
 
-static void radioCtrl_endHandler( void )
+static void radioCtrl_readyHandler( void )
 {
     tRadioCtrl_context *pContext = getContext();
+    radio_setTxPacket( &pContext->txPacket );
+    radio_setTxAddress( RADIO_LOGADDR_PRIMARY );
 
     if( radio_start() != RADIO_OK )
     {
-        radioCtrl_errorHandler( "Radio RX error\n" );
+        radioCtrl_errorHandler( "Radio TX error\n" );
     }
-}
-
-static void radioCtrl_addressHandler( void )
-{
-    static uint32_t counter = 0;
-    ++counter;
 }
 
 void radioCtrl_init( void )
@@ -68,15 +61,11 @@ void radioCtrl_init( void )
     }
 
     tRadio_event_handler_tableElement eventTable[] = {
-        { RADIO_EVENTS_END, radioCtrl_endHandler },
-        { RADIO_EVENTS_ADDRESS, radioCtrl_addressHandler },
+        { RADIO_EVENTS_READY, radioCtrl_readyHandler }
     };
     radio_enableEvents( eventTable );
 
-    tRadio_logAddr addresses[] = {RADIO_LOGADDR_PRIMARY };
-    radio_setRxAddresses( addresses, 1u );
-
-    tRadio_shorts shortsToEnable[] = { RADIO_SHORTS_READY_START };
+    tRadio_shorts shortsToEnable[] = { RADIO_SHORTS_END_DISABLE };
     radio_enableShorts( shortsToEnable );
 }
 
@@ -87,19 +76,6 @@ void radioCtrl_transmitPacket( const void * const pPayload, const uint8_t payloa
     memcpy( &(pContext->txPacket.payload), pPayload, payloadLen );
 
     if( RADIO_OK != radio_enableTxMode() )
-    {
-        radioCtrl_errorHandler( "Invalid radio state\n" );
-    }
-}
-
-void radioCtrl_waitForPacket()
-{
-    tRadioCtrl_context *pContext = getContext();
-    pContext->pRxPacket = &__estack;
-
-    radio_setPacketAddress( pContext->pRxPacket );
-
-    if( RADIO_OK != radio_enableRxMode() )
     {
         radioCtrl_errorHandler( "Invalid radio state\n" );
     }

@@ -1,4 +1,4 @@
-#include "config.h"
+#include "tx_config.h"
 
 const tConfig config =
 {

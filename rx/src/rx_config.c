@@ -1,4 +1,4 @@
-#include "config.h"
+#include "rx_config.h"
 
 const tConfig config =
 {

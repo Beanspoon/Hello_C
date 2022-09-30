@@ -3,10 +3,12 @@ CHIPSET = mbn52832
 
 SRCS += \
 	$(wildcard chipsets/$(CHIPSET)/src/*.c) \
+	$(wildcard common/src/*.c) \
 	$(wildcard $(NODE)/src/*.c)
 
 INCLUDES += \
 	chipsets/$(CHIPSET)/include \
+	common/include \
 	$(NODE)/include
 
 CFLAGS += \

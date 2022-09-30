@@ -1,10 +1,10 @@
-#include "core_ctrl.h"
+#include "rx_core_ctrl.h"
 
 #include <stdint-gcc.h>
 
 /**
  * @brief Core context
- * 
+ *
  */
 typedef struct
 {
@@ -13,7 +13,7 @@ typedef struct
 
 /**
  * @brief Get a pointer to the core context
- * 
+ *
  * @return pointer to the core context
  */
 static tCoreCtrl_context *getContext( void )
