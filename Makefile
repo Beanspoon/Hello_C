@@ -1,13 +1,13 @@
-PROJECT = helloC
+PROJECT = helloC_$(NODE)
 CHIPSET = mbn52832
 
 SRCS += \
 	$(wildcard chipsets/$(CHIPSET)/src/*.c) \
-	$(wildcard src/*.c)
+	$(wildcard $(NODE)/src/*.c)
 
 INCLUDES += \
 	chipsets/$(CHIPSET)/include \
-	include
+	$(NODE)/include
 
 CFLAGS += \
 	-mthumb \
@@ -30,7 +30,7 @@ LDFLAGS += \
 
 CFLAGS += $(foreach i,$(INCLUDES),-I $(i))
 
-BUILD_DIR ?= build
+BUILD_DIR ?= build/$(NODE)
 OBJ_DIR ?= $(BUILD_DIR)/objs
 OBJS = $(patsubst %.c,$(OBJ_DIR)/%.o,$(SRCS))
 
