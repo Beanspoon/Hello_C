@@ -238,7 +238,7 @@ void radio_setAddressPrefix( const tRadio_logAddr logicalAddr, const uint8_t pre
  *
  * @param[in] pPacket pointer to the packet in memory
  */
-void radio_setTxPacket( const void * const pPacket );
+void radio_setPacketAddress( const void * const pPacket );
 
 /**
  * @brief Sets the logical address to use in transmission
@@ -247,12 +247,21 @@ void radio_setTxPacket( const void * const pPacket );
  */
 void radio_setTxAddress( const tRadio_logAddr logAddr );
 
+void radio_setRxAddresses( const tRadio_logAddr logAddrs[], const uint8_t arrayLen );
+
 /**
  * @brief Ramps up the radio in TX mode. Event READY will trigger when complete
  *
  * @return tRadio_retVal indicating success or failure of setting the task
  */
 tRadio_retVal radio_enableTxMode( void );
+
+/**
+ * @brief Ramps up the radio in RX mode. Event READY will trigger when complete
+ *
+ * @return tRadio_retVal RADIO_INVALID_TASK if radio is not in correct state else RADIO_OK
+ */
+tRadio_retVal radio_enableRxMode( void );
 
 /**
  * @brief Starts transmission or reception

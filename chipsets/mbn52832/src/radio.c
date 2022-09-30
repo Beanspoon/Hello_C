@@ -81,19 +81,6 @@ typedef struct
     RO_reg                          : 0;
 } tRadio_pCnfRegs;
 
-typedef struct
-{
-    tEnableState   ADDR0               : 1; // Bit[0] 0: disable, or 1: enable reception on logical address 0
-    tEnableState   ADDR1               : 1; // Bit[1] 0: disable, or 1: enable reception on logical address 1
-    tEnableState   ADDR2               : 1; // Bit[2] 0: disable, or 1: enable reception on logical address 2
-    tEnableState   ADDR3               : 1; // Bit[3] 0: disable, or 1: enable reception on logical address 3
-    tEnableState   ADDR4               : 1; // Bit[4] 0: disable, or 1: enable reception on logical address 4
-    tEnableState   ADDR5               : 1; // Bit[5] 0: disable, or 1: enable reception on logical address 5
-    tEnableState   ADDR6               : 1; // Bit[6] 0: disable, or 1: enable reception on logical address 6
-    tEnableState   ADDR7               : 1; // Bit[7] 0: disable, or 1: enable reception on logical address 7
-    RO_reg                          : 0;
-} tRadio_rxAddressReg;
-
 /**
  * @brief Definition of the CRC config register
  *
@@ -216,7 +203,7 @@ typedef struct
     RW_reg                  BASE[2];                    // 0x51C-520 Radio base address registers
     RW_reg                  PREFIX[2];                  // 0x524-528 Prefix bytes for logical addresses
     RW_reg                  TXADDRESS;                  // 0x52C Transmit logical address select
-    tRadio_rxAddressReg     RXADDRESS;                  // 0x530 Receive logical address select
+    RW_reg                  RXADDRESSES;                // 0x530 Receive logical address select
     tRadio_crcCnfReg        CRCCNF;                     // 0x534 CRC configuration register
     RW_reg                  CRCPOLY;                    // 0x538 CRC polynomial register (24 bits)
     RW_reg                  CRCINIT;                    // 0x53C Initial value for CRC (24 bits)
@@ -390,7 +377,7 @@ void radio_setSecondaryAddressPrefix( const tRadio_logAddr logicalAddr, const ui
     setLogicalAddressPrefix( logicalAddr, prefix );
 }
 
-void radio_setTxPacket( const void * const pPacket )
+void radio_setPacketAddress( const void * const pPacket )
 {
     RADIO.PACKETPTR = (uint32_t)pPacket;
 }
@@ -398,6 +385,17 @@ void radio_setTxPacket( const void * const pPacket )
 void radio_setTxAddress( const tRadio_logAddr logAddr )
 {
     RADIO.TXADDRESS = logAddr;
+}
+
+void radio_setRxAddresses( const tRadio_logAddr logAddrs[], const uint8_t arrayLen )
+{
+    RW_reg regVal = { 0u };
+
+    for( uint8_t idx = 0u; idx < arrayLen; ++idx )
+    {
+        regVal |= (1 << logAddrs[idx]);
+    }
+    RADIO.RXADDRESSES = regVal;
 }
 
 tRadio_retVal radio_enableTxMode( void )
@@ -408,6 +406,17 @@ tRadio_retVal radio_enableTxMode( void )
     }
 
     RADIO.TASKS[RADIO_TASKS_TXEN] = ENABLED;
+    return RADIO_OK;
+}
+
+tRadio_retVal radio_enableRxMode( void )
+{
+    if( RADIO.STATE != RADIO_DISABLED )
+    {
+        return RADIO_INVALID_TASK;
+    }
+
+    RADIO.TASKS[RADIO_TASKS_RXEN] = ENABLED;
     return RADIO_OK;
 }
 
