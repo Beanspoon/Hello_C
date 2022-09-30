@@ -34,7 +34,7 @@ static void radioCtrl_errorHandler( const char errorString[] )
 static void radioCtrl_readyHandler( void )
 {
     tRadioCtrl_context *pContext = getContext();
-    radio_setTxPacket( &pContext->txPacket );
+    radio_setPacketAddress( &pContext->txPacket );
     radio_setTxAddress( RADIO_LOGADDR_PRIMARY );
 
     if( radio_start() != RADIO_OK )
