@@ -6,6 +6,8 @@
 #define ARRAY_SIZE( array )     ( sizeof(array)/sizeof(array[0]) )
 #define BYTE_SIZE_BITS          8u
 
+#define THREE_BYTE_MAX          0xFFFFFF
+
 /**
  * @brief Copy data from address pSource to address pDest
  *

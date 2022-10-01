@@ -88,9 +88,9 @@ typedef struct
 typedef struct
 {
     RW_reg  LEN                 : 3; // Bit[0-2] CRC length in number of bytes
-    const uint8_t               : 0;
+    uint8_t                     : 0;
     RW_reg  SKIPADDR            : 1; // Bit[8] 0: include, or 1: skip address field in CRC calculation
-    RO_reg                      : 0;
+    RW_reg                      : 0;
 } tRadio_crcCnfReg;
 
 /**
@@ -284,6 +284,11 @@ static void setLogicalAddressPrefix( const uint8_t logicalAddress, const uint8_t
     RADIO.PREFIX[regNum] = ( prefix << (byteNum * BYTE_SIZE_BITS ) );
 }
 
+void radio_init( void )
+{
+    RADIO.POWER = ENABLED;
+}
+
 void radio_setMode( const tRadio_mode mode )
 {
     RADIO.MODE = mode;
@@ -436,6 +441,49 @@ tRadio_retVal radio_start( void )
     }
 
     return retVal;
+}
+
+void radio_setWhiteningIV( uint8_t initVal )
+{
+    RADIO.DATAWHITEIV = initVal;
+}
+
+tRadio_retVal radio_configureCrc( tRadio_crcConfig *config )
+{
+    tRadio_retVal configStatus = RADIO_OK;
+    uint32_t polyReg = 0u;
+    uint8_t index = 0u;
+    while( ( index < sizeof(config->polyArray) ) &&
+            ( config->polyArray[index] != 0 ) &&
+            ( RADIO_OK == configStatus ) )
+    {
+        if( config->polyArray[index] > 23u )
+        {
+            configStatus = RADIO_INVALID_PARAM;
+        }
+        polyReg |= ( 1u << config->polyArray[index] );
+        ++index;
+    }
+
+    if( RADIO_OK == configStatus )
+    {
+        configStatus = config->initValue <= THREE_BYTE_MAX ? RADIO_OK : RADIO_INVALID_PARAM;
+    }
+
+    if( RADIO_OK == configStatus )
+    {
+        tRadio_crcCnfReg registerVal = {
+            .LEN = config->crcLength,
+            .SKIPADDR = config->addressBehaviour
+        };
+        RADIO.CRCCNF = registerVal;
+
+        RADIO.CRCINIT = config->initValue;
+
+        RADIO.CRCPOLY = polyReg;
+    }
+
+    return configStatus;
 }
 
 void Radio_isr( void )

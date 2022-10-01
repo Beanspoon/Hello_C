@@ -130,6 +130,28 @@ typedef enum
 } tRadio_mode;
 
 /**
+ * @brief Radio CRC length enum
+ *
+ */
+typedef enum
+{
+    RADIO_CRC_DISABLED,
+    RADIO_1_BYTE_CRC,
+    RADIO_2_BYTE_CRC,
+    RADIO_3_BYTE_CRC
+} tRadio_crcLen;
+
+/**
+ * @brief Radio CRC behaviour
+ *
+ */
+typedef enum
+{
+    RADIO_CRC_INCLUDE_ADDRESS,
+    RADIO_CRC_SKIP_ADDRESS
+} tRadio_crcAddrBehaviour;
+
+/**
  * @brief Packet configuration structure
  *
  */
@@ -148,6 +170,18 @@ typedef struct
 } tRadio_packetConfig;
 
 /**
+ * @brief CRC configuration structure
+ *
+ */
+typedef struct
+{
+    tRadio_crcLen           crcLength;          // Length of the CRC
+    tRadio_crcAddrBehaviour addressBehaviour;   // Include or skip address in CRC calculation
+    uint32_t                initValue;          // Init value for CRC calculation
+    uint8_t                 polyArray[24u];     // Array of terms for CRC calculation
+} tRadio_crcConfig;
+
+/**
  * @brief Radio return value used to indicate success or failure of a radio function
  *
  */
@@ -158,6 +192,12 @@ typedef enum
     RADIO_INVALID_TASK,     // Task is not valid for current radio state
     RADIO_ERROR,            // An error occurred
 } tRadio_retVal;
+
+/**
+ * @brief Initialise radio peripheral
+ *
+ */
+void radio_init( void );
 
 void (radio_enableShorts)( const tRadio_shorts shorts[], const uint8_t arrayLen );
 /**
@@ -269,5 +309,20 @@ tRadio_retVal radio_enableRxMode( void );
  * @return tRadio_retVal indicating success or failure of settin the task
  */
 tRadio_retVal radio_start( void );
+
+/**
+ * @brief Sets the initial value for data whitening
+ *
+ * @param[in] initVal Initial value for data whitening
+ */
+void radio_setWhiteningIV( uint8_t initVal );
+
+/**
+ * @brief Configure the radio's CRC check
+ *
+ * @param[in] crcLength Length of the CRC in bytes
+ * @param[in] addressBehaviour Include or skip address in CRC calculation
+ */
+tRadio_retVal radio_configureCrc( tRadio_crcConfig *config );
 
 #endif // RADIO_H

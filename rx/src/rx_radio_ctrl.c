@@ -52,15 +52,38 @@ static void radioCtrl_addressHandler( void )
 
 void radioCtrl_init( void )
 {
+    radio_init();
+
     radio_setMode( RADIO_MODE_BLE1MBIT );
+
+    radio_setWhiteningIV( 37u );    // Use channel number for data whitening (37 is default frequency)
+
+    radio_setPrimaryAddress( 0x00, 0x00 );
+
+    tRadio_logAddr addresses[] = { RADIO_LOGADDR_PRIMARY };
+    radio_setRxAddresses( addresses, 1u );
 
     tRadio_packetConfig packetConfig =
     {
-        .lengthFieldLen = 8u,
-        .maxPayloadLen = 255u,
-        .baseAddrLen = RADIO_4_BYTE_BASE_ADDR,
+        .s0Len = 1u,
+        .s1Len = 2u,
+        .lengthFieldLen = 6u,
+        .maxPayloadLen = 37u,
+        .staticLen = 0u,
+        .baseAddrLen = RADIO_3_BYTE_BASE_ADDR,
+        .endian = RADIO_LITTLE_ENDIAN,
+        .dataWhitening = ENABLED
     };
     tRadio_retVal initRetVal = radio_setPacketConfiguration( &packetConfig );
+
+    tRadio_crcConfig crcConfig =
+    {
+        .crcLength = RADIO_3_BYTE_CRC,
+        .addressBehaviour   = RADIO_CRC_SKIP_ADDRESS,
+        .initValue          = 0x555555,
+        .polyArray          = { 10u, 9u, 6u, 4u, 3u, 1u, 0u }
+    };
+    initRetVal |= radio_configureCrc( &crcConfig );
 
     if( initRetVal != RADIO_OK )
     {
@@ -72,9 +95,6 @@ void radioCtrl_init( void )
         { RADIO_EVENTS_ADDRESS, radioCtrl_addressHandler },
     };
     radio_enableEvents( eventTable );
-
-    tRadio_logAddr addresses[] = {RADIO_LOGADDR_PRIMARY };
-    radio_setRxAddresses( addresses, 1u );
 
     tRadio_shorts shortsToEnable[] = { RADIO_SHORTS_READY_START };
     radio_enableShorts( shortsToEnable );
