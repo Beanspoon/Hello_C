@@ -7,6 +7,10 @@
 
 #define RADIO_BASE_ADDR 0x40001000
 
+/**
+ * @brief Radio tasks enum
+ *
+ */
 typedef enum
 {
     RADIO_TASKS_TXEN,         // Enable the radio in tx mode
