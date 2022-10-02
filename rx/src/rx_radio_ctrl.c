@@ -34,14 +34,9 @@ static void radioCtrl_errorHandler( const char errorString[] )
     }
 }
 
-static void radioCtrl_endHandler( void )
+static void radioCtrl_crcOkHandler( void )
 {
     tRadioCtrl_context *pContext = getContext();
-
-    if( radio_start() != RADIO_OK )
-    {
-        radioCtrl_errorHandler( "Radio RX error\n" );
-    }
 }
 
 static void radioCtrl_addressHandler( void )
@@ -58,7 +53,7 @@ void radioCtrl_init( void )
 
     radio_setWhiteningIV( 37u );    // Use channel number for data whitening (37 is default frequency)
 
-    radio_setPrimaryAddress( 0x00, 0x00 );
+    // radio_setPrimaryAddress( 0xde, 0xadbeef00 );
 
     tRadio_logAddr addresses[] = { RADIO_LOGADDR_PRIMARY };
     radio_setRxAddresses( addresses, 1u );
@@ -90,13 +85,18 @@ void radioCtrl_init( void )
         radioCtrl_errorHandler( "Init failure!\n" );
     }
 
-    tRadio_event_handler_tableElement eventTable[] = {
-        { RADIO_EVENTS_END, radioCtrl_endHandler },
+    tRadio_event_handler_tableElement eventTable[] =
+    {
+        { RADIO_EVENTS_CRCOK, radioCtrl_crcOkHandler },
         { RADIO_EVENTS_ADDRESS, radioCtrl_addressHandler },
     };
     radio_enableEvents( eventTable );
 
-    tRadio_shorts shortsToEnable[] = { RADIO_SHORTS_READY_START };
+    tRadio_shorts shortsToEnable[] =
+    {
+        RADIO_SHORTS_READY_START,
+        RADIO_SHORTS_END_START
+    };
     radio_enableShorts( shortsToEnable );
 }
 
