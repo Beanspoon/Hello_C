@@ -4,7 +4,9 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "${workspaceFolder}/include/**",
+                "${workspaceFolder}/chipsets/mbn52832/include/**",
+                "${workspaceFolder}/tx/include/**",
+                "${workspaceFolder}/rx/include/**",
                 "/usr/include/**"
             ],
             "defines": [],
