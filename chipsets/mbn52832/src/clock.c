@@ -28,7 +28,7 @@ typedef enum
 {
     CLOCK_EVENTS_HFCLKSTARTED,  // High-frequency clock is started
     CLOCK_EVENTS_LFCLKSTARTED,  // Low-frequency clock is started
-    CLOCK_EVENTS_DONE,          // Calibration of LFCLK RC oscillator complete
+    CLOCK_EVENTS_DONE = 3,      // Calibration of LFCLK RC oscillator complete
     CLOCK_EVENTS_CTTO,          // Calibration timer timed out
     CLOCK_EVENTS_MAX
 } tClock_events;

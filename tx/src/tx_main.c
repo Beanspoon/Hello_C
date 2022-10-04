@@ -1,5 +1,6 @@
 #include "tx_core_ctrl.h"
 #include "tx_radio_ctrl.h"
+#include "tx_clock_ctrl.h"
 
 #include "tx_config.h"
 
@@ -7,7 +8,8 @@
 
 void main( void )
 {
-    systick_init( config.systick_frequency, config.core_clock_frequency );
+
+    clockCtrl_init();
 
     // Set up radio
     radioCtrl_init();
