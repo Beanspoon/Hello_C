@@ -2,12 +2,13 @@
 #include "tx_radio_ctrl.h"
 #include "tx_clock_ctrl.h"
 
-#include "tx_config.h"
+#include "config.h"
 
 #include <stdint-gcc.h>
 
 void main( void )
 {
+    systick_init( CONFIG_SYSTICK_FREQUENCY_HZ, CONFIG_CORE_CLOCK_FREQUENCY_HZ );
 
     clockCtrl_init();
 
@@ -21,7 +22,7 @@ void main( void )
     {
         packet[13] = counter;
         radioCtrl_transmitPacket( packet, sizeof(packet) );
-        systick_busyWait( 1000 );
+        systick_busyWait( CONFIG_TRANSMIT_INTERVAL_MS );
         ++counter;
     }
 }

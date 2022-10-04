@@ -1,7 +1,7 @@
 #include "rx_core_ctrl.h"
 #include "rx_radio_ctrl.h"
 
-#include "rx_config.h"
+#include "config.h"
 
 #include <stdint-gcc.h>
 
@@ -12,7 +12,7 @@ void messageReceivedCallback( void )
 
 void main( void )
 {
-    systick_init( config.systick_frequency, config.core_clock_frequency );
+    systick_init( CONFIG_SYSTICK_FREQUENCY_HZ, CONFIG_CORE_CLOCK_FREQUENCY_HZ );
 
     // Set up radio
     radioCtrl_init();
