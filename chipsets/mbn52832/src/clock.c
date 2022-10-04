@@ -34,27 +34,6 @@ typedef enum
 } tClock_events;
 
 /**
- * @brief Clock source enum
- *
- */
-typedef enum
-{
-    CLOCK_SOURCE_INTERNAL,  // Internal RC oscillator
-    CLOCK_SOURCE_CRYSTAL,   // Crystal oscillator
-    CLOCK_SOURCE_SYNTH,     // 32.768 kHz synthesised from high-frquency clock (only applicable to low-frequency clock)
-} tClock_source;
-
-/**
- * @brief Clock state enum
- *
- */
-typedef enum
-{
-    CLOCK_STATE_NOT_RUNNING,
-    CLOCK_STATE_RUNNING
-} tClock_state;
-
-/**
  * @brief Structure of the HFCLKSTAT register
  *
  */
@@ -149,3 +128,18 @@ typedef struct
 } tClock_regMap;
 
 #define CLOCK   (*((volatile tClock_regMap *)CLOCK_BASE_ADDR))
+
+void clock_startHFClock( void )
+{
+    CLOCK.TASKS[CLOCK_TASKS_HFCLKSTART] = ENABLED;
+}
+
+tClock_state clock_getHFClockState()
+{
+    return CLOCK.HFCLKSTAT.state;
+}
+
+tClock_source clock_getHFClockSource()
+{
+    return CLOCK.HFCLKSTAT.source;
+}

@@ -53,7 +53,7 @@ void radioCtrl_init( void )
 
     radio_setWhiteningIV( 37u );    // Use channel number for data whitening (37 is default frequency)
 
-    // radio_setPrimaryAddress( 0xde, 0xadbeef00 );
+    radio_setPrimaryAddress( 0xde, 0xadbeef00 );
 
     tRadio_logAddr addresses[] = { RADIO_LOGADDR_PRIMARY };
     radio_setRxAddresses( addresses, 1u );

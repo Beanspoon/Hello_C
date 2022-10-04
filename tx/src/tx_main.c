@@ -1,6 +1,6 @@
 #include "tx_core_ctrl.h"
 #include "tx_radio_ctrl.h"
-#include "tx_clock_ctrl.h"
+#include "clock_ctrl.h"
 
 #include "config.h"
 
@@ -9,6 +9,8 @@
 void main( void )
 {
     systick_init( CONFIG_SYSTICK_FREQUENCY_HZ, CONFIG_CORE_CLOCK_FREQUENCY_HZ );
+
+    volatile bool running = clockCtrl_isXtalRunning();
 
     clockCtrl_init();
 
@@ -20,9 +22,12 @@ void main( void )
 
     while(1)
     {
-        packet[13] = counter;
-        radioCtrl_transmitPacket( packet, sizeof(packet) );
+        if( clockCtrl_isXtalRunning() )
+        {
+            packet[13] = counter;
+            radioCtrl_transmitPacket( packet, sizeof(packet) );
+            ++counter;
+        }
         systick_busyWait( CONFIG_TRANSMIT_INTERVAL_MS );
-        ++counter;
     }
 }
