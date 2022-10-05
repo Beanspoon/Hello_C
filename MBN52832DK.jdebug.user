@@ -1,15 +1,23 @@
 
-OpenDocument="core_m4.c", FilePath="C:/Users/Peter/Documents/Projects/Embedded/hello_c/src/core_m4.c", Line=0
-OpenDocument="startup.c", FilePath="C:/Users/Peter/Documents/Projects/Embedded/hello_c/src/startup.c", Line=8
-OpenDocument="main.c", FilePath="C:/Users/Peter/Documents/Projects/Embedded/hello_c/src/main.c", Line=26
+
+Breakpoint=/home/pete/projects/hello_C/src/radio_ctrl.c:80, State=BP_STATE_ON
+OpenDocument="startup.c", FilePath="/home/pete/projects/hello_C/chipsets/mbn52832/src/startup.c", Line=9
+OpenDocument="utils.c", FilePath="/home/pete/projects/hello_C/src/utils.c", Line=0
+OpenDocument="radio.c", FilePath="/home/pete/projects/hello_C/chipsets/mbn52832/src/radio.c", Line=427
+OpenDocument="radio_ctrl.c", FilePath="/home/pete/projects/hello_C/src/radio_ctrl.c", Line=54
+OpenDocument="core_systick.c", FilePath="/home/pete/projects/hello_C/chipsets/mbn52832/src/core_systick.c", Line=52
+OpenDocument="main.c", FilePath="/home/pete/projects/hello_C/src/main.c", Line=0
+OpenDocument="core_nvic.c", FilePath="/home/pete/projects/hello_C/chipsets/mbn52832/src/core_nvic.c", Line=1
+OpenDocument="core_ctrl.c", FilePath="/home/pete/projects/hello_C/src/core_ctrl.c", Line=0
 OpenToolbar="Debug", Floating=0, x=0, y=0
-OpenWindow="Registers 1", DockArea=RIGHT, x=0, y=1, w=629, h=315, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, FilteredItems=[], RefreshRate=1
-OpenWindow="Disassembly", DockArea=RIGHT, x=0, y=0, w=629, h=316, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
-OpenWindow="Memory 1", DockArea=BOTTOM, x=1, y=0, w=927, h=318, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, EditorAddress=0x0
-OpenWindow="Functions", DockArea=LEFT, x=0, y=0, w=300, h=632, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
-OpenWindow="Console", DockArea=BOTTOM, x=0, y=0, w=992, h=318, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
-TableHeader="Functions", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Address";"Size";"#Insts";"Source"], ColWidths=[238;100;100;100;100]
+OpenWindow="Registers 1", DockArea=RIGHT, x=0, y=1, w=279, h=163, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, FilteredItems=[], RefreshRate=1
+OpenWindow="Disassembly", DockArea=RIGHT, x=0, y=0, w=279, h=164, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Memory 1", DockArea=BOTTOM, x=1, y=0, w=314, h=127, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, EditorAddress=0x20000000
+OpenWindow="Functions", DockArea=LEFT, x=0, y=1, w=279, h=163, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Memory Usage", DockArea=LEFT, x=0, y=0, w=279, h=164, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Console", DockArea=BOTTOM, x=0, y=0, w=408, h=127, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+TableHeader="Functions", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Address";"Size";"#Insts";"Source"], ColWidths=[238;100;100;100;147]
 TableHeader="Power Sampling", SortCol="None", SortOrder="ASCENDING", VisibleCols=["Index";"Time";"Ch 0"], ColWidths=[100;100;100]
-TableHeader="Registers 1", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Description"], ColWidths=[142;105;365]
+TableHeader="Registers 1", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Description"], ColWidths=[94;105;259]
 TableHeader="RegisterSelectionDialog", SortCol="None", SortOrder="ASCENDING", VisibleCols=[], ColWidths=[]
-TableHeader="TargetExceptionDialog", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Address";"Description"], ColWidths=[200;100;100;359]
+TableHeader="TargetExceptionDialog", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Address";"Description"], ColWidths=[200;113;100;801]
