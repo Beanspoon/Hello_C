@@ -1,8 +1,10 @@
 #include "tx_core_ctrl.h"
 #include "tx_radio_ctrl.h"
+#include "gpio.h"
 #include "clock_ctrl.h"
 
 #include "config.h"
+#include "types.h"
 
 #include <stdint-gcc.h>
 
@@ -10,24 +12,30 @@ void main( void )
 {
     systick_init( CONFIG_SYSTICK_FREQUENCY_HZ, CONFIG_CORE_CLOCK_FREQUENCY_HZ );
 
-    volatile bool running = clockCtrl_isXtalRunning();
-
     clockCtrl_init();
 
     // Set up radio
     radioCtrl_init();
 
-    uint8_t packet[] = { 0x55, 0x55, 'H', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd', 0x00, 0x55, 0x55 };
-    uint8_t counter = 0u;
+    tGpio_pinCnfReg buttonConfig =
+    {
+        .DIR = GPIO_DIR_INPUT,
+        .INPUT_BUFFER = GPIO_INBUF_CONNECT,
+        .PULL = GPIO_PULL_UP
+    };
 
+    gpio_configurePin( BTN0, &buttonConfig );
+    gpio_configurePin( BTN1, &buttonConfig );
+
+    uint8_t prevGpioState, newGpioState = 0u;
     while(1)
     {
-        if( clockCtrl_isXtalRunning() )
+        newGpioState = (gpio_readPin(BTN0)) | (gpio_readPin(BTN1) << 1u);
+        if( newGpioState != prevGpioState )
         {
-            packet[13] = counter;
-            radioCtrl_transmitPacket( packet, sizeof(packet) );
-            ++counter;
+            radioCtrl_transmitPacket( &newGpioState, sizeof(newGpioState) );
+            prevGpioState = newGpioState;
         }
-        systick_busyWait( CONFIG_TRANSMIT_INTERVAL_MS );
+        systick_busyWait( CONFIG_UPDATE_INTERVAL );
     }
 }

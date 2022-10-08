@@ -15,5 +15,6 @@
 #define LED0    GPIO_PIN17
 #define LED1    GPIO_PIN18
 
+#define CONFIG_UPDATE_INTERVAL  20u
 
 #endif // CONFIG_H
