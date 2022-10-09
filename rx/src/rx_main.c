@@ -20,6 +20,17 @@ void main( void )
     // Set up radio
     radioCtrl_init();
 
+    tGpio_pinCnfReg pinConfig =
+    {
+        .DIR = GPIO_DIR_OUTPUT,
+        .INPUT_BUFFER = GPIO_INBUF_DISCONNECT
+        .PULL = GPIO_PULL_DISABLED,
+        .DRIVE = GPIO_DRIVE_S0S1,
+        .SENSE = GPIO_SENSE_DISABLED
+    };
+    gpio_configurePin( LED0, &pinConfig );
+    gpio_configurePin( LED1, &pinConfig );
+
     while( !clockCtrl_isXtalRunning() ) { }
 
     radioCtrl_waitForPacket();
