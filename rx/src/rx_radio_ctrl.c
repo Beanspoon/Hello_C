@@ -112,7 +112,7 @@ void radioCtrl_transmitPacket( const void * const pPayload, const uint8_t payloa
     }
 }
 
-void radioCtrl_waitForPacket()
+void radioCtrl_waitForPacket( const tRadioCtrl_packetHandler callback )
 {
     tRadioCtrl_context *pContext = getContext();
     pContext->pRxPacket = &__estack;

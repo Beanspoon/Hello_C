@@ -16,6 +16,12 @@ typedef struct __attribute__((packed))
 } tRadio_packet;
 
 /**
+ * @brief Function pointer for packet handler function
+ *
+ */
+typedef void (*tRadioCtrl_packetHandler)( const uint8_t * const pPacket, const uint8_t packetLength);
+
+/**
  * @brief Initialise the radio
  *
  */
@@ -29,6 +35,6 @@ void radioCtrl_init( void );
  */
 void radioCtrl_transmitPacket( const void * const pPayload, const uint8_t payloadLen );
 
-void radioCtrl_waitForPacket( void );
+void radioCtrl_waitForPacket( const tRadioCtrl_packetHandler callback );
 
 #endif // RADIO_CTRL_H
