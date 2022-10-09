@@ -1,14 +1,15 @@
 #include "rx_core_ctrl.h"
 #include "rx_radio_ctrl.h"
 #include "clock_ctrl.h"
+#include "gpio.h"
 
 #include "config.h"
 
 #include <stdint-gcc.h>
 
-void messageReceivedCallback( void )
+void packetCallback( const uint8_t * const pPacket, const uint8_t packetLength )
 {
-    while(1) { }
+
 }
 
 void main( void )
