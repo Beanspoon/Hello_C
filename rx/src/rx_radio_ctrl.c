@@ -12,6 +12,7 @@ typedef struct
 {
     tRadioCtrl_packet               txPacket;           // Memory location for packet pending transmission
     tRadioCtrl_packet               rxPacket;           // Memory location for most recently received packet
+    tRadioCtrl_packetHandler    pfPacketHandler;    // Handler function to handle recieved packet
 } tRadioCtrl_context;
 
 /**
@@ -37,6 +38,13 @@ static void radioCtrl_errorHandler( const char errorString[] )
 static void radioCtrl_crcOkHandler( void )
 {
     tRadioCtrl_context *pContext = getContext();
+
+    uint8_t packet[MAX_PACKET_PAYLOAD_SIZE] = { 0 };
+    uint8_t length = pContext->rxPacket.length;
+    memcpy( packet, pContext->rxPacket.payload, length );
+    pContext->pfPacketHandler( packet, length );
+}
+
 static void radioCtrl_crcErrorHandler( void )
 {
     volatile RW_reg crcValue = radio_readCrc();
