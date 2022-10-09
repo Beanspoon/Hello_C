@@ -490,6 +490,11 @@ tRadio_retVal radio_configureCrc( tRadio_crcConfig *config )
     return configStatus;
 }
 
+uint32_t radio_readCrc( void )
+{
+    return RADIO.RXCRC;
+}
+
 void Radio_isr( void )
 {
     tRadio_context *pContext = getContext();

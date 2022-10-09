@@ -325,4 +325,11 @@ void radio_setWhiteningIV( uint8_t initVal );
  */
 tRadio_retVal radio_configureCrc( tRadio_crcConfig *config );
 
+/**
+ * @brief Reads the CRC value of a received packet
+ *
+ * @return uint32_t containing the CRC value
+ */
+uint32_t radio_readCrc( void );
+
 #endif // RADIO_H
