@@ -10,8 +10,8 @@ extern uint32_t __estack;
  */
 typedef struct
 {
-    tRadio_packet   txPacket;
-    tRadio_packet * pRxPacket;
+    tRadioCtrl_packet               txPacket;           // Memory location for packet pending transmission
+    tRadioCtrl_packet               rxPacket;           // Memory location for most recently received packet
 } tRadioCtrl_context;
 
 /**
@@ -115,9 +115,8 @@ void radioCtrl_transmitPacket( const void * const pPayload, const uint8_t payloa
 void radioCtrl_waitForPacket( const tRadioCtrl_packetHandler callback )
 {
     tRadioCtrl_context *pContext = getContext();
-    pContext->pRxPacket = &__estack;
 
-    radio_setPacketAddress( pContext->pRxPacket );
+    radio_setPacketAddress( &pContext->rxPacket );
 
     if( RADIO_OK != radio_enableRxMode() )
     {

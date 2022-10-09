@@ -15,7 +15,7 @@ typedef struct __attribute__((packed))
 {
     uint8_t length;
     uint8_t payload[MAX_PACKET_PAYLOAD_SIZE];
-} tRadio_packet;
+} tRadioCtrl_packet;
 
 /**
  * @brief Function pointer for packet handler function
