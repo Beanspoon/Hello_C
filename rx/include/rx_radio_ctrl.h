@@ -3,6 +3,8 @@
 
 #include "radio.h"
 
+#include "config.h"
+
 #include <stdint-gcc.h>
 
 /**
@@ -12,7 +14,7 @@
 typedef struct __attribute__((packed))
 {
     uint8_t length;
-    uint8_t payload[255];
+    uint8_t payload[MAX_PACKET_PAYLOAD_SIZE];
 } tRadio_packet;
 
 /**

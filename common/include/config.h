@@ -9,6 +9,9 @@
 #define CONFIG_SYSTICK_FREQUENCY_HZ     1000u       // 1 kHz = 1 ms period
 #define CONFIG_CORE_CLOCK_FREQUENCY_HZ  64000000u   // 64 MHz
 
+// RADIO
+#define MAX_PACKET_PAYLOAD_SIZE 10u
+
 //GPIO
 #define BTN0    GPIO_PIN13
 #define BTN1    GPIO_PIN14
