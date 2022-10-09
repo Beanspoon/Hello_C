@@ -37,6 +37,9 @@ static void radioCtrl_errorHandler( const char errorString[] )
 static void radioCtrl_crcOkHandler( void )
 {
     tRadioCtrl_context *pContext = getContext();
+static void radioCtrl_crcErrorHandler( void )
+{
+    volatile RW_reg crcValue = radio_readCrc();
 }
 
 static void radioCtrl_addressHandler( void )
@@ -88,6 +91,7 @@ void radioCtrl_init( void )
     tRadio_event_handler_tableElement eventTable[] =
     {
         { RADIO_EVENTS_CRCOK, radioCtrl_crcOkHandler },
+        { RADIO_EVENTS_CRCERROR, radioCtrl_crcErrorHandler },
         { RADIO_EVENTS_ADDRESS, radioCtrl_addressHandler },
     };
     radio_enableEvents( eventTable );
