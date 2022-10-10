@@ -18,7 +18,7 @@ typedef struct
     RW_reg          DIRCLR;        // 0x51C Direction clear register (sets pin to input)
     RW_reg          LATCH;         // 0x520 Latch register indicating which GPIO pins have met criteria set in PIN_CNF[n].SENSE. Write '1' to clear
     RW_reg          DETECTMODE;    // 0x524 Select between default DETECT signal behaviour (0) and LDETECT mode (1)
-    RO_reg          RESERVED_B[0x77];
+    RO_reg          RESERVED_B[0x76];
     tGpio_pinCnfReg PINCNF[32];    // 0x700-77C Configuration of GPIO pins
 } tGpio_regMap;
 
@@ -30,7 +30,7 @@ tGpio_status gpio_configurePin( const tGpio_pin pin, const tGpio_pinCnfReg *pPin
 {
     tGpio_status retStatus = GPIO_STATUS_INVALID;
 
-    if( pin > GPIO_PIN_MAX )
+    if( pin < GPIO_PIN_MAX )
     {
         GPIO.PINCNF[pin] = *pPinConfig;
         retStatus = GPIO_STATUS_OK;
@@ -41,7 +41,7 @@ tGpio_status gpio_configurePin( const tGpio_pin pin, const tGpio_pinCnfReg *pPin
 tGpio_pinState gpio_readPin( const tGpio_pin pin )
 {
     RW_reg pinValue = GPIO.IN & GPIO_PINMASK(pin);
-    return (tGpio_pinState)pinValue;
+    return (tGpio_pinState)(pinValue >> pin);
 }
 
 void gpio_writePin( const tGpio_pin pin, const tGpio_pinState state )

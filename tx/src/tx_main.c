@@ -21,7 +21,8 @@ void main( void )
     {
         .DIR = GPIO_DIR_INPUT,
         .INPUT_BUFFER = GPIO_INBUF_CONNECT,
-        .PULL = GPIO_PULL_UP
+        .PULL = GPIO_PULL_DISABLED,
+        .SENSE = GPIO_SENSE_LOW
     };
 
     gpio_configurePin( BTN0, &buttonConfig );
