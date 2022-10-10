@@ -29,7 +29,6 @@ typedef enum
  */
 typedef enum
 {
-    GPIO_PIN0,
     GPIO_PIN1,
     GPIO_PIN2,
     GPIO_PIN3,
@@ -61,6 +60,7 @@ typedef enum
     GPIO_PIN29,
     GPIO_PIN30,
     GPIO_PIN31,
+    GPIO_PIN32,
     GPIO_PIN_MAX
 } tGpio_pin;
 
