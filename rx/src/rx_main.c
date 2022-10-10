@@ -30,7 +30,9 @@ void main( void )
         .SENSE = GPIO_SENSE_DISABLED
     };
     gpio_configurePin( LED0, &pinConfig );
+    gpio_writePin( LED0, HIGH );
     gpio_configurePin( LED1, &pinConfig );
+    gpio_writePin( LED1, HIGH );
 
     while( !clockCtrl_isXtalRunning() ) { }
 
