@@ -43,3 +43,9 @@ tGpio_pinState gpio_readPin( const tGpio_pin pin )
     RW_reg pinValue = GPIO.IN & GPIO_PINMASK(pin);
     return (tGpio_pinState)pinValue;
 }
+
+void gpio_writePin( const tGpio_pin pin, const tGpio_pinState state )
+{
+    RW_reg *reg = ( state == HIGH ) ? &GPIO.OUTSET : &GPIO.OUTCLR;
+    *reg = GPIO_PINMASK( pin );
+}

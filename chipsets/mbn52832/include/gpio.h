@@ -154,4 +154,12 @@ tGpio_status gpio_configurePin( const tGpio_pin pin, const tGpio_pinCnfReg *pPin
  */
 tGpio_pinState gpio_readPin( const tGpio_pin pin );
 
+/**
+ * @brief Sets the state of a pin
+ *
+ * @param[in] pin the pin being set
+ * @param[in] state the state the pin is bein set to
+ */
+void gpio_writePin( const tGpio_pin pin, const tGpio_pinState state );
+
 #endif // GPIO_H
