@@ -34,7 +34,7 @@ void main( void )
 
     while( !clockCtrl_isXtalRunning() ) { }
 
-    radioCtrl_waitForPacket();
+    radioCtrl_waitForPacket( packetCallback );
 
     while(1)
     {
