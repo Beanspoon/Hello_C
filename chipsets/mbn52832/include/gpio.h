@@ -117,7 +117,7 @@ typedef enum
  */
 typedef enum
 {
-    GIPO_SENSE_DISABLED,    // Pin sensing mechanism disabled
+    GPIO_SENSE_DISABLED,    // Pin sensing mechanism disabled
     GPIO_SENSE_HIGH,        // Sense for high level
     GPIO_SENSE_LOW          // Sense for low level
 } tGpio_sense;
