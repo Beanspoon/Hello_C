@@ -32,7 +32,7 @@ void main( void )
     tGpio_pinCnfReg pinConfig =
     {
         .DIR = GPIO_DIR_OUTPUT,
-        .INPUT_BUFFER = GPIO_INBUF_DISCONNECT
+        .INPUT_BUFFER = GPIO_INBUF_DISCONNECT,
         .PULL = GPIO_PULL_DISABLED,
         .DRIVE = GPIO_DRIVE_S0S1,
         .SENSE = GPIO_SENSE_DISABLED
