@@ -128,6 +128,7 @@ void radioCtrl_waitForPacket( const tRadioCtrl_packetHandler callback )
 {
     tRadioCtrl_context *pContext = getContext();
 
+    pContext->pfPacketHandler = callback;
     radio_setPacketAddress( &pContext->rxPacket );
 
     if( RADIO_OK != radio_enableRxMode() )
