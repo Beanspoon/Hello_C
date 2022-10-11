@@ -11,9 +11,8 @@ void packetCallback( const uint8_t * const pPacket, const uint8_t packetLength )
 {
     if( packetLength == 1u )
     {
-        // LEDs are active low so invert button signal
-        tGpio_pinState led0State = (~*pPacket) & 1u;
-        tGpio_pinState led1State = (~*pPacket) & (1u << 1u);
+        tGpio_pinState led0State = *pPacket & 1u;
+        tGpio_pinState led1State = (*pPacket & 2u) >> 1u;
 
         gpio_writePin( LED0, led0State );
         gpio_writePin( LED1, led1State );
