@@ -92,7 +92,7 @@ typedef enum
 {
     GPIO_PULL_DISABLED,
     GPIO_PULL_DOWN,
-    GPIO_PULL_UP
+    GPIO_PULL_UP = 3
 } tGpio_pull;
 
 /**
@@ -118,7 +118,7 @@ typedef enum
 typedef enum
 {
     GPIO_SENSE_DISABLED,    // Pin sensing mechanism disabled
-    GPIO_SENSE_HIGH,        // Sense for high level
+    GPIO_SENSE_HIGH = 2,    // Sense for high level
     GPIO_SENSE_LOW          // Sense for low level
 } tGpio_sense;
 
