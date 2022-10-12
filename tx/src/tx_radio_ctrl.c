@@ -47,7 +47,8 @@ void radioCtrl_init( void )
 {
     radio_init();
 
-    radio_setMode( RADIO_MODE_BLE1MBIT );
+    // radio_setMode( RADIO_MODE_BLE1MBIT );
+    radio_configureFrequency( 0u, true );
 
     radio_setWhiteningIV( 37u );
 
@@ -71,7 +72,7 @@ void radioCtrl_init( void )
     tRadio_crcConfig crcConfig =
     {
         .crcLength = RADIO_3_BYTE_CRC,
-        .addressBehaviour   = RADIO_CRC_SKIP_ADDRESS,
+        .addressBehaviour   = RADIO_CRC_INCLUDE_ADDRESS,
         .initValue          = 0x555555,
         .polyArray          = { 10u, 9u, 6u, 4u, 3u, 1u, 0u }
     };
