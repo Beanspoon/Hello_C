@@ -86,7 +86,7 @@ void radioCtrl_init( void )
     tRadio_crcConfig crcConfig =
     {
         .crcLength = RADIO_3_BYTE_CRC,
-        .addressBehaviour   = RADIO_CRC_INCLUDE_ADDRESS,
+        .addressBehaviour   = RADIO_CRC_SKIP_ADDRESS,
         .initValue          = 0x555555,
         .polyArray          = { 10u, 9u, 6u, 4u, 3u, 1u, 0u }
     };
