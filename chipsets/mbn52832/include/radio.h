@@ -4,6 +4,8 @@
 #include "types.h"
 #include "utils.h"
 
+#include <stdbool.h>
+
 /**
  * @brief Radio shortcuts enum
  *
@@ -331,5 +333,14 @@ tRadio_retVal radio_configureCrc( tRadio_crcConfig *config );
  * @return uint32_t containing the CRC value
  */
 uint32_t radio_readCrc( void );
+
+/**
+ * @brief Configures the radio frequency settings
+ *
+ * @param[in] channelFrequency Comms frequency = baseFrequency + channelFrequency
+ * @param[in] lowFrequency Toggles between default (2400 MHz) and low (2360 MHz) baseFrequency
+ * @return tRadio_retVal indicating whether the configuration was a success
+ */
+tRadio_retVal radio_configureFrequency( const uint8_t channelFrequency, const bool lowFrequency );
 
 #endif // RADIO_H

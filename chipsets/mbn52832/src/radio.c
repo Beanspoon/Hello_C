@@ -54,9 +54,9 @@ typedef struct
 typedef struct
 {
     RW_reg  FREQUENCY           : 7; // Bit[0-6] Radio channel frequency (2400 + FREQUENCY) MHz [0-100]
-    const uint8_t               : 0;
-    RW_reg  MAP                 : 1; // Bit[8] Base frequency 0: 2360 MHz, 1: 2400 MHz
-    RO_reg                      : 0;
+    uint8_t                     : 0;
+    RW_reg  MAP                 : 1; // Bit[8] Base frequency 0: 2400 MHz, 1: 2360 MHz
+    RW_reg                      : 0;
 } tRadio_frequencyReg;
 
 /**
@@ -493,6 +493,22 @@ tRadio_retVal radio_configureCrc( tRadio_crcConfig *config )
 uint32_t radio_readCrc( void )
 {
     return RADIO.RXCRC;
+}
+
+tRadio_retVal radio_configureFrequency( const uint8_t channelFrequency, const bool lowFrequency )
+{
+    if( channelFrequency > 100 )
+    {
+        return RADIO_INVALID_PARAM;
+    }
+
+    tRadio_frequencyReg reg =
+    {
+        .FREQUENCY = channelFrequency,
+        .MAP = lowFrequency
+    };
+    RADIO.FREQUENCY = reg;
+    return RADIO_OK;
 }
 
 void Radio_isr( void )
