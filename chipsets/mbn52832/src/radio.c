@@ -233,7 +233,7 @@ typedef struct
 
 typedef struct
 {
-    tRadio_eventHandler pfEventHandlers[RADIO_SHORTS_MAX];
+    tRadio_eventHandler pfEventHandlers[RADIO_EVENTS_MAX];
 } tRadio_context;
 
 #define RADIO_LENGTH_FIELD_MAX_LENGTH_BITS  8u
