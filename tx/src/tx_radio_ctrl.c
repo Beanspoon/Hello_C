@@ -1,6 +1,7 @@
 #include "tx_radio_ctrl.h"
 
 #include "utils.h"
+#include "config.h"
 
 /**
  * @brief Radio context
@@ -61,7 +62,7 @@ void radioCtrl_init( void )
         .s0Len          = 1u,
         .s1Len          = 2u,
         .lengthFieldLen = 6u,
-        .maxPayloadLen  = 37u,
+        .maxPayloadLen  = MAX_PACKET_PAYLOAD_SIZE,
         .staticLen      = 0u,
         .baseAddrLen    = RADIO_3_BYTE_BASE_ADDR,
         .endian         = RADIO_LITTLE_ENDIAN,
