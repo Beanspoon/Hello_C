@@ -1,6 +1,8 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
+#include "gpio.h"
+
 #include <stdint-gcc.h>
 
 // SYSTICK
@@ -8,6 +10,14 @@
 #define CONFIG_CORE_CLOCK_FREQUENCY_HZ  64000000u   // 64 MHz
 
 // RADIO
-#define CONFIG_TRANSMIT_INTERVAL_MS    1000u
+#define MAX_PACKET_PAYLOAD_SIZE 10u
+
+//GPIO
+#define BTN0    GPIO_PIN13
+#define BTN1    GPIO_PIN14
+#define LED0    GPIO_PIN17
+#define LED1    GPIO_PIN18
+
+#define CONFIG_UPDATE_INTERVAL  20u
 
 #endif // CONFIG_H

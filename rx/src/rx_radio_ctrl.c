@@ -10,8 +10,9 @@ extern uint32_t __estack;
  */
 typedef struct
 {
-    tRadio_packet   txPacket;
-    tRadio_packet * pRxPacket;
+    tRadioCtrl_packet               txPacket;           // Memory location for packet pending transmission
+    tRadioCtrl_packet               rxPacket;           // Memory location for most recently received packet
+    tRadioCtrl_packetHandler    pfPacketHandler;    // Handler function to handle recieved packet
 } tRadioCtrl_context;
 
 /**
@@ -37,6 +38,16 @@ static void radioCtrl_errorHandler( const char errorString[] )
 static void radioCtrl_crcOkHandler( void )
 {
     tRadioCtrl_context *pContext = getContext();
+
+    uint8_t packet[MAX_PACKET_PAYLOAD_SIZE] = { 0 };
+    uint8_t length = pContext->rxPacket.length;
+    memcpy( packet, pContext->rxPacket.payload, length );
+    pContext->pfPacketHandler( packet, length );
+}
+
+static void radioCtrl_crcErrorHandler( void )
+{
+    volatile RW_reg crcValue = radio_readCrc();
 }
 
 static void radioCtrl_addressHandler( void )
@@ -49,7 +60,8 @@ void radioCtrl_init( void )
 {
     radio_init();
 
-    radio_setMode( RADIO_MODE_BLE1MBIT );
+    // radio_setMode( RADIO_MODE_BLE1MBIT );
+    radio_configureFrequency( 0u, true );
 
     radio_setWhiteningIV( 37u );    // Use channel number for data whitening (37 is default frequency)
 
@@ -63,7 +75,7 @@ void radioCtrl_init( void )
         .s0Len = 1u,
         .s1Len = 2u,
         .lengthFieldLen = 6u,
-        .maxPayloadLen = 37u,
+        .maxPayloadLen = MAX_PACKET_PAYLOAD_SIZE,
         .staticLen = 0u,
         .baseAddrLen = RADIO_3_BYTE_BASE_ADDR,
         .endian = RADIO_LITTLE_ENDIAN,
@@ -88,6 +100,7 @@ void radioCtrl_init( void )
     tRadio_event_handler_tableElement eventTable[] =
     {
         { RADIO_EVENTS_CRCOK, radioCtrl_crcOkHandler },
+        { RADIO_EVENTS_CRCERROR, radioCtrl_crcErrorHandler },
         { RADIO_EVENTS_ADDRESS, radioCtrl_addressHandler },
     };
     radio_enableEvents( eventTable );
@@ -112,12 +125,12 @@ void radioCtrl_transmitPacket( const void * const pPayload, const uint8_t payloa
     }
 }
 
-void radioCtrl_waitForPacket()
+void radioCtrl_waitForPacket( const tRadioCtrl_packetHandler callback )
 {
     tRadioCtrl_context *pContext = getContext();
-    pContext->pRxPacket = &__estack;
 
-    radio_setPacketAddress( pContext->pRxPacket );
+    pContext->pfPacketHandler = callback;
+    radio_setPacketAddress( &pContext->rxPacket );
 
     if( RADIO_OK != radio_enableRxMode() )
     {
